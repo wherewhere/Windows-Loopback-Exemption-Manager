@@ -1,4 +1,4 @@
-﻿using ModernWpf.Controls;
+﻿using LoopBack.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using MessageBox = ModernWpf.Controls.MessageBox;
 
-namespace Loopback
+namespace LoopBack
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -15,7 +15,7 @@ namespace Loopback
     public partial class MainWindow : Window
     {
         private LoopUtil _loop;
-        private List<LoopUtil.AppContainer> appFiltered = new List<LoopUtil.AppContainer>();
+        private List<AppContainer> appFiltered = new List<AppContainer>();
         private bool isDirty = false;
 
         public MainWindow()
@@ -67,7 +67,7 @@ namespace Loopback
             string appsInFilter = filter.ToUpper();
             appFiltered.Clear();
 
-            foreach (LoopUtil.AppContainer app in _loop.Apps)
+            foreach (AppContainer app in _loop.Apps)
             {
                 string appName = app.DisplayName.ToUpper();
 
@@ -116,7 +116,7 @@ namespace Loopback
         {
             if (isDirty)
             {
-                MessageBoxResult resp = MessageBox.Show("You have not saved your changes. Are you sure you want to exit ?", "Loopback Manager", MessageBoxButton.YesNo);
+                MessageBoxResult resp = MessageBox.Show("You have not saved your changes. Are you sure you want to exit ?", "LoopBack Manager", MessageBoxButton.YesNo);
                 if (resp == MessageBoxResult.No)
                 {
                     e.Cancel = true;

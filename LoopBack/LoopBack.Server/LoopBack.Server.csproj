@@ -22,8 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ModernWpf\ModernWpf.Controls\ModernWpf.Controls.csproj" />
-    <ProjectReference Include="..\..\ModernWpf\ModernWpf.MessageBox\ModernWpf.MessageBox.csproj" />
+    <PackageReference Include="ModernWpf.MessageBox.Mica" Version="0.5.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loopback.Metadata\LoopBack.Metadata.csproj" />
   </ItemGroup>
 
   <ItemGroup>

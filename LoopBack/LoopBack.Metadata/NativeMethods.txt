@@ -1,0 +1,10 @@
+﻿
+NETISO_FLAG
+
+ConvertSidToStringSid
+ConvertStringSidToSid
+NetworkIsolationEnumAppContainers
+NetworkIsolationFreeAppContainers
+NetworkIsolationGetAppContainerConfig
+NetworkIsolationSetAppContainerConfig
+SHLoadIndirectString

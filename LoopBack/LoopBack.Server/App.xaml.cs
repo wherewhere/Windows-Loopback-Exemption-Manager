@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Loopback
+namespace LoopBack
 {
     /// <summary>
     /// Interaction logic for App.xaml
