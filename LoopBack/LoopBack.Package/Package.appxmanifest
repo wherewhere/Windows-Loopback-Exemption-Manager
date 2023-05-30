@@ -16,7 +16,7 @@
   <Properties>
     <DisplayName>LoopBack.Package</DisplayName>
     <PublisherDisplayName>qq251</PublisherDisplayName>
-    <Logo>Images\StoreLogo.png</Logo>
+    <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>

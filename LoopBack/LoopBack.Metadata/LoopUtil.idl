@@ -3,7 +3,7 @@ import "AppContainer.idl";
 namespace LoopBack.Metadata
 {
     [default_interface]
-    runtimeclass LoopUtil
+    runtimeclass LoopUtil : Windows.Foundation.IClosable
     {
         Windows.Foundation.Collections.IIterable<AppContainer> Apps { get; };
 

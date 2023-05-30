@@ -70,6 +70,7 @@
                 <cwuc:DataGridTemplateColumn
                     Width="85"
                     CanUserResize="False"
+                    CanUserSort="True"
                     Header="Exempt"
                     IsReadOnly="True">
                     <cwuc:DataGridTemplateColumn.CellTemplate>
@@ -90,19 +91,43 @@
                     Width="150"
                     Binding="{Binding Path=DisplayName}"
                     CanUserResize="True"
+                    CanUserSort="True"
                     Header="App Display Name"
                     IsReadOnly="True" />
                 <cwuc:DataGridTextColumn
                     Width="400"
                     Binding="{Binding Path=AppContainerName}"
                     CanUserResize="True"
+                    CanUserSort="True"
                     Header="App Full Name"
                     IsReadOnly="True" />
                 <cwuc:DataGridTextColumn
                     Width="400"
                     Binding="{Binding Path=WorkingDirectory}"
                     CanUserResize="True"
+                    CanUserSort="True"
                     Header="Directory"
+                    IsReadOnly="True" />
+                <cwuc:DataGridTextColumn
+                    Width="400"
+                    Binding="{Binding Path=PackageFullName}"
+                    CanUserResize="True"
+                    CanUserSort="True"
+                    Header="Package Full Name"
+                    IsReadOnly="True" />
+                <cwuc:DataGridTextColumn
+                    Width="400"
+                    Binding="{Binding Path=AppContainerSid}"
+                    CanUserResize="True"
+                    CanUserSort="True"
+                    Header="App Container Sid"
+                    IsReadOnly="True" />
+                <cwuc:DataGridTextColumn
+                    Width="400"
+                    Binding="{Binding Path=UserSid}"
+                    CanUserResize="True"
+                    CanUserSort="True"
+                    Header="User Sid"
                     IsReadOnly="True" />
             </cwuc:DataGrid.Columns>
         </cwuc:DataGrid>

@@ -130,13 +130,21 @@ namespace winrt::LoopBack::Metadata::implementation
         app.LoopUtil(loopUtil);
         if (PI_app.displayName != nullptr) { app.DisplayName(PI_app.displayName); }
         if (PI_app.appContainerName != nullptr) { app.AppContainerName(PI_app.appContainerName); }
+        if (PI_app.packageFullName != nullptr) { app.PackageFullName(PI_app.packageFullName); }
         if (PI_app.workingDirectory != nullptr) { app.WorkingDirectory(PI_app.workingDirectory); }
 
         if (PI_app.appContainerSid != nullptr)
         {
             LPWSTR tempSid;
             ConvertSidToStringSid(PI_app.appContainerSid, &tempSid);
-            if (tempSid != nullptr) { app.StringSid(tempSid); }
+            if (tempSid != nullptr) { app.AppContainerSid(tempSid); }
+        }
+
+        if (PI_app.userSid != nullptr)
+        {
+            LPWSTR tempSid;
+            ConvertSidToStringSid(PI_app.userSid, &tempSid);
+            if (tempSid != nullptr) { app.UserSid(tempSid); }
         }
 
         IVector<hstring> capabilities = single_threaded_vector<hstring>();
@@ -155,7 +163,25 @@ namespace winrt::LoopBack::Metadata::implementation
         }
         app.Capabilities(capabilities);
 
+        IVector<hstring> app_binaries = GetBinaries(PI_app.binaries);
+        app.Binaries(app_binaries);
+
         return app;
+    }
+
+    IVector<hstring> LoopUtil::GetBinaries(INET_FIREWALL_AC_BINARIES cap)
+    {
+        IVector<hstring> myCap = single_threaded_vector<hstring>();
+
+        LPWSTR* arrayValue = cap.binaries;
+
+        for (DWORD i = 0; i < cap.count; i++)
+        {
+            LPWSTR cur = arrayValue[i];
+            myCap.Append(cur);
+        }
+
+        return myCap;
     }
 
     vector<SID_AND_ATTRIBUTES> LoopUtil::GetCapabilities(INET_FIREWALL_AC_CAPABILITIES cap)
@@ -255,10 +281,10 @@ namespace winrt::LoopBack::Metadata::implementation
         {
             if (app.LoopUtil())
             {
-                hstring stringSid = app.StringSid();
+                hstring stringSid = app.AppContainerSid();
                 if (stringSid != sid)
                 {
-                    enabledList.Append(app.StringSid());
+                    enabledList.Append(app.AppContainerSid());
                 }
             }
         }
@@ -277,7 +303,7 @@ namespace winrt::LoopBack::Metadata::implementation
             if (app.LoopUtil())
             {
                 bool found = false;
-                hstring stringSid = app.StringSid();
+                hstring stringSid = app.AppContainerSid();
                 for (hstring sid : list)
                 {
                     if (stringSid == sid)
@@ -288,7 +314,7 @@ namespace winrt::LoopBack::Metadata::implementation
                 }
                 if (!found)
                 {
-                    enabledList.Append(app.StringSid());
+                    enabledList.Append(app.AppContainerSid());
                 }
             }
         }
@@ -316,9 +342,16 @@ namespace winrt::LoopBack::Metadata::implementation
         }
     }
 
+    void LoopUtil::Close()
+    {
+        FreeResources();
+        apps.Clear();
+        _AppListConfig.clear();
+    }
+
     IAsyncAction LoopUtil::StopService()
     {
         co_await winrt::resume_after(std::chrono::seconds(1));
-        ExitProcess(0);
+        ExitProcess(S_OK);
     }
 }

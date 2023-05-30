@@ -13,16 +13,22 @@ namespace winrt::LoopBack::Metadata::implementation
         bool LoopUtil() { return loopUtil; }
         hstring DisplayName() { return displayName; }
         hstring AppContainerName() { return appContainerName; }
+        hstring PackageFullName() { return packageFullName; }
         hstring WorkingDirectory() { return workingDirectory; }
-        hstring StringSid() { return stringSid; }
+        hstring AppContainerSid() { return appContainerSid; }
+        hstring UserSid() { return userSid; }
         IIterable<hstring> Capabilities() { return capabilities; }
+        IIterable<hstring> Binaries() { return binaries; }
 
         void LoopUtil(bool value) { loopUtil = value; }
         void DisplayName(hstring value) { displayName = value; }
         void AppContainerName(hstring value) { appContainerName = value; }
+        void PackageFullName(hstring value) { packageFullName = value; }
         void WorkingDirectory(hstring value) { workingDirectory = value; }
-        void StringSid(hstring value) { stringSid = value; }
+        void AppContainerSid(hstring value) { appContainerSid = value; }
+        void UserSid(hstring value) { userSid = value; }
         void Capabilities(IIterable<hstring> value) { capabilities = value; }
+        void Binaries(IIterable<hstring> value) { binaries = value; }
 
         AppContainer() = default;
 
@@ -30,11 +36,12 @@ namespace winrt::LoopBack::Metadata::implementation
         bool loopUtil = false;
         hstring displayName = L"";
         hstring appContainerName = L"";
+        hstring packageFullName = L"";
         hstring workingDirectory = L"";
-        hstring stringSid = L"";
+        hstring appContainerSid = L"";
+        hstring userSid = L"";
         IIterable<hstring> capabilities = nullptr;
-
-        vector<SID_AND_ATTRIBUTES> GetCapabilities(INET_FIREWALL_AC_CAPABILITIES cap);
+        IIterable<hstring> binaries = nullptr;
     };
 }
 

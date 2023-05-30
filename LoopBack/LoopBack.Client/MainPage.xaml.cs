@@ -62,7 +62,7 @@ namespace LoopBack.Client
             }
 
             isDirty = false;
-            IEnumerable<string> enableList = appFiltered.Where(x => x.LoopUtil).Select(x => x.StringSid);
+            IEnumerable<string> enableList = appFiltered.Where(x => x.LoopUtil).Select(x => x.AppContainerSid);
             if (_loop.SetLoopbackList(enableList))
             {
                 Log("Saved loopback excemptions");

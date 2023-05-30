@@ -24,6 +24,7 @@ namespace winrt::LoopBack::Metadata::implementation
         bool AddLookback(hstring stringSid);
         bool RemoveLookback(hstring stringSid);
         void FreeResources();
+        void Close();
         IAsyncAction StopService();
 
         IIterable<AppContainer> Apps()
@@ -40,6 +41,7 @@ namespace winrt::LoopBack::Metadata::implementation
         HINSTANCE FirewallAPI = nullptr;
 
         vector<SID_AND_ATTRIBUTES> GetCapabilities(INET_FIREWALL_AC_CAPABILITIES cap);
+        IVector<hstring> GetBinaries(INET_FIREWALL_AC_BINARIES cap);
         AppContainer CreateAppContainer(INET_FIREWALL_APP_CONTAINER PI_app, bool loopUtil);
         bool CheckLoopback(SID* intPtr);
         vector<SID_AND_ATTRIBUTES> GetContainerSID(INET_FIREWALL_AC_CAPABILITIES cap);

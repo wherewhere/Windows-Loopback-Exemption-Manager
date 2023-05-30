@@ -6,9 +6,12 @@ namespace LoopBack.Metadata
         Boolean LoopUtil { get; set; };
         String DisplayName { get; set; };
         String AppContainerName { get; set; };
+        String PackageFullName{ get; set; };
         String WorkingDirectory { get; set; };
-        String StringSid { get; set; };
+        String AppContainerSid{ get; set; };
+        String UserSid{ get; set; };
         Windows.Foundation.Collections.IIterable<String> Capabilities { get; set; };
+        Windows.Foundation.Collections.IIterable<String> Binaries{ get; set; };
 
         AppContainer();
     }
