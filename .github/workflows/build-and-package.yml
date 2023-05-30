@@ -1,8 +1,6 @@
 name: build and package
 
-on:
-  push:
-  pull_request:
+on: [push, pull_request]
 
 jobs:
   build-and-test:
@@ -11,8 +9,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Solution_Name: LookBack.sln
-      Project_Name: LoopBack/LoopBack.Package/LoopBack.Package.wapproj
+      Solution_Name: LoopBack/LoopBack.Package/LoopBack.Package.wapproj
       Project_Directory: LoopBack/LoopBack.Package
 
     steps:
@@ -34,11 +31,17 @@ jobs:
       with:
         msbuild-architecture: x64
 
+    - name: Setup NuGet.exe
+      uses: NuGet/setup-nuget@v1
+    
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
       env:
         Configuration: Release
+
+    - name: Nuget restore
+      run: nuget restore LoopBack.sln
 
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create the app package
