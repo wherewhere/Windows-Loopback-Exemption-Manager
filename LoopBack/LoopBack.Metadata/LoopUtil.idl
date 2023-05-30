@@ -1,0 +1,22 @@
+import "AppContainer.idl";
+
+namespace LoopBack.Metadata
+{
+    [default_interface]
+    runtimeclass LoopUtil
+    {
+        Windows.Foundation.Collections.IIterable<AppContainer> Apps { get; };
+
+        LoopUtil();
+        Windows.Foundation.Collections.IIterable<AppContainer> GetAppContainers();
+        Boolean SetLoopbackList(Windows.Foundation.Collections.IIterable<String> list);
+        [default_overload]
+        Boolean AddLookback(Windows.Foundation.Collections.IIterable<String> list);
+        [default_overload]
+        Boolean RemoveLookback(Windows.Foundation.Collections.IIterable<String> list);
+        Boolean AddLookback(String stringSid);
+        Boolean RemoveLookback(String stringSid);
+        void FreeResources();
+        Windows.Foundation.IAsyncAction StopService();
+    }
+}

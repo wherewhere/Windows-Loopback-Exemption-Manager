@@ -1,0 +1,15 @@
+namespace LoopBack.Metadata
+{
+    [default_interface]
+    runtimeclass AppContainer
+    {
+        Boolean LoopUtil { get; set; };
+        String DisplayName { get; set; };
+        String AppContainerName { get; set; };
+        String WorkingDirectory { get; set; };
+        String StringSid { get; set; };
+        Windows.Foundation.Collections.IIterable<String> Capabilities { get; set; };
+
+        AppContainer();
+    }
+}
