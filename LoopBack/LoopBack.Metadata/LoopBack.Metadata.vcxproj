@@ -82,7 +82,7 @@
     <Import Project="PropertySheet.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <PropertyGroup>
     <OutDir>bin\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -155,6 +155,15 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\..\packages\Microsoft.Windows.CppWinRT.2.0.220531.1\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\..\packages\Microsoft.Windows.CppWinRT.2.0.220531.1\build\native\Microsoft.Windows.CppWinRT.targets')" />
   </ImportGroup>
+  <Target Name="OutputWinMD" BeforeTargets="BuildCompile">
+    <PropertyGroup>
+      <PlatformName Condition="'$(Platform)' == 'Win32'">x86</PlatformName>
+      <PlatformName Condition="'$(Platform)' == 'ARM64EC'">ARM64</PlatformName>
+      <PlatformName Condition="'$(PlatformName)' == ''">$(Platform)</PlatformName>
+    </PropertyGroup>
+    <Copy SourceFiles="$(OutDir)\$(ProjectName).winmd" DestinationFolder="..\..\WinMD\$(PlatformName)\$(Configuration)\" />
+    <Message Text="Copied output metadata file to '..\..\WinMD\$(PlatformName)\$(Configuration)\'." />
+  </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>

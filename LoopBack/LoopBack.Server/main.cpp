@@ -6,9 +6,12 @@
 int main()
 {
     init_apartment();
+
     RegisterLoopUtil();
     RegisterAppContainer();
-    while (true);
+
+    handle event{ CreateEvent(nullptr, false, false, nullptr) };
+    WaitForSingleObject(event.get(), INFINITE);
 }
 
 DWORD RegisterLoopUtil()

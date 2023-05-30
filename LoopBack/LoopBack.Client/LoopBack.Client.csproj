@@ -162,7 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Loopback.Metadata">
-      <HintPath>..\..\WinMD\Loopback.Metadata.winmd</HintPath>
+      <HintPath>..\..\WinMD\$(Platform)\$(Configuration)\Loopback.Metadata.winmd</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
