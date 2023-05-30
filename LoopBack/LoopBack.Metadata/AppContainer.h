@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AppContainer.g.h"
+#include "ComClsids.h"
 
 using namespace std;
 using namespace winrt;
@@ -8,6 +9,7 @@ using namespace Windows::Foundation::Collections;
 
 namespace winrt::LoopBack::Metadata::implementation
 {
+    [uuid(OUTOFPROC_COM_CLSID_AppContainer)]
     struct AppContainer : AppContainerT<AppContainer>
     {
         bool LoopUtil() { return loopUtil; }

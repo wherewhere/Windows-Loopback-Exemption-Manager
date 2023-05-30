@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "LoopUtil.g.h"
+#include "ComClsids.h"
 
 using namespace std;
 using namespace winrt;
@@ -10,6 +11,7 @@ using namespace Windows::Foundation::Collections;
 
 namespace winrt::LoopBack::Metadata::implementation
 {
+    [uuid(OUTOFPROC_COM_CLSID_LoopUtil)]
     struct LoopUtil : LoopUtilT<LoopUtil>
     {
         PINET_FIREWALL_APP_CONTAINER _PACs = nullptr;

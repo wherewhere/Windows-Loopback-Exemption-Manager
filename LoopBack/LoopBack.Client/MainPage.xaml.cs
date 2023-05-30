@@ -1,11 +1,9 @@
 ﻿using LoopBack.Metadata;
-using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Foundation.Metadata;
 using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -82,10 +80,10 @@ namespace LoopBack.Client
         {
             await ThreadSwitcher.ResumeBackgroundAsync();
             string appsInFilter = filter.ToUpper();
-            var apps = _loop.GetAppContainers();
+            IEnumerable<AppContainer> apps = _loop.GetAppContainers();
             await Dispatcher.ResumeForegroundAsync();
             appFiltered.Clear();
-            foreach (var app in apps)
+            foreach (AppContainer app in apps)
             {
                 string appName = app.DisplayName.ToString().ToUpper();
 
@@ -120,19 +118,14 @@ namespace LoopBack.Client
         private void TxtFilter_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             bool isEnabledChecked = (bool)Loopback_Enabled.IsChecked;
-            if (isEnabledChecked)
-            {
-                _ = Filter(txtFilter.Text, (bool)Loopback_Enabled.IsChecked, isEnabledChecked);
-            }
-            else
-            {
-                _ = Filter(txtFilter.Text, (bool)Loopback_Disabled.IsChecked, isEnabledChecked);
-            }
+            _ = isEnabledChecked
+                ? Filter(txtFilter.Text, (bool)Loopback_Enabled.IsChecked, isEnabledChecked)
+                : Filter(txtFilter.Text, (bool)Loopback_Disabled.IsChecked, isEnabledChecked);
         }
 
         private void OnCloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
         {
-            _ = _loop.StopService();
+            //_ = _loop.StopService();
         }
     }
 }

@@ -1,0 +1,5 @@
+#pragma once
+#include "guiddef.h"
+
+#define OUTOFPROC_COM_CLSID_LoopUtil "50169480-3FB8-4A19-AAED-ED9170811A3A"
+#define OUTOFPROC_COM_CLSID_AppContainer "F45FCBCC-E727-411D-880B-3EF2DB8752B9"
