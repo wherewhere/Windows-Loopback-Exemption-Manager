@@ -16,12 +16,11 @@ int main()
 
     _comServerExitEvent.create();
     auto& module = Microsoft::WRL::Module<Microsoft::WRL::ModuleType::OutOfProc>::Create(&_releaseNotifier);
-    
-    RegisterLoopUtil(module);
-    RegisterAppContainer(module);
-
+    auto loopUtil = RegisterLoopUtil(module);
+    auto appContainer = RegisterAppContainer(module);
     _comServerExitEvent.wait();
-
+    UnregisterCOMObject(module, loopUtil);
+    UnregisterCOMObject(module, appContainer);
 }
 
 DWORD RegisterLoopUtil(Microsoft::WRL::Details::DefaultModule<Microsoft::WRL::ModuleType::OutOfProc>& module)
@@ -35,7 +34,7 @@ DWORD RegisterLoopUtil(Microsoft::WRL::Details::DefaultModule<Microsoft::WRL::Mo
     check_hresult(loopUtilFactory.As<IClassFactory>(&loopUtilFactoryAsClassFactory));
 
     check_hresult(module.RegisterCOMObject(
-		L"LoopUtil Server",
+		nullptr,
         &CLSID_LoopUtil,
         loopUtilFactoryAsClassFactory.GetAddressOf(),
 		&registration,
@@ -55,11 +54,19 @@ DWORD RegisterAppContainer(Microsoft::WRL::Details::DefaultModule<Microsoft::WRL
     check_hresult(appContainerFactory.As<IClassFactory>(&appContainerFactoryAsClassFactory));
 
     check_hresult(module.RegisterCOMObject(
-        L"AppContainer Server",
+        nullptr,
         &CLSID_AppContainer,
         appContainerFactoryAsClassFactory.GetAddressOf(),
         &registration,
         1));
 
     return registration;
+}
+
+void UnregisterCOMObject(Microsoft::WRL::Details::DefaultModule<Microsoft::WRL::ModuleType::OutOfProc>& module, DWORD registration)
+{
+    check_hresult(module.UnregisterCOMObject(
+        nullptr,
+        &registration,
+        1));
 }

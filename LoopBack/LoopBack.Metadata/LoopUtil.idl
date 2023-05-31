@@ -16,7 +16,6 @@ namespace LoopBack.Metadata
         Boolean RemoveLookback(Windows.Foundation.Collections.IIterable<String> list);
         Boolean AddLookback(String stringSid);
         Boolean RemoveLookback(String stringSid);
-        void FreeResources();
         Windows.Foundation.IAsyncAction StopService();
     }
 }

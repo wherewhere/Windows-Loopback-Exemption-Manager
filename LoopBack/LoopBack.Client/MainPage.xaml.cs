@@ -125,7 +125,7 @@ namespace LoopBack.Client
 
         private void OnCloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
         {
-            //_ = _loop.StopService();
+            _ = _loop.StopService();
         }
     }
 }

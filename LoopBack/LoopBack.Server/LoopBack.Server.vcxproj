@@ -137,6 +137,7 @@
     <ClInclude Include="LoopUtilFactory.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppContainerFactory.cpp" />
@@ -157,6 +158,12 @@
     <ProjectReference Include="..\LoopBack.Metadata\LoopBack.Metadata.vcxproj">
       <Project>{8bef428a-76e0-45b4-b2b0-db66a88c1406}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LoopBack.Server.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="favicon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

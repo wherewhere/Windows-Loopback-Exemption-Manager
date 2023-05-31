@@ -14,8 +14,7 @@ namespace winrt::LoopBack::Metadata::implementation
     [uuid(OUTOFPROC_COM_CLSID_LoopUtil)]
     struct LoopUtil : LoopUtilT<LoopUtil>
     {
-        PINET_FIREWALL_APP_CONTAINER _PACs = nullptr;
-        vector<SID_AND_ATTRIBUTES> _AppListConfig;
+        IVector<hstring> _AppListConfig;
 
         LoopUtil() = default;
 
@@ -25,7 +24,6 @@ namespace winrt::LoopBack::Metadata::implementation
         bool RemoveLookback(IIterable<hstring> list);
         bool AddLookback(hstring stringSid);
         bool RemoveLookback(hstring stringSid);
-        void FreeResources();
         void Close();
         IAsyncAction StopService();
 
@@ -47,8 +45,9 @@ namespace winrt::LoopBack::Metadata::implementation
         AppContainer CreateAppContainer(INET_FIREWALL_APP_CONTAINER PI_app, bool loopUtil);
         bool CheckLoopback(SID* intPtr);
         vector<SID_AND_ATTRIBUTES> GetContainerSID(INET_FIREWALL_AC_CAPABILITIES cap);
-        vector<SID_AND_ATTRIBUTES> PI_NetworkIsolationGetAppContainerConfig();
-        vector<INET_FIREWALL_APP_CONTAINER> PI_NetworkIsolationEnumAppContainers();
+        IVector<hstring> PI_NetworkIsolationGetAppContainerConfig();
+        IVector<AppContainer> PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> &list);
+        void PI_NetworkIsolationFreeAppContainers(PINET_FIREWALL_APP_CONTAINER point);
         IVector<hstring> GetEnabledLoopList(hstring list, bool isAdd = true);
         IVector<hstring> GetEnabledLoopList(IIterable<hstring> list, bool isAdd = true);
 
