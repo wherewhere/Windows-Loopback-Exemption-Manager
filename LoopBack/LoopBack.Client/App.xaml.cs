@@ -1,6 +1,11 @@
-﻿using System;
+﻿using LoopBack.Client.Helpers;
+using LoopBack.Client.Pages;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
+using Windows.Foundation.Metadata;
+using Windows.System.Profile;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -18,8 +23,14 @@ namespace LoopBack.Client
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
+            UnhandledException += Application_UnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            if (ApiInformation.IsEnumNamedValuePresent("Windows.UI.Xaml.FocusVisualKind", "Reveal"))
+            {
+                FocusVisualKind = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox" ? FocusVisualKind.Reveal : FocusVisualKind.HighVisibility;
+            }
         }
 
         /// <summary>
@@ -29,10 +40,38 @@ namespace LoopBack.Client
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            EnsureWindow(e);
+        }
+
+        protected override void OnActivated(IActivatedEventArgs e)
+        {
+            base.OnActivated(e);
+            EnsureWindow(e);
+        }
+
+        protected override void OnShareTargetActivated(ShareTargetActivatedEventArgs e)
+        {
+            base.OnShareTargetActivated(e);
+            EnsureWindow(e);
+        }
+
+        private void EnsureWindow(IActivatedEventArgs e)
+        {
+            if (!isLoaded)
+            {
+                RegisterExceptionHandlingSynchronizationContext();
+                isLoaded = true;
+            }
+
+            Window window = Window.Current;
+            WindowHelper.TrackWindow(window);
+
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态
-            if (Window.Current.Content is not Frame rootFrame)
+            if (window.Content is not Frame rootFrame)
             {
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+
                 // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
 
@@ -44,21 +83,30 @@ namespace LoopBack.Client
                 }
 
                 // 将框架放在当前窗口中
-                Window.Current.Content = rootFrame;
+                window.Content = rootFrame;
+
+                ThemeHelper.Initialize(window);
             }
 
-            if (e.PrelaunchActivated == false)
+            if (e is LaunchActivatedEventArgs args)
             {
-                if (rootFrame.Content == null)
+                if (!args.PrelaunchActivated)
                 {
-                    // 当导航堆栈尚未还原时，导航到第一页，
-                    // 并通过将所需信息作为导航参数传入来配置
-                    // 参数
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    CoreApplication.EnablePrelaunch(true);
                 }
-                // 确保当前窗口处于活动状态
-                Window.Current.Activate();
+                else { return; }
             }
+
+            if (rootFrame.Content == null)
+            {
+                // 当导航堆栈尚未还原时，导航到第一页，
+                // 并通过将所需信息作为导航参数传入来配置
+                // 参数
+                rootFrame.Navigate(typeof(MainPage), e);
+            }
+
+            // 确保当前窗口处于活动状态
+            window.Activate();
         }
 
         /// <summary>
@@ -84,5 +132,37 @@ namespace LoopBack.Client
             //TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
         }
+
+        private void Application_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            SettingsHelper.LogManager.GetLogger("Unhandled Exception - Application").Error(e.Exception.ExceptionToMessage(), e.Exception);
+            e.Handled = true;
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception Exception)
+            {
+                SettingsHelper.LogManager.GetLogger("Unhandled Exception - CurrentDomain").Error(Exception.ExceptionToMessage(), Exception);
+            }
+        }
+
+        /// <summary>
+        /// Should be called from OnActivated and OnLaunched
+        /// </summary>
+        private void RegisterExceptionHandlingSynchronizationContext()
+        {
+            ExceptionHandlingSynchronizationContext
+                .Register()
+                .UnhandledException += SynchronizationContext_UnhandledException;
+        }
+
+        private void SynchronizationContext_UnhandledException(object sender, Helpers.UnhandledExceptionEventArgs e)
+        {
+            SettingsHelper.LogManager.GetLogger("Unhandled Exception - SynchronizationContext").Error(e.Exception.ExceptionToMessage(), e.Exception);
+            e.Handled = true;
+        }
+
+        private bool isLoaded;
     }
 }

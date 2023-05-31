@@ -10,6 +10,7 @@
                 <!--  Add resource dictionaries here  -->
             </ResourceDictionary.MergedDictionaries>
             <!--  Add resources here  -->
+            <FontFamily x:Key="SymbolThemeFontFamily">Segoe Fluent Icons,Segoe MDL2 Assets,Segoe UI Symbol</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

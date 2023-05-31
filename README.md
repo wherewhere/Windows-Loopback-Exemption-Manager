@@ -8,16 +8,16 @@ By default, Windows Modern UI and Universal Apps are forbidden to send network t
 This tool enables the management of the Apps that can connect to the local Computer.
 
 # More information about this topic
-- [Revisiting Fiddler and Win8+ Immersive applications](https://docs.microsoft.com/en-us/archive/blogs/fiddler/revisiting-fiddler-and-win8-immersive-applications])
+- [Revisiting Fiddler and Win8+ Immersive applications](https://docs.microsoft.com/en-us/archive/blogs/fiddler/revisiting-fiddler-and-win8-immersive-applications)
 - [Fiddler and Windows 8 Metro-style applications](https://docs.microsoft.com/en-us/archive/blogs/fiddler/fiddler-and-windows-8-metro-style-applications)
 - [How to enable loopback and troubleshoot network isolation (Windows Store apps)](https://docs.microsoft.com/en-us/previous-versions/windows/apps/hh780593(v=win.10))
 
 # Network Isolation APIs
 Check the source code of this project on a sample usage of the Network Isolation APIs : 
-NetworkIsolationEnumAppContainers 
-NetworkIsolationFreeAppContainers 
-NetworkIsolationGetAppContainerConfig 
-NetworkIsolationSetAppContainerConfig
+- NetworkIsolationEnumAppContainers 
+- NetworkIsolationFreeAppContainers 
+- NetworkIsolationGetAppContainerConfig 
+- NetworkIsolationSetAppContainerConfig
 
 ![Loopback Exemption Manager](LoopbackSampleExecution.png)
 

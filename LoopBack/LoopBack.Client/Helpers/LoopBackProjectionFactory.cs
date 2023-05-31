@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace LoopBack.Client
+namespace LoopBack.Client.Helpers
 {
     public static class LoopBackProjectionFactory
     {

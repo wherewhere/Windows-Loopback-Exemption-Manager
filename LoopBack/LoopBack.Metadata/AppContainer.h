@@ -34,6 +34,8 @@ namespace winrt::LoopBack::Metadata::implementation
 
         AppContainer() = default;
 
+        hstring ToString();
+
     private:
         bool loopUtil = false;
         hstring displayName = L"";

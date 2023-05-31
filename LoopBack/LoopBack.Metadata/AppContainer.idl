@@ -1,7 +1,7 @@
 namespace LoopBack.Metadata
 {
     [default_interface]
-    runtimeclass AppContainer
+    runtimeclass AppContainer : Windows.Foundation.IStringable
     {
         Boolean LoopUtil { get; set; };
         String DisplayName { get; set; };
