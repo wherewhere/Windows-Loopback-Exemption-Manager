@@ -15,11 +15,11 @@ namespace LoopBack.Client.Helpers
         public static string ExceptionToMessage(this Exception ex)
         {
             StringBuilder builder = new();
-            builder.Append('\n');
-            if (!string.IsNullOrWhiteSpace(ex.Message)) { builder.AppendLine($"Message: {ex.Message}"); }
-            builder.AppendLine($"HResult: {ex.HResult} (0x{Convert.ToString(ex.HResult, 16).ToUpperInvariant()})");
-            if (!string.IsNullOrWhiteSpace(ex.StackTrace)) { builder.AppendLine(ex.StackTrace); }
-            if (!string.IsNullOrWhiteSpace(ex.HelpLink)) { builder.Append($"HelperLink: {ex.HelpLink}"); }
+            _ = builder.Append('\n');
+            if (!string.IsNullOrWhiteSpace(ex.Message)) { _ = builder.AppendLine($"Message: {ex.Message}"); }
+            _ = builder.AppendLine($"HResult: {ex.HResult} (0x{Convert.ToString(ex.HResult, 16).ToUpperInvariant()})");
+            if (!string.IsNullOrWhiteSpace(ex.StackTrace)) { _ = builder.AppendLine(ex.StackTrace); }
+            if (!string.IsNullOrWhiteSpace(ex.HelpLink)) { _ = builder.Append($"HelperLink: {ex.HelpLink}"); }
             return builder.ToString();
         }
 
@@ -41,6 +41,22 @@ namespace LoopBack.Client.Helpers
             }, cancellationToken);
             TResult taskResult = task.Result;
             return taskResult;
+        }
+
+        public static bool ValidateAndGetUri(string url, out Uri uri)
+        {
+            uri = null;
+            if (string.IsNullOrWhiteSpace(url)) { return false; }
+            try
+            {
+                uri = new Uri(url);
+                return true;
+            }
+            catch (FormatException ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(UIHelper)).Warn(ex.ExceptionToMessage(), ex);
+            }
+            return false;
         }
     }
 }

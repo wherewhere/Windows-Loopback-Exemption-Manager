@@ -19,9 +19,15 @@ namespace LoopBack.Client.ViewModels
 
         private readonly DispatcherQueue Dispatcher = DispatcherQueue.GetForCurrentThread();
 
-        public bool IsDirty { get; set; }
         public string CachedSortedColumn { get; set; }
         public IEnumerable<AppContainer> AppContainers { get; private set; }
+
+        private bool isDirty;
+        public bool IsDirty
+        {
+            get => isDirty;
+            set => SetProperty(ref isDirty, value);
+        }
 
         private string message = string.Empty;
         public string Message
@@ -179,7 +185,7 @@ namespace LoopBack.Client.ViewModels
             {
                 await ThreadSwitcher.ResumeBackgroundAsync();
 
-                if (!IsDirty)
+                if (!isDirty)
                 {
                     ShowMessage("Nothing to save");
                     return;

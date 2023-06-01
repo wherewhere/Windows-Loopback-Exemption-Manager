@@ -4,11 +4,13 @@ using LoopBack.Metadata;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.ObjectModel;
-using System.Reflection;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -47,6 +49,10 @@ namespace LoopBack.Client.Pages
             {
                 case "Save":
                     _ = Provider.SaveConfigure();
+                    if (SaveButton.Flyout is FlyoutBase flyout_logout)
+                    {
+                        flyout_logout.Hide();
+                    }
                     break;
                 case "Refresh":
                     _ = Provider.Refresh();
@@ -153,5 +159,31 @@ namespace LoopBack.Client.Pages
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e) => Provider.IsDirty = true;
 
         private void OnCloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e) => _ = Provider.StopService();
+
+        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement element = sender as FrameworkElement;
+            switch(element.Name)
+            {
+                case "Copy":
+                    DataPackage dataPackage = new();
+                    dataPackage.SetText(element.Tag.ToString());
+                    Clipboard.SetContentWithOptions(dataPackage, null);
+                    break;
+                case "Open":
+                    if (element.Tag != null)
+                    {
+                        string tag = element.Tag.ToString();
+                        if (UIHelper.ValidateAndGetUri(tag, out var url))
+                        {
+                            if (url.IsFile)
+                            {
+                                _ = Launcher.LaunchFolderPathAsync(tag);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
     }
 }
