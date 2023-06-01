@@ -121,7 +121,7 @@ namespace winrt::LoopBack::Metadata::implementation
     {
         AppContainer app = AppContainer::AppContainer();
 
-        app.LoopUtil(loopUtil);
+        app.IsEnableLoop(loopUtil);
         if (PI_app.displayName != nullptr) { app.DisplayName(PI_app.displayName); }
         if (PI_app.appContainerName != nullptr) { app.AppContainerName(PI_app.appContainerName); }
         if (PI_app.packageFullName != nullptr) { app.PackageFullName(PI_app.packageFullName); }
@@ -271,7 +271,7 @@ namespace winrt::LoopBack::Metadata::implementation
         IVector<hstring> enabledList = single_threaded_vector<hstring>();
         for (AppContainer app : apps)
         {
-            if (app.LoopUtil())
+            if (app.IsEnableLoop())
             {
                 hstring stringSid = app.AppContainerSid();
                 if (stringSid != sid)
@@ -292,7 +292,7 @@ namespace winrt::LoopBack::Metadata::implementation
         IVector<hstring> enabledList = single_threaded_vector<hstring>();
         for (AppContainer app : apps)
         {
-            if (app.LoopUtil())
+            if (app.IsEnableLoop())
             {
                 bool found = false;
                 hstring stringSid = app.AppContainerSid();

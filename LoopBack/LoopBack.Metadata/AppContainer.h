@@ -12,7 +12,7 @@ namespace winrt::LoopBack::Metadata::implementation
     [uuid(OUTOFPROC_COM_CLSID_AppContainer)]
     struct AppContainer : AppContainerT<AppContainer>
     {
-        bool LoopUtil() { return loopUtil; }
+        bool IsEnableLoop() { return isEnableLoop; }
         hstring DisplayName() { return displayName; }
         hstring AppContainerName() { return appContainerName; }
         hstring PackageFullName() { return packageFullName; }
@@ -22,7 +22,7 @@ namespace winrt::LoopBack::Metadata::implementation
         IIterable<hstring> Capabilities() { return capabilities; }
         IIterable<hstring> Binaries() { return binaries; }
 
-        void LoopUtil(bool value) { loopUtil = value; }
+        void IsEnableLoop(bool value) { isEnableLoop = value; }
         void DisplayName(hstring value) { displayName = value; }
         void AppContainerName(hstring value) { appContainerName = value; }
         void PackageFullName(hstring value) { packageFullName = value; }
@@ -37,7 +37,7 @@ namespace winrt::LoopBack::Metadata::implementation
         hstring ToString();
 
     private:
-        bool loopUtil = false;
+        bool isEnableLoop = false;
         hstring displayName = L"";
         hstring appContainerName = L"";
         hstring packageFullName = L"";

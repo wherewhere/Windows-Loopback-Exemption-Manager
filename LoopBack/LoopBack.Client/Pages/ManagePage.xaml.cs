@@ -1,8 +1,10 @@
 ﻿using LoopBack.Client.Helpers;
 using LoopBack.Client.ViewModels;
 using LoopBack.Metadata;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using Windows.UI.Core;
 using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
@@ -48,6 +50,7 @@ namespace LoopBack.Client.Pages
                     break;
                 case "Refresh":
                     _ = Provider.Refresh();
+                    ClearSort();
                     break;
                 default:
                     break;
@@ -86,11 +89,64 @@ namespace LoopBack.Client.Pages
         {
             if (args.ChosenSuggestion is string word)
             {
-                _ = (Provider?.Filter(word));
+                _ = (Provider?.FilterData(word));
+                ClearSort();
             }
             else if (args.ChosenSuggestion is null)
             {
-                _ = (Provider?.Filter(sender.Text));
+                _ = (Provider?.FilterData(sender.Text));
+                ClearSort();
+            }
+        }
+
+        private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+        {
+            DataGrid dataGrid = sender as DataGrid;
+            // Clear previous sorted column if we start sorting a different column
+            string previousSortedColumn = Provider.CachedSortedColumn;
+            if (previousSortedColumn != string.Empty)
+            {
+                foreach (DataGridColumn dataGridColumn in dataGrid.Columns)
+                {
+                    if (dataGridColumn.Tag != null && dataGridColumn.Tag.ToString() == previousSortedColumn &&
+                        (e.Column.Tag == null || previousSortedColumn != e.Column.Tag.ToString()))
+                    {
+                        dataGridColumn.SortDirection = null;
+                    }
+                }
+            }
+
+            // Toggle clicked column's sorting method
+            if (e.Column.Tag != null)
+            {
+                if (e.Column.SortDirection == null)
+                {
+                    _ = Provider.SortData(e.Column.Tag.ToString(), true);
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else if (e.Column.SortDirection == DataGridSortDirection.Ascending)
+                {
+                    _ = Provider.SortData(e.Column.Tag.ToString(), false);
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+                else
+                {
+                    _ = Provider.SortData(e.Column.Tag.ToString(), true);
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+            }
+        }
+
+        private void ClearSort()
+        {
+            // Clear previous sorted column if we start sorting a different column
+            string previousSortedColumn = Provider.CachedSortedColumn;
+            if (previousSortedColumn != string.Empty)
+            {
+                foreach (DataGridColumn dataGridColumn in DataGrid.Columns)
+                {
+                    dataGridColumn.SortDirection = null;
+                }
             }
         }
 

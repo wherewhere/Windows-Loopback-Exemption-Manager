@@ -6,6 +6,7 @@
     xmlns:cwuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:metadata="using:LoopBack.Metadata"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:viewmodels="using:LoopBack.Client.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:ManageViewModel}"
@@ -82,25 +83,29 @@
         <cwuc:DataGrid
             x:Name="DataGrid"
             Grid.Row="1"
+            d:DataContext="{d:DesignInstance Type=metadata:AppContainer}"
             AutoGenerateColumns="False"
             CanUserReorderColumns="True"
             CanUserResizeColumns="True"
             CanUserSortColumns="True"
-            ItemsSource="{Binding FilteredAppContainers}">
+            GridLinesVisibility="Horizontal"
+            ItemsSource="{x:Bind Provider.FilteredAppContainers, Mode=OneWay}"
+            Sorting="DataGrid_Sorting">
             <cwuc:DataGrid.Columns>
                 <cwuc:DataGridTemplateColumn
                     Width="85"
                     CanUserResize="False"
                     CanUserSort="True"
                     Header="Exempt"
-                    IsReadOnly="True">
+                    IsReadOnly="True"
+                    Tag="IsEnableLoop">
                     <cwuc:DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="metadata:AppContainer">
                             <ToggleSwitch
                                 MinWidth="0"
                                 Margin="5,0,0,0"
                                 HorizontalAlignment="Center"
-                                IsOn="{Binding LoopUtil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsOn="{x:Bind IsEnableLoop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 OffContent=""
                                 OnContent=""
                                 Toggled="ToggleSwitch_Toggled" />
@@ -113,42 +118,48 @@
                     CanUserResize="True"
                     CanUserSort="True"
                     Header="App Display Name"
-                    IsReadOnly="True" />
+                    IsReadOnly="True"
+                    Tag="DisplayName" />
                 <cwuc:DataGridTextColumn
                     Width="400"
                     Binding="{Binding AppContainerName}"
                     CanUserResize="True"
                     CanUserSort="True"
                     Header="App Full Name"
-                    IsReadOnly="True" />
+                    IsReadOnly="True"
+                    Tag="AppContainerName" />
                 <cwuc:DataGridTextColumn
                     Width="400"
                     Binding="{Binding WorkingDirectory}"
                     CanUserResize="True"
                     CanUserSort="True"
                     Header="Directory"
-                    IsReadOnly="True" />
+                    IsReadOnly="True"
+                    Tag="WorkingDirectory" />
                 <cwuc:DataGridTextColumn
                     Width="400"
                     Binding="{Binding PackageFullName}"
                     CanUserResize="True"
                     CanUserSort="True"
                     Header="Package Full Name"
-                    IsReadOnly="True" />
+                    IsReadOnly="True"
+                    Tag="PackageFullName" />
                 <cwuc:DataGridTextColumn
                     Width="400"
                     Binding="{Binding AppContainerSid}"
                     CanUserResize="True"
                     CanUserSort="True"
                     Header="App Container Sid"
-                    IsReadOnly="True" />
+                    IsReadOnly="True"
+                    Tag="AppContainerSid" />
                 <cwuc:DataGridTextColumn
                     Width="400"
                     Binding="{Binding UserSid}"
                     CanUserResize="True"
                     CanUserSort="True"
                     Header="User Sid"
-                    IsReadOnly="True" />
+                    IsReadOnly="True"
+                    Tag="UserSid" />
             </cwuc:DataGrid.Columns>
         </cwuc:DataGrid>
         <Grid
@@ -160,9 +171,9 @@
                 VerticalAlignment="Center"
                 FontWeight="Bold"
                 TextTrimming="CharacterEllipsis"
-                ToolTipService.ToolTip="{Binding Message}">
+                ToolTipService.ToolTip="{x:Bind Provider.Message, Mode=OneWay}">
                 <Run Text="Status: " />
-                <Run Text="{Binding Message}" />
+                <Run Text="{x:Bind Provider.Message, Mode=OneWay}" />
             </TextBlock>
         </Grid>
     </Grid>

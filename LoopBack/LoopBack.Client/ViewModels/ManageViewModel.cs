@@ -20,6 +20,7 @@ namespace LoopBack.Client.ViewModels
         private readonly DispatcherQueue Dispatcher = DispatcherQueue.GetForCurrentThread();
 
         public bool IsDirty { get; set; }
+        public string CachedSortedColumn { get; set; }
         public IEnumerable<AppContainer> AppContainers { get; private set; }
 
         private string message = string.Empty;
@@ -53,7 +54,7 @@ namespace LoopBack.Client.ViewModels
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 loopUtil ??= LoopBackProjectionFactory.TryCreateLoopUtil();
                 AppContainers = loopUtil.GetAppContainers();
-                await Filter(string.Empty);
+                FilteredAppContainers = new(AppContainers);
                 ShowMessage("Loaded");
             }
             catch (Exception ex)
@@ -63,13 +64,13 @@ namespace LoopBack.Client.ViewModels
             }
         }
 
-        public async Task Filter(string filter)
+        public async Task FilterData(string filter)
         {
             try
             {
+                await ThreadSwitcher.ResumeBackgroundAsync();
                 bool notFiltering = string.IsNullOrWhiteSpace(filter);
                 if (!notFiltering) { ShowMessage("Filtering..."); }
-                await ThreadSwitcher.ResumeBackgroundAsync();
                 string appsInFilter = filter.ToUpper();
                 await Dispatcher.EnqueueAsync(filteredAppContainers.Clear);
                 foreach (AppContainer app in AppContainers)
@@ -93,6 +94,62 @@ namespace LoopBack.Client.ViewModels
             }
         }
 
+        public async Task SortData(string sortBy, bool ascending)
+        {
+            try
+            {
+                ShowMessage("Sorting...");
+                await ThreadSwitcher.ResumeBackgroundAsync();
+                CachedSortedColumn = sortBy;
+                switch (sortBy)
+                {
+                    case "IsEnableLoop":
+                        FilteredAppContainers = ascending
+                            ? new(filteredAppContainers.OrderBy(item => item.IsEnableLoop))
+                            : new(filteredAppContainers.OrderByDescending(item => item.IsEnableLoop));
+                        break;
+                    case "DisplayName":
+                        FilteredAppContainers = ascending
+                            ? new(filteredAppContainers.OrderBy(item => item.DisplayName))
+                            : new(filteredAppContainers.OrderByDescending(item => item.DisplayName));
+                        break;
+                    case "AppContainerName":
+                        FilteredAppContainers = ascending
+                            ? new(filteredAppContainers.OrderBy(item => item.AppContainerName))
+                            : new(filteredAppContainers.OrderByDescending(item => item.AppContainerName));
+                        break;
+                    case "WorkingDirectory":
+                        FilteredAppContainers = ascending
+                            ? new(filteredAppContainers.OrderBy(item => item.WorkingDirectory))
+                            : new(filteredAppContainers.OrderByDescending(item => item.WorkingDirectory));
+                        break;
+                    case "PackageFullName":
+                        FilteredAppContainers = ascending
+                            ? new(filteredAppContainers.OrderBy(item => item.PackageFullName))
+                            : new(filteredAppContainers.OrderByDescending(item => item.PackageFullName));
+                        break;
+                    case "Range":
+                        FilteredAppContainers = ascending
+                            ? new(filteredAppContainers.OrderBy(item => item.AppContainerSid))
+                            : new(filteredAppContainers.OrderByDescending(item => item.AppContainerSid));
+                        break;
+                    case "UserSid":
+                        FilteredAppContainers = ascending
+                            ? new(filteredAppContainers.OrderBy(item => item.UserSid))
+                            : new(filteredAppContainers.OrderByDescending(item => item.UserSid));
+                        break;
+                    default:
+                        break;
+                }
+                ShowMessage("Sorted...");
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(ex.ExceptionToMessage());
+                ShowMessage(ex.Message);
+            }
+        }
+
         public async Task SelectAll(bool isChecked)
         {
             try
@@ -103,10 +160,10 @@ namespace LoopBack.Client.ViewModels
                 {
                     if (app != null)
                     {
-                        app.LoopUtil = isChecked;
+                        app.IsEnableLoop = isChecked;
                     }
                 }
-                await Dispatcher.EnqueueAsync(() => FilteredAppContainers = new(FilteredAppContainers));
+                FilteredAppContainers = new(FilteredAppContainers);
                 ShowMessage("Switched");
             }
             catch (Exception ex)
@@ -129,7 +186,7 @@ namespace LoopBack.Client.ViewModels
                 }
 
                 IsDirty = false;
-                IEnumerable<string> enableList = AppContainers.Where(x => x.LoopUtil).Select(x => x.AppContainerSid);
+                IEnumerable<string> enableList = AppContainers.Where(x => x.IsEnableLoop).Select(x => x.AppContainerSid);
                 if (loopUtil.SetLoopbackList(enableList))
                 {
                     ShowMessage("Saved loopback exemptions");

@@ -3,7 +3,7 @@ namespace LoopBack.Metadata
     [default_interface]
     runtimeclass AppContainer : Windows.Foundation.IStringable
     {
-        Boolean LoopUtil { get; set; };
+        Boolean IsEnableLoop { get; set; };
         String DisplayName { get; set; };
         String AppContainerName { get; set; };
         String PackageFullName{ get; set; };
