@@ -38,7 +38,7 @@ namespace LoopBack.Client.Pages
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
             CheckBox checkBox = sender as CheckBox;
-            _ = Provider.SelectAll(checkBox.IsChecked.Value);
+            _ = Provider.ExemptAll(checkBox.IsChecked.Value);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

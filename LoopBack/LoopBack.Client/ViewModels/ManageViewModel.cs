@@ -150,7 +150,7 @@ namespace LoopBack.Client.ViewModels
             }
         }
 
-        public async Task SelectAll(bool isChecked)
+        public async Task ExemptAll(bool isChecked)
         {
             try
             {

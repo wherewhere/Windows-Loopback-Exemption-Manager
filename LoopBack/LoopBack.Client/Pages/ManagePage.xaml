@@ -64,7 +64,7 @@
                     MinWidth="0"
                     VerticalAlignment="Center"
                     Click="CheckBox_Click"
-                    Content="Select All" />
+                    Content="Exempt All" />
                 <Button
                     Width="100"
                     VerticalAlignment="Center"
@@ -149,7 +149,7 @@
                     Binding="{Binding AppContainerSid}"
                     CanUserResize="True"
                     CanUserSort="True"
-                    Header="App Container Sid"
+                    Header="App Container SID"
                     IsReadOnly="True"
                     Tag="AppContainerSid" />
                 <cwuc:DataGridTextColumn
@@ -157,7 +157,7 @@
                     Binding="{Binding UserSid}"
                     CanUserResize="True"
                     CanUserSort="True"
-                    Header="User Sid"
+                    Header="User SID"
                     IsReadOnly="True"
                     Tag="UserSid" />
             </cwuc:DataGrid.Columns>

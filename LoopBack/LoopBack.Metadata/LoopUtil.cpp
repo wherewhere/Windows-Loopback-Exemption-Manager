@@ -141,56 +141,13 @@ namespace winrt::LoopBack::Metadata::implementation
             if (tempSid != nullptr) { app.UserSid(tempSid); }
         }
 
-        IVector<hstring> capabilities = single_threaded_vector<hstring>();
-        if (PI_app.capabilities.count > 0)
-        {
-            vector<SID_AND_ATTRIBUTES> app_capabilities = GetCapabilities(PI_app.capabilities);
-            for (SID_AND_ATTRIBUTES app_capability : app_capabilities)
-            {
-                if (app_capability.Sid != nullptr)
-                {
-                    LPWSTR mysid;
-                    ConvertSidToStringSid(app_capability.Sid, &mysid);
-                    if (mysid != nullptr) { capabilities.Append(mysid); }
-                }
-            }
-        }
+        IVector<hstring> capabilities = GetCapabilities(PI_app.capabilities);
         app.Capabilities(capabilities);
 
         IVector<hstring> app_binaries = GetBinaries(PI_app.binaries);
         app.Binaries(app_binaries);
 
         return app;
-    }
-
-    IVector<hstring> LoopUtil::GetBinaries(INET_FIREWALL_AC_BINARIES cap)
-    {
-        IVector<hstring> myCap = single_threaded_vector<hstring>();
-
-        LPWSTR* arrayValue = cap.binaries;
-
-        for (DWORD i = 0; i < cap.count; i++)
-        {
-            LPWSTR cur = arrayValue[i];
-            myCap.Append(cur);
-        }
-
-        return myCap;
-    }
-
-    vector<SID_AND_ATTRIBUTES> LoopUtil::GetCapabilities(INET_FIREWALL_AC_CAPABILITIES cap)
-    {
-        vector<SID_AND_ATTRIBUTES> myCap;
-
-        SID_AND_ATTRIBUTES* arrayValue = cap.capabilities;
-
-        for (DWORD i = 0; i < cap.count; i++)
-        {
-            SID_AND_ATTRIBUTES cur = arrayValue[i];
-            myCap.push_back(cur);
-        }
-
-        return myCap;
     }
 
     bool LoopUtil::CheckLoopback(SID* intPtr)
@@ -213,6 +170,53 @@ namespace winrt::LoopBack::Metadata::implementation
         return false;
     }
 
+    IVector<hstring> LoopUtil::GetBinaries(INET_FIREWALL_AC_BINARIES cap)
+    {
+        IVector<hstring> myCap = single_threaded_vector<hstring>();
+
+        if (cap.binaries != nullptr)
+        {
+            LPWSTR* arrayValue = cap.binaries;
+
+            for (DWORD i = 0; i < cap.count; i++)
+            {
+                LPWSTR cur = arrayValue[i];
+                if (cur != nullptr)
+                {
+                    myCap.Append(cur);
+                }
+            }
+        }
+
+        return myCap;
+    }
+
+    IVector<hstring> LoopUtil::GetCapabilities(INET_FIREWALL_AC_CAPABILITIES cap)
+    {
+        IVector<hstring> myCap = single_threaded_vector<hstring>();
+
+        if (cap.capabilities != nullptr)
+        {
+            SID_AND_ATTRIBUTES* arrayValue = cap.capabilities;
+
+            for (DWORD i = 0; i < cap.count; i++)
+            {
+                SID_AND_ATTRIBUTES cur = arrayValue[i];
+                if (cur.Sid != nullptr)
+                {
+                    LPWSTR mysid;
+                    ConvertSidToStringSid(cur.Sid, &mysid);
+                    if (mysid != nullptr)
+                    {
+                        myCap.Append(mysid);
+                    }
+                }
+            }
+        }
+
+        return myCap;
+    }
+
     IVector<hstring> LoopUtil::PI_NetworkIsolationGetAppContainerConfig()
     {
         DWORD size = 0;
@@ -221,14 +225,20 @@ namespace winrt::LoopBack::Metadata::implementation
 
         if (GetNetworkIsolationGetAppContainerConfig()(&size, &arrayValue) == S_OK)
         {
-            for (DWORD i = 0; i < size; i++)
+            if (arrayValue != nullptr)
             {
-                LPWSTR sid;
-                SID_AND_ATTRIBUTES cur = arrayValue[i];
-                if (cur.Sid != nullptr)
+                for (DWORD i = 0; i < size; i++)
                 {
-                    ConvertSidToStringSid(cur.Sid, &sid);
-                    list.Append(sid);
+                    LPWSTR sid;
+                    SID_AND_ATTRIBUTES cur = arrayValue[i];
+                    if (cur.Sid != nullptr)
+                    {
+                        ConvertSidToStringSid(cur.Sid, &sid);
+                        if (sid != nullptr)
+                        {
+                            list.Append(sid);
+                        }
+                    }
                 }
             }
         }
@@ -238,23 +248,35 @@ namespace winrt::LoopBack::Metadata::implementation
 
     IVector<AppContainer> LoopUtil::PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> &list)
     {
-        list.Clear();
+        if (list)
+        {
+            list.Clear();
+        }
+        else
+        {
+            list = single_threaded_vector<AppContainer>();
+        }
 
         DWORD size = 0;
         PINET_FIREWALL_APP_CONTAINER arrayValue = nullptr;
 
-        GetNetworkIsolationEnumAppContainers()(NETISO_FLAG::NETISO_FLAG_MAX, &size, &arrayValue);
-        PINET_FIREWALL_APP_CONTAINER _PACs = arrayValue; //store the pointer so it can be freed when we close the form
-
-        for (DWORD i = 0; i < size; i++)
+        if (GetNetworkIsolationEnumAppContainers()(NETISO_FLAG::NETISO_FLAG_MAX, &size, &arrayValue) == S_OK)
         {
-            INET_FIREWALL_APP_CONTAINER cur = arrayValue[i];
-            AppContainer app = CreateAppContainer(cur, CheckLoopback(cur.appContainerSid));
-            list.Append(app);
+            if (arrayValue != nullptr)
+            {
+                PINET_FIREWALL_APP_CONTAINER _PACs = arrayValue; //store the pointer so it can be freed when we close the form
+
+                for (DWORD i = 0; i < size; i++)
+                {
+                    INET_FIREWALL_APP_CONTAINER cur = arrayValue[i];
+                    AppContainer app = CreateAppContainer(cur, CheckLoopback(cur.appContainerSid));
+                    list.Append(app);
+                }
+
+                PI_NetworkIsolationFreeAppContainers(_PACs);
+            }
         }
 
-        PI_NetworkIsolationFreeAppContainers(_PACs);
-         
         return list;
     }
 
@@ -334,6 +356,7 @@ namespace winrt::LoopBack::Metadata::implementation
     IAsyncAction LoopUtil::StopService()
     {
         co_await winrt::resume_after(std::chrono::seconds(1));
+        Close();
         ExitProcess(S_OK);
     }
 }
