@@ -11,8 +11,7 @@ using namespace Windows::Foundation::Collections;
 
 namespace winrt::LoopBack::Metadata::implementation
 {
-    [uuid(OUTOFPROC_COM_CLSID_LoopUtil)]
-    struct LoopUtil : LoopUtilT<LoopUtil>
+    struct __declspec(OUTOFPROC_COM_CLSID_LoopUtil) LoopUtil : LoopUtilT<LoopUtil>
     {
         IVector<hstring> _AppListConfig;
 

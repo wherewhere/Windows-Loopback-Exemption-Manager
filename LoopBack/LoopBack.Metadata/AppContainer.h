@@ -3,14 +3,12 @@
 #include "AppContainer.g.h"
 #include "ComClsids.h"
 
-using namespace std;
 using namespace winrt;
 using namespace Windows::Foundation::Collections;
 
 namespace winrt::LoopBack::Metadata::implementation
 {
-    [uuid(OUTOFPROC_COM_CLSID_AppContainer)]
-    struct AppContainer : AppContainerT<AppContainer>
+    struct __declspec(uuid(OUTOFPROC_COM_CLSID_AppContainer)) AppContainer : AppContainerT<AppContainer>
     {
         bool IsEnableLoop() { return isEnableLoop; }
         hstring DisplayName() { return displayName; }

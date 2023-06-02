@@ -152,7 +152,7 @@
                     <cwuc:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate x:DataType="metadata:AppContainer">
                             <Border
-                                Padding="8,0"
+                                Padding="8"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 Background="{ThemeResource SystemControlTransparentBrush}"
@@ -189,7 +189,7 @@
                     <cwuc:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate x:DataType="metadata:AppContainer">
                             <Border
-                                Padding="8,0"
+                                Padding="8"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 Background="{ThemeResource SystemControlTransparentBrush}"
@@ -226,7 +226,7 @@
                     <cwuc:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate x:DataType="metadata:AppContainer">
                             <Border
-                                Padding="8,0"
+                                Padding="8"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 Background="{ThemeResource SystemControlTransparentBrush}"
@@ -272,7 +272,7 @@
                     <cwuc:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate x:DataType="metadata:AppContainer">
                             <Border
-                                Padding="8,0"
+                                Padding="8"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 Background="{ThemeResource SystemControlTransparentBrush}"
@@ -309,7 +309,7 @@
                     <cwuc:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate x:DataType="metadata:AppContainer">
                             <Border
-                                Padding="8,0"
+                                Padding="8"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 Background="{ThemeResource SystemControlTransparentBrush}"
@@ -346,7 +346,7 @@
                     <cwuc:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate x:DataType="metadata:AppContainer">
                             <Border
-                                Padding="8,0"
+                                Padding="8"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 Background="{ThemeResource SystemControlTransparentBrush}"

@@ -17,6 +17,7 @@
   <ItemGroup>
     <Midl Include="AppContainer.idl" />
     <Midl Include="LoopUtil.idl" />
+    <Midl Include="LoopBackManagerContract.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LoopBack.Metadata.def" />

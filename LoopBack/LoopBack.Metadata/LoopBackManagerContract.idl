@@ -1,0 +1,5 @@
+namespace LoopBack.Metadata
+{
+    [contractversion(1)]
+    apicontract LoopBackManagerContract{};
+}

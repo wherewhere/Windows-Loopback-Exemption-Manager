@@ -1,6 +1,9 @@
+import "LoopBackManagerContract.idl";
+
 namespace LoopBack.Metadata
 {
     [default_interface]
+    [contract(LoopBack.Metadata.LoopBackManagerContract, 1)]
     runtimeclass AppContainer : Windows.Foundation.IStringable
     {
         Boolean IsEnableLoop { get; set; };

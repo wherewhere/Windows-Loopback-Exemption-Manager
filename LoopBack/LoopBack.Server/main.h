@@ -3,14 +3,16 @@
 #include "pch.h"
 #include "LoopUtilFactory.h"
 #include "AppContainerFactory.h"
-#include "wil/resource.h"
-#include "wil/com.h"
+#include "wil/cppwinrt_wrl.h"
 #include "wrl/module.h"
 
+using namespace wil;
 using namespace winrt;
+using namespace Microsoft::WRL;
+using namespace Microsoft::WRL::Details;
 
 // Holds the main open until COM tells us there are no more server connections
-wil::unique_event _comServerExitEvent;
+unique_event _comServerExitEvent;
 
 // Routine Description:
 // - Called back when COM says there is nothing left for our server to do and we can tear down.
@@ -31,6 +33,6 @@ static GUID CLSID_AppContainer =
     0xf45fcbcc, 0xe727, 0x411d, { 0x88, 0xb, 0x3e, 0xf2, 0xdb, 0x87, 0x52, 0xb9 }
 };
 
-DWORD RegisterLoopUtil(Microsoft::WRL::Details::DefaultModule<Microsoft::WRL::ModuleType::OutOfProc>& module);
-DWORD RegisterAppContainer(Microsoft::WRL::Details::DefaultModule<Microsoft::WRL::ModuleType::OutOfProc>& module);
-void UnregisterCOMObject(Microsoft::WRL::Details::DefaultModule<Microsoft::WRL::ModuleType::OutOfProc>& module, DWORD registration);
+DWORD RegisterLoopUtil(DefaultModule<ModuleType::OutOfProc>& module);
+DWORD RegisterAppContainer(DefaultModule<ModuleType::OutOfProc>& module);
+void UnregisterCOMObject(DefaultModule<ModuleType::OutOfProc>& module, DWORD registration);
