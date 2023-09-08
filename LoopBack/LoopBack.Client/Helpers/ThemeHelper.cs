@@ -32,7 +32,7 @@ namespace LoopBack.Client.Helpers
 
         public static bool IsDarkTheme() => UISettings.GetColorValue(UIColorType.Background) == Colors.Black;
 
-        public static async void UpdateSystemCaptionButtonColors()
+        public static void UpdateSystemCaptionButtonColors()
         {
             bool IsDark = IsDarkTheme();
             bool IsHighContrast = new AccessibilitySettings().HighContrast;
@@ -40,9 +40,9 @@ namespace LoopBack.Client.Helpers
             Color ForegroundColor = IsDark || IsHighContrast ? Colors.White : Colors.Black;
             Color BackgroundColor = IsHighContrast ? Color.FromArgb(255, 0, 0, 0) : IsDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);
 
-            foreach (Window window in WindowHelper.ActiveWindows)
+            WindowHelper.ActiveWindows.ForEach(async (window) =>
             {
-                if (!window.Dispatcher.HasThreadAccess)
+                if (window.Dispatcher?.HasThreadAccess == false)
                 {
                     await window.Dispatcher.ResumeForegroundAsync();
                 }
@@ -62,12 +62,12 @@ namespace LoopBack.Client.Helpers
                     TitleBar.BackgroundColor = TitleBar.InactiveBackgroundColor = BackgroundColor;
                     TitleBar.ButtonBackgroundColor = TitleBar.ButtonInactiveBackgroundColor = ExtendViewIntoTitleBar ? Colors.Transparent : BackgroundColor;
                 }
-            }
+            });
         }
 
         public static async void UpdateSystemCaptionButtonColors(Window window)
         {
-            if (!window.Dispatcher.HasThreadAccess)
+            if (window.Dispatcher?.HasThreadAccess == false)
             {
                 await window.Dispatcher.ResumeForegroundAsync();
             }

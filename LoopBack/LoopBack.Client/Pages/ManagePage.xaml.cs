@@ -22,7 +22,7 @@ namespace LoopBack.Client.Pages
     /// </summary>
     public sealed partial class ManagePage : Page
     {
-        private readonly ManageViewModel Provider = new();
+        private ManageViewModel Provider { get; } = new();
 
         public ManagePage() => InitializeComponent();
 
@@ -30,11 +30,7 @@ namespace LoopBack.Client.Pages
         {
             base.OnNavigatedTo(e);
             SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += OnCloseRequested;
-            if (DataContext is not ManageViewModel)
-            {
-                DataContext = Provider;
-                _ = Provider.Refresh();
-            }
+            _ = Provider.Refresh();
         }
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
@@ -55,7 +51,7 @@ namespace LoopBack.Client.Pages
                     }
                     break;
                 case "Refresh":
-                    _ = Provider.Refresh();
+                    _ = Provider.Refresh().ContinueWith((x) => Provider.IsDirty = false);
                     ClearSort();
                     break;
                 default:
@@ -156,34 +152,31 @@ namespace LoopBack.Client.Pages
             }
         }
 
-        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e) => Provider.IsDirty = true;
-
-        private void OnCloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e) => _ = Provider.StopService();
-
         private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            switch(element.Name)
+            switch (element.Name)
             {
                 case "Copy":
                     DataPackage dataPackage = new();
                     dataPackage.SetText(element.Tag.ToString());
                     Clipboard.SetContentWithOptions(dataPackage, null);
                     break;
-                case "Open":
-                    if (element.Tag != null)
+                case "Open" when element.Tag != null:
+                    string tag = element.Tag.ToString();
+                    if (Uri.TryCreate(tag, UriKind.RelativeOrAbsolute, out Uri url))
                     {
-                        string tag = element.Tag.ToString();
-                        if (UIHelper.ValidateAndGetUri(tag, out var url))
+                        if (url.IsFile)
                         {
-                            if (url.IsFile)
-                            {
-                                _ = Launcher.LaunchFolderPathAsync(tag);
-                            }
+                            _ = Launcher.LaunchFolderPathAsync(tag);
                         }
                     }
                     break;
             }
         }
+
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e) => Provider.IsDirty = true;
+
+        private void OnCloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e) => _ = Provider.StopService();
     }
 }

@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="Helpers\ExceptionHandling.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
+    <Compile Include="Helpers\SettingsPaneRegister.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />

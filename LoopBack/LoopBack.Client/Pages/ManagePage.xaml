@@ -12,6 +12,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:viewmodels="using:LoopBack.Client.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:ManageViewModel}"
+    DataContext="{x:Bind Provider}"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:StringVisibilityConverter x:Key="StringVisibilityConverter" />
@@ -79,6 +80,7 @@
                     Width="100"
                     VerticalAlignment="Center"
                     Content="Save"
+                    IsEnabled="{x:Bind Provider.IsDirty, Mode=OneWay}"
                     Style="{StaticResource AccentButtonStyle}">
                     <Button.KeyboardAccelerators>
                         <KeyboardAccelerator Key="S" Modifiers="Control" />
@@ -130,15 +132,12 @@
                     Tag="IsEnableLoop">
                     <cwuc:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate x:DataType="metadata:AppContainer">
-                            <ToggleSwitch
+                            <CheckBox
                                 MinWidth="0"
-                                Margin="5,0,0,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                IsOn="{x:Bind IsEnableLoop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                OffContent=""
-                                OnContent=""
-                                Toggled="ToggleSwitch_Toggled" />
+                                Click="ToggleSwitch_Toggled"
+                                IsChecked="{Binding IsEnableLoop, Mode=TwoWay}" />
                         </DataTemplate>
                     </cwuc:DataGridTemplateColumn.CellTemplate>
                 </cwuc:DataGridTemplateColumn>

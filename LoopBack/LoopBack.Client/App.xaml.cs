@@ -80,13 +80,7 @@ namespace LoopBack.Client
                 // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
 
-                if (ApiInformation.IsTypePresent("Windows.UI.ApplicationSettings.SettingsPane"))
-                {
-#pragma warning disable CS0618
-                    SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
-#pragma warning restore CS0618
-                    rootFrame.Dispatcher.AcceleratorKeyActivated += Dispatcher_AcceleratorKeyActivated;
-                }
+                SettingsPaneRegister.Register(window);
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
@@ -145,49 +139,6 @@ namespace LoopBack.Client
             //TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
         }
-
-#pragma warning disable CS0618
-        private void OnCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
-        {
-            args.Request.ApplicationCommands.Add(
-                new SettingsCommand(
-                    "Feedback",
-                    "Feedback",
-                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/wherewhere/Windows-Loopback-Exemption-Manager/issues"))));
-            args.Request.ApplicationCommands.Add(
-                new SettingsCommand(
-                    "LogFolder",
-                    "Log Folder",
-                    async (handler) => _ = Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists))));
-            args.Request.ApplicationCommands.Add(
-                new SettingsCommand(
-                    "Repository",
-                    "Repository",
-                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/wherewhere/Windows-Loopback-Exemption-Manager"))));
-        }
-
-        private void Dispatcher_AcceleratorKeyActivated(CoreDispatcher sender, AcceleratorKeyEventArgs args)
-        {
-            if (args.EventType.ToString().Contains("Down"))
-            {
-                CoreVirtualKeyStates ctrl = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
-                if (ctrl.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    CoreVirtualKeyStates shift = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift);
-                    if (shift.HasFlag(CoreVirtualKeyStates.Down))
-                    {
-                        switch (args.VirtualKey)
-                        {
-                            case VirtualKey.X:
-                                SettingsPane.Show();
-                                args.Handled = true;
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-#pragma warning restore CS0618
 
         private void Application_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
