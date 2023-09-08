@@ -36,7 +36,7 @@ namespace LoopBack.Client.Pages
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
             CheckBox checkBox = sender as CheckBox;
-            _ = Provider.ExemptAll(checkBox.IsChecked.Value);
+            _ = Provider.ExemptAllAsync(checkBox.IsChecked.Value);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -44,7 +44,7 @@ namespace LoopBack.Client.Pages
             switch ((sender as FrameworkElement).Tag?.ToString())
             {
                 case "Save":
-                    _ = Provider.SaveConfigure();
+                    _ = Provider.SaveConfigureAsync();
                     if (SaveButton.Flyout is FlyoutBase flyout_logout)
                     {
                         flyout_logout.Hide();
@@ -91,12 +91,12 @@ namespace LoopBack.Client.Pages
         {
             if (args.ChosenSuggestion is string word)
             {
-                _ = (Provider?.FilterData(word));
+                _ = (Provider?.FilterDataAsync(word));
                 ClearSort();
             }
             else if (args.ChosenSuggestion is null)
             {
-                _ = (Provider?.FilterData(sender.Text));
+                _ = (Provider?.FilterDataAsync(sender.Text));
                 ClearSort();
             }
         }
@@ -123,17 +123,17 @@ namespace LoopBack.Client.Pages
             {
                 if (e.Column.SortDirection == null)
                 {
-                    _ = Provider.SortData(e.Column.Tag.ToString(), true);
+                    _ = Provider.SortDataAsync(e.Column.Tag.ToString(), true);
                     e.Column.SortDirection = DataGridSortDirection.Ascending;
                 }
                 else if (e.Column.SortDirection == DataGridSortDirection.Ascending)
                 {
-                    _ = Provider.SortData(e.Column.Tag.ToString(), false);
+                    _ = Provider.SortDataAsync(e.Column.Tag.ToString(), false);
                     e.Column.SortDirection = DataGridSortDirection.Descending;
                 }
                 else
                 {
-                    _ = Provider.SortData(e.Column.Tag.ToString(), true);
+                    _ = Provider.SortDataAsync(e.Column.Tag.ToString(), true);
                     e.Column.SortDirection = DataGridSortDirection.Ascending;
                 }
             }

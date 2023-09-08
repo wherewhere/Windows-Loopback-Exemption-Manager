@@ -86,7 +86,7 @@ namespace LoopBack.Client.ViewModels
             }
         }
 
-        public async Task FilterData(string filter)
+        public async Task FilterDataAsync(string filter)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace LoopBack.Client.ViewModels
             }
         }
 
-        public async Task SortData(string sortBy, bool ascending)
+        public async Task SortDataAsync(string sortBy, bool ascending)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace LoopBack.Client.ViewModels
             }
         }
 
-        public async Task ExemptAll(bool isChecked)
+        public async Task ExemptAllAsync(bool isChecked)
         {
             try
             {
@@ -195,7 +195,7 @@ namespace LoopBack.Client.ViewModels
             }
         }
 
-        public async Task SaveConfigure()
+        public async Task SaveConfigureAsync()
         {
             try
             {
@@ -227,6 +227,6 @@ namespace LoopBack.Client.ViewModels
 
         public void ShowMessage(string log) => Message = $"{DateTime.Now:hh:mm:ss.fff} {log}";
 
-        public IAsyncAction StopService() => loopUtil.StopService();
+        public IAsyncAction StopService() => loopUtil.StopServiceAsync();
     }
 }
