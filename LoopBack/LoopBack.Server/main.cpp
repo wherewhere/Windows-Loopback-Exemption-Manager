@@ -27,36 +27,48 @@ DWORD RegisterLoopUtil(DefaultModule<ModuleType::OutOfProc>& module)
 {
     DWORD registration = 0;
 
-    ComPtr<LoopUtilFactory> loopUtilFactory;
-    check_hresult(MakeAndInitialize<LoopUtilFactory>(&loopUtilFactory));
+    ComPtr<IUnknown> factory;
+    unsigned int flags = OutOfProc;
 
-    ComPtr<IClassFactory> loopUtilFactoryAsClassFactory;
-    check_hresult(loopUtilFactory.As<IClassFactory>(&loopUtilFactoryAsClassFactory));
+    check_hresult(CreateClassFactory<LoopUtilFactory>(
+        &flags,
+        nullptr,
+        guid_of<IUnknown>(),
+        &factory));
+
+    ComPtr<IClassFactory> factoryAsClassFactory;
+    check_hresult(factory.As<IClassFactory>(&factoryAsClassFactory));
 
     check_hresult(module.RegisterCOMObject(
-		nullptr,
+        nullptr,
         &CLSID_LoopUtil,
-        loopUtilFactoryAsClassFactory.GetAddressOf(),
-		&registration,
-		1));
+        factoryAsClassFactory.GetAddressOf(),
+        &registration,
+        1));
 
-	return registration;
+    return registration;
 }
 
 DWORD RegisterAppContainer(DefaultModule<ModuleType::OutOfProc>& module)
 {
     DWORD registration = 0;
 
-    ComPtr<AppContainerFactory> appContainerFactory;
-    check_hresult(MakeAndInitialize<AppContainerFactory>(&appContainerFactory));
+    ComPtr<IUnknown> factory;
+    unsigned int flags = OutOfProc;
 
-    ComPtr<IClassFactory> appContainerFactoryAsClassFactory;
-    check_hresult(appContainerFactory.As<IClassFactory>(&appContainerFactoryAsClassFactory));
+    check_hresult(CreateClassFactory<AppContainerFactory>(
+        &flags,
+        nullptr,
+        guid_of<IUnknown>(),
+        &factory));
+
+    ComPtr<IClassFactory> factoryAsClassFactory;
+    check_hresult(factory.As<IClassFactory>(&factoryAsClassFactory));
 
     check_hresult(module.RegisterCOMObject(
         nullptr,
         &CLSID_AppContainer,
-        appContainerFactoryAsClassFactory.GetAddressOf(),
+        factoryAsClassFactory.GetAddressOf(),
         &registration,
         1));
 
