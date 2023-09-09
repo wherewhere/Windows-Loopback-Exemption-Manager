@@ -1,0 +1,17 @@
+import "LoopBackManagerContract.idl";
+
+namespace LoopBack.Metadata
+{
+    [default_interface]
+    [contract(LoopBack.Metadata.LoopBackManagerContract, 1)]
+    runtimeclass ServerManager
+    {
+        Boolean IsRunAsAdministrator { get; };
+
+        ServerManager();
+
+        void RunAsAdministrator();
+
+        Windows.Foundation.IAsyncAction StopServerAsync();
+    }
+}

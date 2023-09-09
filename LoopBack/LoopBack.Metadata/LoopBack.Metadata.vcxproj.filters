@@ -5,6 +5,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ServerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ComClsids.h">
@@ -13,11 +14,13 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ServerManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="AppContainer.idl" />
     <Midl Include="LoopUtil.idl" />
     <Midl Include="LoopBackManagerContract.idl" />
+    <Midl Include="ServerManager.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LoopBack.Metadata.def" />

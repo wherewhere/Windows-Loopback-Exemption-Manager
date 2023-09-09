@@ -69,17 +69,27 @@ namespace LoopBack.Client.Pages
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 if (!string.IsNullOrEmpty(filter))
                 {
-                    string appsInFilter = filter.ToUpper();
+                    string appsInFilter = filter;
                     foreach (AppContainer app in Provider.AppContainers)
                     {
                         if (app != null)
                         {
-                            string appName = app.DisplayName.ToUpper();
-                            if (appName.Contains(appsInFilter))
+                            string appName = app.DisplayName;
+                            if (appName.Contains(appsInFilter, StringComparison.OrdinalIgnoreCase))
                             {
                                 await Dispatcher.TryRunAsync(
                                     CoreDispatcherPriority.Normal,
-                                    () => observableCollection.Add(app.ToString()));
+                                    () => observableCollection.Add(appName));
+                            }
+                            else
+                            {
+                                string packageFullName = app.PackageFullName;
+                                if (packageFullName.Contains(appsInFilter, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    await Dispatcher.TryRunAsync(
+                                        CoreDispatcherPriority.Normal,
+                                        () => observableCollection.Add(packageFullName));
+                                }
                             }
                         }
                     }
@@ -154,7 +164,7 @@ namespace LoopBack.Client.Pages
 
         private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
-            FrameworkElement element = sender as FrameworkElement;
+            if (sender is not FrameworkElement element) { return; }
             switch (element.Name)
             {
                 case "Copy":
@@ -172,11 +182,14 @@ namespace LoopBack.Client.Pages
                         }
                     }
                     break;
+                case "RunAsAdmin":
+                    _ = Provider.RunAsAdministrator();
+                    break;
             }
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e) => Provider.IsDirty = true;
 
-        private void OnCloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e) => _ = Provider.StopService();
+        private void OnCloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e) => _ = Provider.StopServerAsync();
     }
 }

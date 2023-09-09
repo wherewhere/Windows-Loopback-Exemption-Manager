@@ -94,6 +94,7 @@
               LaunchAndActivationPermission="O:SYG:SYD:(A;;11;;;WD)(A;;11;;;RC)(A;;11;;;AC)(A;;11;;;AN)S:P(ML;;NX;;;S-1-16-0)">
               <com:Class Id ="50169480-3FB8-4A19-AAED-ED9170811A3A" DisplayName="LoopUtil Server" />
               <com:Class Id ="F45FCBCC-E727-411D-880B-3EF2DB8752B9" DisplayName="AppContainer Server" />
+              <com:Class Id ="06FDF320-A6F5-45B4-B553-ADF15C927F51" DisplayName="ServerManager Server" />
             </com:ExeServer>
           </com:ComServer>
         </com:Extension>
@@ -102,9 +103,8 @@
   </Applications>
 
   <Capabilities>
-    <Capability Name="internetClient" />
     <rescap:Capability Name="runFullTrust" />
-	<rescap:Capability Name="confirmAppClose" />
+    <rescap:Capability Name="confirmAppClose" />
     <rescap:Capability Name="unvirtualizedResources" />
   </Capabilities>
 </Package>

@@ -75,6 +75,32 @@ DWORD RegisterAppContainer(DefaultModule<ModuleType::OutOfProc>& module)
     return registration;
 }
 
+DWORD RegisterServerManager(DefaultModule<ModuleType::OutOfProc>& module)
+{
+    DWORD registration = 0;
+
+    ComPtr<IUnknown> factory;
+    unsigned int flags = OutOfProc;
+
+    check_hresult(CreateClassFactory<ServerManagerFactory>(
+        &flags,
+        nullptr,
+        guid_of<IUnknown>(),
+        &factory));
+
+    ComPtr<IClassFactory> factoryAsClassFactory;
+    check_hresult(factory.As<IClassFactory>(&factoryAsClassFactory));
+
+    check_hresult(module.RegisterCOMObject(
+        nullptr,
+        &CLSID_ServerManager,
+        factoryAsClassFactory.GetAddressOf(),
+        &registration,
+        1));
+
+    return registration;
+}
+
 void UnregisterCOMObject(DefaultModule<ModuleType::OutOfProc>& module, DWORD registration)
 {
     check_hresult(module.UnregisterCOMObject(

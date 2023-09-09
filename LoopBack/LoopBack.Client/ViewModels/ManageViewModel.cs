@@ -29,6 +29,13 @@ namespace LoopBack.Client.ViewModels
             set => SetProperty(ref isDirty, value);
         }
 
+        private bool isRunAsAdministrator;
+        public bool IsRunAsAdministrator
+        {
+            get => isRunAsAdministrator;
+            set => SetProperty(ref isRunAsAdministrator, value);
+        }
+
         private string message = string.Empty;
         public string Message
         {
@@ -75,9 +82,25 @@ namespace LoopBack.Client.ViewModels
                 ShowMessage("Loading...");
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 loopUtil ??= LoopBackProjectionFactory.TryCreateLoopUtil();
-                AppContainers = loopUtil.GetAppContainers();
-                FilteredAppContainers = new(AppContainers);
-                ShowMessage("Loaded");
+                if (loopUtil != null)
+                {
+                    IsRunAsAdministrator = loopUtil.ServerManager.IsRunAsAdministrator;
+                    AppContainers = loopUtil.GetAppContainers();
+                    FilteredAppContainers = new(AppContainers);
+                    ShowMessage("Loaded");
+                }
+                else
+                {
+                    ShowMessage("Load failed");
+                }
+            }
+            catch (Exception ex) when (ex.HResult == -2147023174)
+            {
+                loopUtil = null;
+                IsDirty = IsRunAsAdministrator = false;
+                AppContainers = FilteredAppContainers = null;
+                SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Warn(ex.ExceptionToMessage());
+                ShowMessage(ex.Message);
             }
             catch (Exception ex)
             {
@@ -91,23 +114,32 @@ namespace LoopBack.Client.ViewModels
             try
             {
                 await ThreadSwitcher.ResumeBackgroundAsync();
-                bool notFiltering = string.IsNullOrWhiteSpace(filter);
-                if (!notFiltering) { ShowMessage("Filtering..."); }
-                string appsInFilter = filter.ToUpper();
-                await Dispatcher.EnqueueAsync(filteredAppContainers.Clear);
-                foreach (AppContainer app in AppContainers)
+                if (string.IsNullOrWhiteSpace(filter))
                 {
-                    if (app != null)
+                    FilteredAppContainers = new(AppContainers);
+                    return;
+                }
+                else
+                {
+                    ShowMessage("Filtering...");
+                    string appsInFilter = filter;
+                    await Dispatcher.EnqueueAsync(filteredAppContainers.Clear);
+                    foreach (AppContainer app in AppContainers)
                     {
-                        string appName = app.DisplayName.ToUpper();
-
-                        if (notFiltering || appName.Contains(appsInFilter))
+                        if (app != null)
                         {
-                            await Dispatcher.EnqueueAsync(() => filteredAppContainers.Add(app));
+                            string appName = app.DisplayName;
+                            string packageFullName = app.PackageFullName;
+
+                            if (appName.Contains(appsInFilter, StringComparison.OrdinalIgnoreCase)
+                                || packageFullName.Contains(appsInFilter, StringComparison.OrdinalIgnoreCase))
+                            {
+                                await Dispatcher.EnqueueAsync(() => filteredAppContainers.Add(app));
+                            }
                         }
                     }
+                    ShowMessage("Filtered");
                 }
-                if (!notFiltering) { ShowMessage("Filtered"); }
             }
             catch (Exception ex)
             {
@@ -225,8 +257,50 @@ namespace LoopBack.Client.ViewModels
             }
         }
 
+        public async Task RunAsAdministrator()
+        {
+            try
+            {
+                await ThreadSwitcher.ResumeBackgroundAsync();
+                if (!isRunAsAdministrator)
+                {
+                    ShowMessage("Try to run as administrator");
+                    try
+                    {
+                        loopUtil.ServerManager.RunAsAdministrator();
+                    }
+                    catch (Exception ex) when (ex.HResult == -2147023170)
+                    {
+                        loopUtil = LoopBackProjectionFactory.TryCreateLoopUtil();
+                        IsRunAsAdministrator = loopUtil.ServerManager.IsRunAsAdministrator;
+                        AppContainers = loopUtil.GetAppContainers();
+                        FilteredAppContainers = new(AppContainers);
+                        if (isRunAsAdministrator)
+                        {
+                            ShowMessage("Run as administrator now");
+                        }
+                        else
+                        {
+                            ShowMessage("Failed to run as administrator");
+                        }
+                        return;
+                    }
+                    ShowMessage("Failed to run as administrator");
+                }
+                else
+                {
+                    ShowMessage("Already run as administrator");
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(ex.ExceptionToMessage());
+                ShowMessage(ex.Message);
+            }
+        }
+
         public void ShowMessage(string log) => Message = $"{DateTime.Now:hh:mm:ss.fff} {log}";
 
-        public IAsyncAction StopService() => loopUtil.StopServiceAsync();
+        public IAsyncAction StopServerAsync() => loopUtil.StopServerAsync();
     }
 }

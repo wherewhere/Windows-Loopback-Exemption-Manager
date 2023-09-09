@@ -1,4 +1,5 @@
 import "AppContainer.idl";
+import "ServerManager.idl";
 import "LoopBackManagerContract.idl";
 
 namespace LoopBack.Metadata
@@ -7,6 +8,7 @@ namespace LoopBack.Metadata
     [contract(LoopBack.Metadata.LoopBackManagerContract, 1)]
     runtimeclass LoopUtil : Windows.Foundation.IClosable
     {
+        ServerManager ServerManager { get; };
         Windows.Foundation.Collections.IIterable<AppContainer> Apps { get; };
 
         LoopUtil();
@@ -18,6 +20,7 @@ namespace LoopBack.Metadata
         Boolean RemoveLookback(Windows.Foundation.Collections.IIterable<String> list);
         Boolean AddLookback(String stringSid);
         Boolean RemoveLookback(String stringSid);
-        Windows.Foundation.IAsyncAction StopServiceAsync();
+
+        Windows.Foundation.IAsyncAction StopServerAsync();
     }
 }

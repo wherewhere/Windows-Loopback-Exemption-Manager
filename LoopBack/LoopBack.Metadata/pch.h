@@ -5,5 +5,8 @@
 
 // Win32 APIs
 #include <netfw.h>
-#include <winnt.h>
 #include <sddl.h>
+#include <shellapi.h>
+#include <winnt.h>
+
+#pragma comment(lib,"shell32.lib")

@@ -10,7 +10,7 @@ namespace winrt::LoopBack::Metadata::implementation
 {
     struct __declspec(uuid(OUTOFPROC_COM_CLSID_AppContainer)) AppContainer : AppContainerT<AppContainer>
     {
-        bool IsEnableLoop() { return isEnableLoop; }
+        bool IsEnableLoop() const { return isEnableLoop; }
         hstring DisplayName() { return displayName; }
         hstring AppContainerName() { return appContainerName; }
         hstring PackageFullName() { return packageFullName; }

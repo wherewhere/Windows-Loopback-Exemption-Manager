@@ -30,7 +30,7 @@ namespace LoopBack.Client.Helpers
         {
             Guid riid = CLSID_IUnknown;
             _ = CoCreateInstance(ref rclsid, IntPtr.Zero, dwClsContext, ref riid, out IntPtr results);
-            return results == IntPtr.Zero ? null : (T)Marshal.GetObjectForIUnknown(results);
+            return results == IntPtr.Zero ? null : Marshal.GetObjectForIUnknown(results) as T;
         }
 
         [DllImport("ole32", EntryPoint = "CoCreateInstance", ExactSpelling = true)]

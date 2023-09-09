@@ -127,6 +127,9 @@
     <ClInclude Include="LoopUtil.h">
       <DependentUpon>LoopUtil.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="ServerManager.h">
+      <DependentUpon>ServerManager.idl</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppContainer.cpp">
@@ -139,11 +142,15 @@
       <DependentUpon>LoopUtil.idl</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="ServerManager.cpp">
+      <DependentUpon>ServerManager.idl</DependentUpon>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="AppContainer.idl" />
     <Midl Include="LoopBackManagerContract.idl" />
     <Midl Include="LoopUtil.idl" />
+    <Midl Include="ServerManager.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LoopBack.Metadata.def" />

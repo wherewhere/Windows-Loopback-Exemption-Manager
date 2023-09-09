@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "LoopUtilFactory.h"
 #include "AppContainerFactory.h"
+#include "ServerManagerFactory.h"
 #include "wil/cppwinrt_wrl.h"
 #include "wrl/module.h"
 
@@ -33,6 +34,13 @@ static GUID CLSID_AppContainer =
     0xf45fcbcc, 0xe727, 0x411d, { 0x88, 0xb, 0x3e, 0xf2, 0xdb, 0x87, 0x52, 0xb9 }
 };
 
+// {06FDF320-A6F5-45B4-B553-ADF15C927F51}
+static GUID CLSID_ServerManager =
+{
+    0x6fdf320, 0xa6f5, 0x45b4, { 0xb5, 0x53, 0xad, 0xf1, 0x5c, 0x92, 0x7f, 0x51 }
+};
+
 DWORD RegisterLoopUtil(DefaultModule<ModuleType::OutOfProc>& module);
 DWORD RegisterAppContainer(DefaultModule<ModuleType::OutOfProc>& module);
+DWORD RegisterServerManager(DefaultModule<ModuleType::OutOfProc>& module);
 void UnregisterCOMObject(DefaultModule<ModuleType::OutOfProc>& module, DWORD registration);

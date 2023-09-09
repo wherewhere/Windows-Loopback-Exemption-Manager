@@ -8,7 +8,7 @@ namespace winrt::LoopBack::Metadata::implementation
 	{
         apps.Clear();
         //List of Apps that have LoopUtil enabled.
-        AppListConfig = PI_NetworkIsolationGetAppContainerConfig();
+        appListConfig = PI_NetworkIsolationGetAppContainerConfig();
         //Full List of Apps
         return PI_NetworkIsolationEnumAppContainers(apps);
 	}
@@ -158,7 +158,7 @@ namespace winrt::LoopBack::Metadata::implementation
             ConvertSidToStringSid(intPtr, &right);
             if (right != nullptr)
             {
-                for (hstring left : AppListConfig)
+                for (hstring left : appListConfig)
                 {
                     if ((hstring)left == (hstring)right)
                     {
@@ -344,19 +344,18 @@ namespace winrt::LoopBack::Metadata::implementation
 
     void LoopUtil::Close()
     {
-        if (FirewallAPI != nullptr)
+        if (firewallAPI != nullptr)
         {
-            FreeLibrary(FirewallAPI);
-            FirewallAPI = nullptr;
+            FreeLibrary(firewallAPI);
+            firewallAPI = nullptr;
         }
         apps.Clear();
-        AppListConfig.Clear();
+        appListConfig.Clear();
     }
 
-    IAsyncAction LoopUtil::StopServiceAsync()
+    IAsyncAction LoopUtil::StopServerAsync()
     {
-        co_await winrt::resume_after(std::chrono::milliseconds(50));
         Close();
-        ExitProcess(S_OK);
+        return serverManager.StopServerAsync();
     }
 }

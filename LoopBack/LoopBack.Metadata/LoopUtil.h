@@ -13,8 +13,19 @@ namespace winrt::LoopBack::Metadata::implementation
 {
     struct __declspec(OUTOFPROC_COM_CLSID_LoopUtil) LoopUtil : LoopUtilT<LoopUtil>
     {
-        HINSTANCE FirewallAPI = nullptr;
-        IVector<hstring> AppListConfig = nullptr;
+        IIterable<AppContainer> Apps()
+        {
+            if (apps.Size() == 0)
+            {
+                return GetAppContainers();
+            }
+            return apps;
+        }
+
+        ServerManager ServerManager() const
+        {
+            return serverManager;
+        }
 
         LoopUtil() = default;
 
@@ -25,19 +36,14 @@ namespace winrt::LoopBack::Metadata::implementation
         bool AddLookback(hstring stringSid);
         bool RemoveLookback(hstring stringSid);
         void Close();
-        IAsyncAction StopServiceAsync();
 
-        IIterable<AppContainer> Apps()
-        {
-            if (apps.Size() == 0)
-            {
-                return GetAppContainers();
-            }
-            return apps;
-        }
+        IAsyncAction StopServerAsync();
 
     private:
         IVector<AppContainer> apps = single_threaded_vector<AppContainer>();
+        ::ServerManager serverManager = ServerManager::ServerManager();
+        IVector<hstring> appListConfig = nullptr;
+        HINSTANCE firewallAPI = nullptr;
 
         AppContainer CreateAppContainer(INET_FIREWALL_APP_CONTAINER PI_app, bool loopUtil);
         bool CheckLoopback(SID* intPtr);
@@ -51,49 +57,49 @@ namespace winrt::LoopBack::Metadata::implementation
 
         HINSTANCE GetFirewallAPI()
         {
-            if (FirewallAPI == nullptr)
+            if (firewallAPI == nullptr)
             {
-                FirewallAPI = LoadLibrary(L"FirewallAPI.dll");
+                firewallAPI = LoadLibrary(L"FirewallAPI.dll");
             }
-            return FirewallAPI;
+            return firewallAPI;
         }
 
         decltype(NetworkIsolationGetAppContainerConfig)* GetNetworkIsolationGetAppContainerConfig()
         {
-            HINSTANCE firewallAPI = GetFirewallAPI();
+            HINSTANCE instance = GetFirewallAPI();
             decltype(NetworkIsolationGetAppContainerConfig)* func =
                 (decltype(NetworkIsolationGetAppContainerConfig)*)GetProcAddress(
-                    firewallAPI,
+                    instance,
                     "NetworkIsolationGetAppContainerConfig");
             return func;
         }
 
         decltype(NetworkIsolationSetAppContainerConfig)* GetNetworkIsolationSetAppContainerConfig()
         {
-            HINSTANCE firewallAPI = GetFirewallAPI();
+            HINSTANCE instance = GetFirewallAPI();
             decltype(NetworkIsolationSetAppContainerConfig)* func =
                 (decltype(NetworkIsolationSetAppContainerConfig)*)GetProcAddress(
-                    firewallAPI,
+                    instance,
                     "NetworkIsolationSetAppContainerConfig");
             return func;
         }
 
         decltype(NetworkIsolationEnumAppContainers)* GetNetworkIsolationEnumAppContainers()
         {
-            HINSTANCE firewallAPI = GetFirewallAPI();
+            HINSTANCE instance = GetFirewallAPI();
             decltype(NetworkIsolationEnumAppContainers)* func =
                 (decltype(NetworkIsolationEnumAppContainers)*)GetProcAddress(
-                    firewallAPI,
+                    instance,
                     "NetworkIsolationEnumAppContainers");
             return func;
         }
 
         decltype(NetworkIsolationFreeAppContainers)* GetNetworkIsolationFreeAppContainers()
         {
-            HINSTANCE firewallAPI = GetFirewallAPI();
+            HINSTANCE instance = GetFirewallAPI();
             decltype(NetworkIsolationFreeAppContainers)* func =
                 (decltype(NetworkIsolationFreeAppContainers)*)GetProcAddress(
-                    firewallAPI,
+                    instance,
                     "NetworkIsolationFreeAppContainers");
             return func;
         }
