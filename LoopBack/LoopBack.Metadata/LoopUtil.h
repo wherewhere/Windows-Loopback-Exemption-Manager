@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "LoopUtil.g.h"
 #include "ComClsids.h"
+#include "LoopUtil.g.h"
 
 using namespace std;
 using namespace winrt;

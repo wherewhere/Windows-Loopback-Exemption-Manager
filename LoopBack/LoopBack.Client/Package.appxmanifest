@@ -15,8 +15,8 @@
   <mp:PhoneIdentity PhoneProductId="eb02184e-8ef5-4f9b-abe6-578d647fea6d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>LoopBack.Client</DisplayName>
-    <PublisherDisplayName>qq251</PublisherDisplayName>
+    <DisplayName>LoopBack</DisplayName>
+    <PublisherDisplayName>wherewhere</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

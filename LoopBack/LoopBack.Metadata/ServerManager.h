@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ServerManager.g.h"
 #include "ComClsids.h"
+#include "ServerManager.g.h"
 
 using namespace std;
 using namespace winrt;

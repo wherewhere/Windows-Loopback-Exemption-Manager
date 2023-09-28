@@ -3,11 +3,13 @@ using Windows.UI.Xaml;
 
 namespace LoopBack.Client.Helpers
 {
-    // Helpers class to allow the app to find the Window that contains an
-    // arbitrary UIElement (GetWindowForElement).  To do this, we keep track
-    // of all active Windows.  The app code must call WindowHelper.CreateWindow
-    // rather than "new Window" so we can keep track of all the relevant
-    // windows.  In the future, we would like to support this in platform APIs.
+    /// <summary>
+    /// Helpers class to allow the app to find the Window that contains an
+    /// arbitrary <see cref="UIElement"/> (GetWindowForElement).
+    /// To do this, we keep track of all active Windows. The app code must call
+    /// WindowHelper.CreateWindow rather than "new <see cref="Window"/>()"
+    /// so we can keep track of all the relevant windows.
+    /// </summary>
     public static class WindowHelper
     {
         public static void TrackWindow(this Window window)
@@ -19,6 +21,6 @@ namespace LoopBack.Client.Helpers
             ActiveWindows?.Add(window);
         }
 
-        public static List<Window> ActiveWindows { get; } = new List<Window>();
+        public static HashSet<Window> ActiveWindows { get; } = new HashSet<Window>(1);
     }
 }

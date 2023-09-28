@@ -14,8 +14,8 @@
     Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>LoopBack.Package</DisplayName>
-    <PublisherDisplayName>qq251</PublisherDisplayName>
+    <DisplayName>LoopBack</DisplayName>
+    <PublisherDisplayName>wherewhere</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -105,6 +105,5 @@
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
     <rescap:Capability Name="confirmAppClose" />
-    <rescap:Capability Name="unvirtualizedResources" />
   </Capabilities>
 </Package>

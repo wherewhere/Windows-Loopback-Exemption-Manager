@@ -4,8 +4,8 @@
 
 namespace winrt::LoopBack::Metadata::implementation
 {
-	hstring AppContainer::ToString()
-	{
-		return displayName;
-	}
+    hstring AppContainer::ToString()
+    {
+        return displayName;
+    }
 }

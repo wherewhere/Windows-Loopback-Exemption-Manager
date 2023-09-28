@@ -44,7 +44,7 @@ namespace LoopBack.Client.Helpers
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
                     "LogFolder",
-                    "Log Folder",
+                    "LogFolder",
                     async (handler) => _ = Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists))));
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(

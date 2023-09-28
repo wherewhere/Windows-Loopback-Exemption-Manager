@@ -64,7 +64,7 @@ namespace LoopBack.Client.Pages
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 string filter = sender.Text;
-                ObservableCollection<string> observableCollection = new();
+                ObservableCollection<string> observableCollection = [];
                 sender.ItemsSource = observableCollection;
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 if (!string.IsNullOrEmpty(filter))
@@ -101,12 +101,12 @@ namespace LoopBack.Client.Pages
         {
             if (args.ChosenSuggestion is string word)
             {
-                _ = (Provider?.FilterDataAsync(word));
+                _ = Provider.FilterDataAsync(word);
                 ClearSort();
             }
             else if (args.ChosenSuggestion is null)
             {
-                _ = (Provider?.FilterDataAsync(sender.Text));
+                _ = Provider.FilterDataAsync(sender.Text);
                 ClearSort();
             }
         }

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "pch.h"
-#include "LoopUtilFactory.h"
 #include "AppContainerFactory.h"
+#include "LoopUtilFactory.h"
 #include "ServerManagerFactory.h"
 #include "wil/cppwinrt_wrl.h"
 #include "wrl/module.h"

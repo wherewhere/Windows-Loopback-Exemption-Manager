@@ -5,13 +5,13 @@
 namespace winrt::LoopBack::Metadata::implementation
 {
     IIterable<AppContainer> LoopUtil::GetAppContainers()
-	{
+    {
         apps.Clear();
         //List of Apps that have LoopUtil enabled.
         appListConfig = PI_NetworkIsolationGetAppContainerConfig();
         //Full List of Apps
         return PI_NetworkIsolationEnumAppContainers(apps);
-	}
+    }
 
     bool LoopUtil::SetLoopbackList(IIterable<hstring> list)
     {

@@ -4,13 +4,13 @@
 
 namespace winrt::LoopBack::Metadata::implementation
 {
-	IAsyncAction ServerManager::StopServerAsync()
-	{
-		co_await winrt::resume_after(std::chrono::milliseconds(50));
-		ExitProcess(S_OK);
-	}
+    IAsyncAction ServerManager::StopServerAsync()
+    {
+        co_await winrt::resume_after(std::chrono::milliseconds(50));
+        ExitProcess(S_OK);
+    }
 
-	bool ServerManager::IsRunAsAdministrator()
+    bool ServerManager::IsRunAsAdministrator()
     {
         SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
         PSID AdministratorsGroup;
