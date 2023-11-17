@@ -1,14 +1,16 @@
 #pragma once
 
-#include "wrl.h"
-
 using namespace winrt;
 using namespace LoopBack::Metadata;
 
-struct LoopUtilFactory : Microsoft::WRL::ClassFactory<>
+struct LoopUtilFactory : winrt::implements<LoopUtilFactory, winrt::Windows::Foundation::IActivationFactory, IClassFactory>
 {
-    IFACEMETHODIMP CreateInstance(
-        _In_opt_ IUnknown* outer,
-        _In_ REFIID iid,
-        _COM_Outptr_ void** result) override;
+    static const CLSID& GetLoopUtilCLSID();
+
+    // IActivationFactory
+    winrt::Windows::Foundation::IInspectable ActivateInstance();
+
+    // IClassFactory
+    HRESULT STDMETHODCALLTYPE CreateInstance(::IUnknown* pUnkOuter, REFIID riid, void** ppvObject);
+    HRESULT STDMETHODCALLTYPE LockServer(BOOL fLock);
 };

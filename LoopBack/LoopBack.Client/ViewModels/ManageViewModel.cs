@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.System;
 
 namespace LoopBack.Client.ViewModels
@@ -43,7 +42,7 @@ namespace LoopBack.Client.ViewModels
             set => SetProperty(ref message, value);
         }
 
-        private ObservableCollection<AppContainer> filteredAppContainers = new();
+        private ObservableCollection<AppContainer> filteredAppContainers = [];
         public ObservableCollection<AppContainer> FilteredAppContainers
         {
             get => filteredAppContainers;
@@ -257,7 +256,7 @@ namespace LoopBack.Client.ViewModels
             }
         }
 
-        public async Task RunAsAdministrator()
+        public async Task RunAsAdministratorAsync()
         {
             try
             {
@@ -300,7 +299,5 @@ namespace LoopBack.Client.ViewModels
         }
 
         public void ShowMessage(string log) => Message = $"{DateTime.Now:hh:mm:ss.fff} {log}";
-
-        public IAsyncAction StopServerAsync() => loopUtil.StopServerAsync();
     }
 }

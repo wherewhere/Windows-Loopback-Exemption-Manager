@@ -18,7 +18,7 @@ namespace LoopBack.Client.Helpers
         public static T CreateInstance<T>(Guid rclsid, uint dwClsContext = 0x1)
         {
             Guid riid = CLSID_IUnknown;
-            uint hresult = CoCreateInstance(ref rclsid, IntPtr.Zero, dwClsContext, ref riid, out IntPtr results);
+            uint hresult = CoCreateInstance(in rclsid, IntPtr.Zero, dwClsContext, in riid, out nint results);
             if (hresult != 0)
             {
                 Marshal.ThrowExceptionForHR((int)hresult);
@@ -29,16 +29,16 @@ namespace LoopBack.Client.Helpers
         public static T TryCreateInstance<T>(Guid rclsid, uint dwClsContext = 0x1) where T : class
         {
             Guid riid = CLSID_IUnknown;
-            _ = CoCreateInstance(ref rclsid, IntPtr.Zero, dwClsContext, ref riid, out IntPtr results);
+            _ = CoCreateInstance(in rclsid, IntPtr.Zero, dwClsContext, in riid, out nint results);
             return results == IntPtr.Zero ? null : Marshal.GetObjectForIUnknown(results) as T;
         }
 
         [DllImport("ole32", EntryPoint = "CoCreateInstance", ExactSpelling = true)]
         private static extern uint CoCreateInstance(
-            [In] ref Guid rclsid,
-            [In] IntPtr pUnkOuter,
+            [In] in Guid rclsid,
+            [In] nint pUnkOuter,
             [In] uint dwClsContext,
-            [In] ref Guid riid,
-            [Out] out IntPtr ppv);
+            [In] in Guid riid,
+            [Out] out nint ppv);
     }
 }

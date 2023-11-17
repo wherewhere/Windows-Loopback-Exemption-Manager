@@ -4,6 +4,19 @@
 
 namespace winrt::LoopBack::Metadata::implementation
 {
+    LoopUtil::LoopUtil()
+    {
+        CoAddRefServerProcess();
+    }
+
+    LoopUtil::~LoopUtil()
+    {
+        if (CoReleaseServerProcess() == 0)
+        {
+            ExitProcess(S_OK);
+        }
+    }
+
     IIterable<AppContainer> LoopUtil::GetAppContainers()
     {
         apps.Clear();

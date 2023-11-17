@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,7 +28,6 @@ namespace LoopBack.Client.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += OnCloseRequested;
             _ = Provider.Refresh();
         }
 
@@ -183,13 +181,11 @@ namespace LoopBack.Client.Pages
                     }
                     break;
                 case "RunAsAdmin":
-                    _ = Provider.RunAsAdministrator();
+                    _ = Provider.RunAsAdministratorAsync();
                     break;
             }
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e) => Provider.IsDirty = true;
-
-        private void OnCloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e) => _ = Provider.StopServerAsync();
     }
 }

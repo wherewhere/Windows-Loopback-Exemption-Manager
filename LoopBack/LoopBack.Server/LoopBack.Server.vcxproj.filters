@@ -4,9 +4,6 @@
     <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AppContainerFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LoopUtilFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -14,9 +11,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerManagerFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -27,16 +21,10 @@
     <ClInclude Include="LoopUtilFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AppContainerFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerManagerFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

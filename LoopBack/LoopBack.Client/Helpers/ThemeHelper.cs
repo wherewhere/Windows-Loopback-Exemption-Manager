@@ -11,12 +11,13 @@ namespace LoopBack.Client.Helpers
     public static class ThemeHelper
     {
         // Keep reference so it does not get optimized/garbage collected
-        public static UISettings UISettings;
+        public static UISettings UISettings { get; } = new UISettings();
+        public static AccessibilitySettings AccessibilitySettings { get; } = new AccessibilitySettings();
+
 
         static ThemeHelper()
         {
             // Registering to color changes, thus we notice when user changes theme system wide
-            UISettings = new UISettings();
             UISettings.ColorValuesChanged += UISettings_ColorValuesChanged;
         }
 
@@ -30,12 +31,14 @@ namespace LoopBack.Client.Helpers
             UpdateSystemCaptionButtonColors();
         }
 
-        public static bool IsDarkTheme() => UISettings.GetColorValue(UIColorType.Background) == Colors.Black;
+        public static bool IsDarkTheme() => UISettings.GetColorValue(UIColorType.Foreground).IsColorLight();
+
+        public static bool IsColorLight(this Color color) => ((5 * color.G) + (2 * color.R) + color.B) > (8 * 128);
 
         public static async void UpdateSystemCaptionButtonColors()
         {
             bool IsDark = IsDarkTheme();
-            bool IsHighContrast = new AccessibilitySettings().HighContrast;
+            bool IsHighContrast = AccessibilitySettings.HighContrast;
 
             Color ForegroundColor = IsDark || IsHighContrast ? Colors.White : Colors.Black;
             Color BackgroundColor = IsHighContrast ? Color.FromArgb(255, 0, 0, 0) : IsDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);
@@ -73,7 +76,7 @@ namespace LoopBack.Client.Helpers
             }
 
             bool IsDark = IsDarkTheme();
-            bool IsHighContrast = new AccessibilitySettings().HighContrast;
+            bool IsHighContrast = AccessibilitySettings.HighContrast;
 
             Color ForegroundColor = IsDark || IsHighContrast ? Colors.White : Colors.Black;
             Color BackgroundColor = IsHighContrast ? Color.FromArgb(255, 0, 0, 0) : IsDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);

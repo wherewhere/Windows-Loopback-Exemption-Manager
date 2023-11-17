@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ComClsids.h"
 #include "ServerManager.g.h"
 
 using namespace std;
@@ -11,7 +10,7 @@ using namespace Windows::Foundation::Collections;
 
 namespace winrt::LoopBack::Metadata::implementation
 {
-    struct __declspec(OUTOFPROC_COM_CLSID_ServerManager)ServerManager : ServerManagerT<ServerManager>
+    struct ServerManager : ServerManagerT<ServerManager>
     {
         bool IsRunAsAdministrator();
 

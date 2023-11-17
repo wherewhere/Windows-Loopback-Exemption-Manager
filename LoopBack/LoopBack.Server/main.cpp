@@ -14,97 +14,23 @@ int main()
         check_hresult(globalOptions->Set(COMGLB_RO_SETTINGS, COMGLB_FAST_RUNDOWN));
     }
 
-    _comServerExitEvent.create();
-    auto& module = Module<ModuleType::OutOfProc>::Create(&_releaseNotifier);
-    auto loopUtil = RegisterLoopUtil(module);
-    auto appContainer = RegisterAppContainer(module);
+    _comServerExitEvent.ResetEvent();
+    auto loopUtil = RegisterLoopUtil();
+
     _comServerExitEvent.wait();
-    UnregisterCOMObject(module, loopUtil);
-    UnregisterCOMObject(module, appContainer);
+    CoRevokeClassObject(loopUtil);
 }
 
-DWORD RegisterLoopUtil(DefaultModule<ModuleType::OutOfProc>& module)
+DWORD RegisterLoopUtil()
 {
     DWORD registration = 0;
 
-    ComPtr<IUnknown> factory;
-    unsigned int flags = OutOfProc;
-
-    check_hresult(CreateClassFactory<LoopUtilFactory>(
-        &flags,
-        nullptr,
-        guid_of<IUnknown>(),
-        &factory));
-
-    ComPtr<IClassFactory> factoryAsClassFactory;
-    check_hresult(factory.As<IClassFactory>(&factoryAsClassFactory));
-
-    check_hresult(module.RegisterCOMObject(
-        nullptr,
-        &CLSID_LoopUtil,
-        factoryAsClassFactory.GetAddressOf(),
-        &registration,
-        1));
+    CoRegisterClassObject(
+        LoopUtilFactory::GetLoopUtilCLSID(),
+        winrt::make<LoopUtilFactory>().as<IUnknown>().get(),
+        CLSCTX_LOCAL_SERVER,
+        REGCLS_MULTIPLEUSE,
+        &registration);
 
     return registration;
-}
-
-DWORD RegisterAppContainer(DefaultModule<ModuleType::OutOfProc>& module)
-{
-    DWORD registration = 0;
-
-    ComPtr<IUnknown> factory;
-    unsigned int flags = OutOfProc;
-
-    check_hresult(CreateClassFactory<AppContainerFactory>(
-        &flags,
-        nullptr,
-        guid_of<IUnknown>(),
-        &factory));
-
-    ComPtr<IClassFactory> factoryAsClassFactory;
-    check_hresult(factory.As<IClassFactory>(&factoryAsClassFactory));
-
-    check_hresult(module.RegisterCOMObject(
-        nullptr,
-        &CLSID_AppContainer,
-        factoryAsClassFactory.GetAddressOf(),
-        &registration,
-        1));
-
-    return registration;
-}
-
-DWORD RegisterServerManager(DefaultModule<ModuleType::OutOfProc>& module)
-{
-    DWORD registration = 0;
-
-    ComPtr<IUnknown> factory;
-    unsigned int flags = OutOfProc;
-
-    check_hresult(CreateClassFactory<ServerManagerFactory>(
-        &flags,
-        nullptr,
-        guid_of<IUnknown>(),
-        &factory));
-
-    ComPtr<IClassFactory> factoryAsClassFactory;
-    check_hresult(factory.As<IClassFactory>(&factoryAsClassFactory));
-
-    check_hresult(module.RegisterCOMObject(
-        nullptr,
-        &CLSID_ServerManager,
-        factoryAsClassFactory.GetAddressOf(),
-        &registration,
-        1));
-
-    return registration;
-}
-
-void UnregisterCOMObject(DefaultModule<ModuleType::OutOfProc>& module, DWORD registration)
-{
-    check_hresult(module.UnregisterCOMObject(
-        nullptr,
-        &registration,
-        1));
 }

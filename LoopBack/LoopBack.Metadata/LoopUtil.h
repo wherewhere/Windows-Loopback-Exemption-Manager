@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "ComClsids.h"
 #include "LoopUtil.g.h"
 
 using namespace std;
@@ -11,7 +10,7 @@ using namespace Windows::Foundation::Collections;
 
 namespace winrt::LoopBack::Metadata::implementation
 {
-    struct __declspec(OUTOFPROC_COM_CLSID_LoopUtil) LoopUtil : LoopUtilT<LoopUtil>
+    struct LoopUtil : LoopUtilT<LoopUtil>
     {
         IIterable<AppContainer> Apps()
         {
@@ -27,7 +26,8 @@ namespace winrt::LoopBack::Metadata::implementation
             return serverManager;
         }
 
-        LoopUtil() = default;
+        LoopUtil();
+        ~LoopUtil();
 
         IIterable<AppContainer> GetAppContainers();
         bool SetLoopbackList(IIterable<hstring> list);

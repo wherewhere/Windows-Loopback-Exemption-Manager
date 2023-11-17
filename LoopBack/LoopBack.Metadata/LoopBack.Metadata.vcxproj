@@ -122,7 +122,6 @@
     <ClInclude Include="AppContainer.h">
       <DependentUpon>AppContainer.idl</DependentUpon>
     </ClInclude>
-    <ClInclude Include="ComClsids.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="LoopUtil.h">
       <DependentUpon>LoopUtil.idl</DependentUpon>
