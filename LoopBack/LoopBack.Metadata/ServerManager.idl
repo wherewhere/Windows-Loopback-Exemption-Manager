@@ -1,4 +1,5 @@
 import "LoopBackManagerContract.idl";
+import "LoopUtil.idl";
 
 namespace LoopBack.Metadata
 {
@@ -6,12 +7,16 @@ namespace LoopBack.Metadata
     [contract(LoopBack.Metadata.LoopBackManagerContract, 1)]
     runtimeclass ServerManager
     {
-        Boolean IsRunAsAdministrator { get; };
-
         ServerManager();
 
-        void RunAsAdministrator();
+        Boolean IsServerRunning { get; };
+        Boolean IsRunAsAdministrator { get; };
 
+        event Windows.Foundation.EventHandler<Boolean> ServerManagerDestructed;
+
+        void RunAsAdministrator();
+        LoopBack.Metadata.LoopUtil GetLoopUtil();
         Windows.Foundation.IAsyncAction StopServerAsync();
+        Windows.Foundation.IAsyncOperation<LoopBack.Metadata.LoopUtil> GetLoopUtilAdminAsync();
     }
 }

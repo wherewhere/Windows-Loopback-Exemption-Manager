@@ -12,33 +12,22 @@ namespace winrt::LoopBack::Metadata::implementation
 {
     struct ServerManager : ServerManagerT<ServerManager>
     {
-        bool IsRunAsAdministrator();
-
         ServerManager() = default;
+        ~ServerManager();
 
+        const bool IsServerRunning() { return true; }
+        const bool IsRunAsAdministrator();
+
+        event_token ServerManagerDestructed(EventHandler<bool> const& handler);
+        void ServerManagerDestructed(winrt::event_token const& token);
+
+        LoopUtil GetLoopUtil();
+        void RunAsAdministrator();
         IAsyncAction StopServerAsync();
+        IAsyncOperation<LoopUtil> GetLoopUtilAdminAsync();
 
-        void RunAsAdministrator()
-        {
-            if (!IsRunAsAdministrator())
-            {
-                WCHAR szPath[MAX_PATH];
-                if (GetModuleFileName(NULL, szPath, ARRAYSIZE(szPath)))
-                {
-                    SHELLEXECUTEINFO sei = { sizeof(sei) };
-
-                    sei.lpVerb = L"runas";
-                    sei.lpFile = szPath;
-                    sei.hwnd = NULL;
-                    sei.nShow = SW_SHOWDEFAULT;
-
-                    if (ShellExecuteEx(&sei))
-                    {
-                        ExitProcess(S_OK);
-                    }
-                }
-            }
-        }
+    private:
+        event<EventHandler<bool>> m_serverManagerDestructedEvent;
     };
 }
 

@@ -12,6 +12,8 @@ namespace winrt::LoopBack::Metadata::implementation
 {
     struct LoopUtil : LoopUtilT<LoopUtil>
     {
+        LoopUtil() = default;
+
         IIterable<AppContainer> Apps()
         {
             if (apps.Size() == 0)
@@ -21,14 +23,6 @@ namespace winrt::LoopBack::Metadata::implementation
             return apps;
         }
 
-        ServerManager ServerManager() const
-        {
-            return serverManager;
-        }
-
-        LoopUtil();
-        ~LoopUtil();
-
         IIterable<AppContainer> GetAppContainers();
         bool SetLoopbackList(IIterable<hstring> list);
         bool AddLookback(IIterable<hstring> list);
@@ -36,8 +30,6 @@ namespace winrt::LoopBack::Metadata::implementation
         bool AddLookback(hstring stringSid);
         bool RemoveLookback(hstring stringSid);
         void Close();
-
-        IAsyncAction StopServerAsync();
 
     private:
         IVector<AppContainer> apps = single_threaded_vector<AppContainer>();

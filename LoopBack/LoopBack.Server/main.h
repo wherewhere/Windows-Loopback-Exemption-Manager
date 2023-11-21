@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pch.h"
-#include "LoopUtilFactory.h"
+#include "Factory.h"
 
 // Holds the main open until COM tells us there are no more server connections
 inline wil::slim_event_manual_reset _comServerExitEvent;
@@ -13,4 +13,4 @@ inline void _releaseNotifier() noexcept
     _comServerExitEvent.SetEvent();
 }
 
-DWORD RegisterLoopUtil();
+DWORD RegisterServerManager();

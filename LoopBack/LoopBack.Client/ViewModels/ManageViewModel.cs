@@ -80,10 +80,10 @@ namespace LoopBack.Client.ViewModels
             {
                 ShowMessage("Loading...");
                 await ThreadSwitcher.ResumeBackgroundAsync();
-                loopUtil ??= LoopBackProjectionFactory.TryCreateLoopUtil();
+                loopUtil ??= LoopBackProjectionFactory.ServerManager.GetLoopUtil();
                 if (loopUtil != null)
                 {
-                    IsRunAsAdministrator = loopUtil.ServerManager.IsRunAsAdministrator;
+                    IsRunAsAdministrator = LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
                     AppContainers = loopUtil.GetAppContainers();
                     FilteredAppContainers = new(AppContainers);
                     ShowMessage("Loaded");
@@ -266,12 +266,12 @@ namespace LoopBack.Client.ViewModels
                     ShowMessage("Try to run as administrator");
                     try
                     {
-                        loopUtil.ServerManager.RunAsAdministrator();
+                        LoopBackProjectionFactory.ServerManager.RunAsAdministrator();
                     }
                     catch (Exception ex) when (ex.HResult == -2147023170)
                     {
-                        loopUtil = LoopBackProjectionFactory.TryCreateLoopUtil();
-                        IsRunAsAdministrator = loopUtil.ServerManager.IsRunAsAdministrator;
+                        loopUtil = LoopBackProjectionFactory.ServerManager.GetLoopUtil();
+                        IsRunAsAdministrator = LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
                         AppContainers = loopUtil.GetAppContainers();
                         FilteredAppContainers = new(AppContainers);
                         if (isRunAsAdministrator)

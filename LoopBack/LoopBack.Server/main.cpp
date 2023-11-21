@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "main.h"
 
-#pragma comment(linker, "/subsystem:windows /entry:mainCRTStartup" )
+#pragma comment(linker, "/subsystem:windows /entry:mainCRTStartup")
 
 int main()
 {
@@ -15,19 +15,20 @@ int main()
     }
 
     _comServerExitEvent.ResetEvent();
-    auto loopUtil = RegisterLoopUtil();
+    DWORD token = RegisterServerManager();
 
     _comServerExitEvent.wait();
-    CoRevokeClassObject(loopUtil);
+    CoRevokeClassObject(token);
+    uninit_apartment();
 }
 
-DWORD RegisterLoopUtil()
+DWORD RegisterServerManager()
 {
     DWORD registration = 0;
 
     CoRegisterClassObject(
-        LoopUtilFactory::GetLoopUtilCLSID(),
-        winrt::make<LoopUtilFactory>().as<IUnknown>().get(),
+        Factory::GetCLSID(),
+        winrt::make<Factory>().as<IUnknown>().get(),
         CLSCTX_LOCAL_SERVER,
         REGCLS_MULTIPLEUSE,
         &registration);

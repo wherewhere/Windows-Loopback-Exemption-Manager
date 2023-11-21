@@ -9,6 +9,8 @@ namespace winrt::LoopBack::Metadata::implementation
 {
     struct AppContainer : AppContainerT<AppContainer>
     {
+        AppContainer() = default;
+
         bool IsEnableLoop() const { return isEnableLoop; }
         hstring DisplayName() { return displayName; }
         hstring AppContainerName() { return appContainerName; }
@@ -28,8 +30,6 @@ namespace winrt::LoopBack::Metadata::implementation
         void UserSid(hstring value) { userSid = value; }
         void Capabilities(IIterable<hstring> value) { capabilities = value; }
         void Binaries(IIterable<hstring> value) { binaries = value; }
-
-        AppContainer() = default;
 
         hstring ToString();
 
