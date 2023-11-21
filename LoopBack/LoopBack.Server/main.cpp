@@ -3,23 +3,38 @@
 
 #pragma comment(linker, "/subsystem:windows /entry:mainCRTStartup")
 
+using namespace winrt;
+using namespace std::chrono;
+
 int main()
 {
     init_apartment();
 
     // Enable fast rundown of objects so that the server exits faster when clients go away.
     {
-        wil::com_ptr<IGlobalOptions> globalOptions;
+        com_ptr<IGlobalOptions> globalOptions;
         check_hresult(CoCreateInstance(CLSID_GlobalOptions, nullptr, CLSCTX_INPROC, IID_PPV_ARGS(&globalOptions)));
         check_hresult(globalOptions->Set(COMGLB_RO_SETTINGS, COMGLB_FAST_RUNDOWN));
     }
 
-    _comServerExitEvent.ResetEvent();
+    _comServerExitEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     DWORD token = RegisterServerManager();
 
-    _comServerExitEvent.wait();
+    CheckComRefAsync();
+    WaitForSingleObject(_comServerExitEvent, INFINITE);
+
     CoRevokeClassObject(token);
     uninit_apartment();
+}
+
+IAsyncAction CheckComRefAsync()
+{
+    co_await resume_after(seconds(10));
+    CoAddRefServerProcess();
+    if (CoReleaseServerProcess() == 0)
+    {
+        _releaseNotifier();
+    }
 }
 
 DWORD RegisterServerManager()
@@ -28,7 +43,7 @@ DWORD RegisterServerManager()
 
     CoRegisterClassObject(
         Factory::GetCLSID(),
-        winrt::make<Factory>().as<IUnknown>().get(),
+        make<Factory>().as<::IUnknown>().get(),
         CLSCTX_LOCAL_SERVER,
         REGCLS_MULTIPLEUSE,
         &registration);

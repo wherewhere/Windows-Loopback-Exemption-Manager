@@ -2,7 +2,6 @@
 
 #include "ServerManager.g.h"
 
-using namespace std;
 using namespace winrt;
 using namespace LoopBack::Metadata;
 using namespace Windows::Foundation;
@@ -24,10 +23,11 @@ namespace winrt::LoopBack::Metadata::implementation
         LoopUtil GetLoopUtil();
         void RunAsAdministrator();
         IAsyncAction StopServerAsync();
-        IAsyncOperation<LoopUtil> GetLoopUtilAdminAsync();
+        IAsyncOperation<LoopBack::Metadata::ServerManager> GetAdminServerManagerAsync();
 
     private:
         event<EventHandler<bool>> m_serverManagerDestructedEvent;
+        LoopBack::Metadata::ServerManager m_adminServerManager = nullptr;
     };
 }
 

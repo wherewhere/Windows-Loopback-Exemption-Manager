@@ -2,7 +2,6 @@
 
 #include "LoopUtil.g.h"
 
-using namespace std;
 using namespace winrt;
 using namespace LoopBack::Metadata;
 using namespace Windows::Foundation;

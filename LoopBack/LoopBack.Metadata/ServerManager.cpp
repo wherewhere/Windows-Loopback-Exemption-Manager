@@ -2,6 +2,8 @@
 #include "ServerManager.h"
 #include "ServerManager.g.cpp"
 
+using namespace std::chrono;
+
 namespace winrt::LoopBack::Metadata::implementation
 {
     ServerManager::~ServerManager()
@@ -73,17 +75,29 @@ namespace winrt::LoopBack::Metadata::implementation
 
     IAsyncAction ServerManager::StopServerAsync()
     {
-        co_await resume_after(chrono::milliseconds(50));
+        co_await resume_after(milliseconds(50));
         ExitProcess(S_OK);
     }
 
-    IAsyncOperation<LoopUtil> ServerManager::GetLoopUtilAdminAsync()
+    IAsyncOperation<LoopBack::Metadata::ServerManager> ServerManager::GetAdminServerManagerAsync()
     {
-        static const CLSID CLSID_LoopUtil = { 0xf745ac80, 0xd07e, 0x4f0f, { 0xb5, 0x41, 0xbd, 0xa6, 0x19, 0x7, 0xf2, 0x34 } }; // F745AC80-D07E-4F0F-B541-BDA61907F234
-        LoopUtil result = try_create_instance<LoopUtil>(CLSID_LoopUtil, CLSCTX_ALL);
-        if (result)
+        try
         {
-            co_return result;
+            if (m_adminServerManager && m_adminServerManager.IsServerRunning())
+            {
+                co_return m_adminServerManager;
+            }
+        }
+        catch (...)
+        {
+            m_adminServerManager = nullptr;
+        }
+
+        static const CLSID CLSID_ServerManager = { 0xf745ac80, 0xd07e, 0x4f0f, { 0xb5, 0x41, 0xbd, 0xa6, 0x19, 0x7, 0xf2, 0x34 } }; // F745AC80-D07E-4F0F-B541-BDA61907F234
+        m_adminServerManager = try_create_instance<LoopBack::Metadata::ServerManager>(CLSID_ServerManager, CLSCTX_ALL);
+        if (m_adminServerManager)
+        {
+            co_return m_adminServerManager;
         }
         else
         {
@@ -99,8 +113,9 @@ namespace winrt::LoopBack::Metadata::implementation
 
                 if (ShellExecuteEx(&sei))
                 {
-                    co_await resume_after(chrono::milliseconds(50));
-                    co_return create_instance<LoopUtil>(CLSID_LoopUtil, CLSCTX_ALL);
+                    co_await resume_after(milliseconds(50));
+                    m_adminServerManager = create_instance<LoopBack::Metadata::ServerManager>(CLSID_ServerManager, CLSCTX_ALL);
+                    co_return m_adminServerManager;
                 }
             }
         }

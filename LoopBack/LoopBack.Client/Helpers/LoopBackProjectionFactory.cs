@@ -18,15 +18,14 @@ namespace LoopBack.Client.Helpers
             {
                 try
                 {
-                    serverManager ??= TryCreateInstance<ServerManager>(CLSID_ServerManager, CLSCTX_ALL);
-                    if (serverManager.IsServerRunning) { return serverManager; }
+                    if (serverManager?.IsServerRunning == true) { return serverManager; }
                 }
                 catch (Exception ex) when (ex.HResult == -2147023174)
                 {
-                    serverManager = TryCreateInstance<ServerManager>(CLSID_ServerManager, CLSCTX_ALL);
-                    return serverManager;
+                    SettingsHelper.LogManager.GetLogger(nameof(LoopBackProjectionFactory)).Warn(ex.ExceptionToMessage());
                 }
-                return null;
+                serverManager = TryCreateInstance<ServerManager>(CLSID_ServerManager, CLSCTX_ALL);
+                return serverManager;
             }
         }
 

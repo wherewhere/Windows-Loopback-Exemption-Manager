@@ -2,6 +2,8 @@
 #include "LoopUtil.h"
 #include "LoopUtil.g.cpp"
 
+using namespace std;
+
 namespace winrt::LoopBack::Metadata::implementation
 {
     IIterable<AppContainer> LoopUtil::GetAppContainers()

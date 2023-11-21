@@ -17,6 +17,6 @@ namespace LoopBack.Metadata
         void RunAsAdministrator();
         LoopBack.Metadata.LoopUtil GetLoopUtil();
         Windows.Foundation.IAsyncAction StopServerAsync();
-        Windows.Foundation.IAsyncOperation<LoopBack.Metadata.LoopUtil> GetLoopUtilAdminAsync();
+        Windows.Foundation.IAsyncOperation<LoopBack.Metadata.ServerManager> GetAdminServerManagerAsync();
     }
 }

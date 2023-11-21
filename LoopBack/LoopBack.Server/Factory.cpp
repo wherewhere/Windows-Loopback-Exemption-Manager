@@ -27,9 +27,9 @@ winrt::Windows::Foundation::IInspectable Factory::ActivateInstance()
 
 HRESULT STDMETHODCALLTYPE Factory::CreateInstance(::IUnknown* pUnkOuter, REFIID riid, void** ppvObject) try
 {
-    RETURN_HR_IF(E_POINTER, !ppvObject);
+    if (!ppvObject) { return E_POINTER; }
     *ppvObject = nullptr;
-    RETURN_HR_IF(CLASS_E_NOAGGREGATION, pUnkOuter != nullptr);
+    if (pUnkOuter != nullptr) { return CLASS_E_NOAGGREGATION; }
     ServerManager result = ServerManager::ServerManager();
     if (!result) { return S_FALSE; }
     CoAddRefServerProcess();
