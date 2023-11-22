@@ -21,7 +21,7 @@ namespace LoopBack.Client.Pages
     /// </summary>
     public sealed partial class ManagePage : Page
     {
-        private ManageViewModel Provider { get; } = new();
+        public ManageViewModel Provider { get; } = new();
 
         public ManagePage() => InitializeComponent();
 
@@ -147,7 +147,7 @@ namespace LoopBack.Client.Pages
             }
         }
 
-        private void ClearSort()
+        public void ClearSort()
         {
             // Clear previous sorted column if we start sorting a different column
             string previousSortedColumn = Provider.CachedSortedColumn;

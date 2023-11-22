@@ -20,7 +20,9 @@
   </Properties>
 
   <Dependencies>
+    <!-- COM server only supports Windows.Desktop
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+    -->
     <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
   </Dependencies>
 
@@ -56,6 +58,10 @@
           <uap:Rotation Preference="portraitFlipped"/>
         </uap:InitialRotationPreference>
       </uap:VisualElements>
+      <Extensions>
+        <!-- Search Pane can only be registered by Windows.Desktop -->
+        <uap:Extension Category="windows.search" />
+      </Extensions>
     </Application>
     <Application Id="LookBackComServer"
       Executable="LoopBack.Server\LoopBack.Server.exe"

@@ -45,10 +45,7 @@ namespace LoopBack.Client.Helpers
 
             foreach (Window window in WindowHelper.ActiveWindows)
             {
-                if (window.Dispatcher?.HasThreadAccess == false)
-                {
-                    await window.Dispatcher.ResumeForegroundAsync();
-                }
+                await window.Dispatcher.ResumeForegroundAsync();
 
                 if (UIHelper.HasStatusBar)
                 {
@@ -70,10 +67,7 @@ namespace LoopBack.Client.Helpers
 
         public static async void UpdateSystemCaptionButtonColors(Window window)
         {
-            if (window.Dispatcher?.HasThreadAccess == false)
-            {
-                await window.Dispatcher.ResumeForegroundAsync();
-            }
+            await window.Dispatcher.ResumeForegroundAsync();
 
             bool IsDark = IsDarkTheme();
             bool IsHighContrast = AccessibilitySettings.HighContrast;
