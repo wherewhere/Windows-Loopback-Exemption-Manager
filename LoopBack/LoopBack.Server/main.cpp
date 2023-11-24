@@ -23,7 +23,7 @@ int main()
     CheckComRefAsync();
     WaitForSingleObject(_comServerExitEvent, INFINITE);
 
-    CoRevokeClassObject(token);
+    check_hresult(CoRevokeClassObject(token));
     uninit_apartment();
 }
 
@@ -41,12 +41,12 @@ DWORD RegisterServerManager()
 {
     DWORD registration = 0;
 
-    CoRegisterClassObject(
+    check_hresult(CoRegisterClassObject(
         Factory::GetCLSID(),
         make<Factory>().as<::IUnknown>().get(),
         CLSCTX_LOCAL_SERVER,
         REGCLS_MULTIPLEUSE,
-        &registration);
+        &registration));
 
     return registration;
 }

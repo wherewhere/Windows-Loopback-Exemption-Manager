@@ -3,11 +3,14 @@ import "LoopBackManagerContract.idl";
 namespace LoopBack.Metadata
 {
     [default_interface]
-    [contract(LoopBack.Metadata.LoopBackManagerContract, 1)]
+    [contract(LoopBackManagerContract, 1)]
     runtimeclass AppContainer : Windows.Foundation.IStringable
     {
+        AppContainer();
+
         Boolean IsEnableLoop { get; set; };
         String DisplayName { get; set; };
+        String Description { get; set; };
         String AppContainerName { get; set; };
         String PackageFullName { get; set; };
         String WorkingDirectory { get; set; };
@@ -15,7 +18,5 @@ namespace LoopBack.Metadata
         String UserSid { get; set; };
         Windows.Foundation.Collections.IIterable<String> Capabilities { get; set; };
         Windows.Foundation.Collections.IIterable<String> Binaries { get; set; };
-
-        AppContainer();
     }
 }

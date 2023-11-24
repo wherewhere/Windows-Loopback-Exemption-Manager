@@ -35,7 +35,7 @@ namespace LoopBack.Client.Helpers
     /// }
     /// </code>
     /// </example>
-    public class ExceptionHandlingSynchronizationContext : SynchronizationContext
+    public class ExceptionHandlingSynchronizationContext(SynchronizationContext syncContext) : SynchronizationContext
     {
         /// <summary>
         /// Registration method.  Call this from OnLaunched and OnActivated inside the App.xaml.cs
@@ -77,49 +77,23 @@ namespace LoopBack.Client.Helpers
             if (Current != context) { SetSynchronizationContext(context); }
         }
 
-
-        private readonly SynchronizationContext _syncContext;
-
-
-        public ExceptionHandlingSynchronizationContext(SynchronizationContext syncContext)
-        {
-            _syncContext = syncContext;
-        }
+        public override SynchronizationContext CreateCopy() => new ExceptionHandlingSynchronizationContext(syncContext.CreateCopy());
 
 
-        public override SynchronizationContext CreateCopy()
-        {
-            return new ExceptionHandlingSynchronizationContext(_syncContext.CreateCopy());
-        }
+        public override void OperationCompleted() => syncContext.OperationCompleted();
 
 
-        public override void OperationCompleted()
-        {
-            _syncContext.OperationCompleted();
-        }
+        public override void OperationStarted() => syncContext.OperationStarted();
 
 
-        public override void OperationStarted()
-        {
-            _syncContext.OperationStarted();
-        }
+        public override void Post(SendOrPostCallback d, object state) => syncContext.Post(WrapCallback(d), state);
 
 
-        public override void Post(SendOrPostCallback d, object state)
-        {
-            _syncContext.Post(WrapCallback(d), state);
-        }
+        public override void Send(SendOrPostCallback d, object state) => syncContext.Send(d, state);
 
 
-        public override void Send(SendOrPostCallback d, object state)
-        {
-            _syncContext.Send(d, state);
-        }
-
-
-        private SendOrPostCallback WrapCallback(SendOrPostCallback sendOrPostCallback)
-        {
-            return state =>
+        private SendOrPostCallback WrapCallback(SendOrPostCallback sendOrPostCallback) =>
+            state =>
             {
                 try
                 {
@@ -130,7 +104,6 @@ namespace LoopBack.Client.Helpers
                     if (!HandleException(ex)) { throw; }
                 }
             };
-        }
 
         private bool HandleException(Exception exception)
         {
@@ -161,6 +134,6 @@ namespace LoopBack.Client.Helpers
     public class UnhandledExceptionEventArgs : EventArgs
     {
         public bool Handled { get; set; }
-        public Exception Exception { get; set; }
+        public Exception Exception { get; init; }
     }
 }

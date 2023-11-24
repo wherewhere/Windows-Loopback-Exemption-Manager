@@ -12,6 +12,14 @@ namespace winrt::LoopBack::Metadata::implementation
     struct LoopUtil : LoopUtilT<LoopUtil>
     {
         LoopUtil() = default;
+        ~LoopUtil()
+        {
+            if (firewallAPI != nullptr)
+            {
+                FreeLibrary(firewallAPI);
+                firewallAPI = nullptr;
+            }
+        }
 
         IIterable<AppContainer> Apps()
         {
@@ -23,74 +31,71 @@ namespace winrt::LoopBack::Metadata::implementation
         }
 
         IIterable<AppContainer> GetAppContainers();
-        bool SetLoopbackList(IIterable<hstring> list);
-        bool AddLookback(IIterable<hstring> list);
-        bool RemoveLookback(IIterable<hstring> list);
-        bool AddLookback(hstring stringSid);
-        bool RemoveLookback(hstring stringSid);
-        void Close();
+        HRESULT SetLoopbackList(IIterable<hstring> list) const;
+        HRESULT SetLoopbackList(IIterable<AppContainer> list) const;
+        HRESULT AddLookback(hstring stringSid) const;
+        HRESULT AddLookback(AppContainer appContainer) const;
+        HRESULT AddLookbacks(IIterable<hstring> list) const;
+        HRESULT AddLookbacks(IIterable<AppContainer> list) const;
+        HRESULT RemoveLookback(hstring stringSid) const;
+        HRESULT RemoveLookback(AppContainer appContainer) const;
+        HRESULT RemoveLookbacks(IIterable<hstring> list) const;
+        HRESULT RemoveLookbacks(IIterable<AppContainer> list) const;
+        const void Close();
 
     private:
-        IVector<AppContainer> apps = single_threaded_vector<AppContainer>();
-        ::ServerManager serverManager = ServerManager::ServerManager();
+        const IVector<AppContainer> apps = single_threaded_vector<AppContainer>();
         IVector<hstring> appListConfig = nullptr;
-        HINSTANCE firewallAPI = nullptr;
+        HINSTANCE firewallAPI = LoadLibrary(L"FirewallAPI.dll");
 
-        AppContainer CreateAppContainer(INET_FIREWALL_APP_CONTAINER PI_app, bool loopUtil);
-        bool CheckLoopback(SID* intPtr);
-        IVector<hstring> GetCapabilities(INET_FIREWALL_AC_CAPABILITIES cap);
-        IVector<hstring> GetBinaries(INET_FIREWALL_AC_BINARIES cap);
-        IVector<hstring> PI_NetworkIsolationGetAppContainerConfig();
-        IVector<AppContainer> PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> &list);
-        void PI_NetworkIsolationFreeAppContainers(PINET_FIREWALL_APP_CONTAINER point);
-        IVector<hstring> GetEnabledLoopList(hstring list, bool isAdd = true);
-        IVector<hstring> GetEnabledLoopList(IIterable<hstring> list, bool isAdd = true);
+        const AppContainer CreateAppContainer(INET_FIREWALL_APP_CONTAINER PI_app, bool loopUtil) const;
+        const bool CheckLoopback(SID* intPtr) const;
+        const IVector<hstring> GetBinaries(INET_FIREWALL_AC_BINARIES cap) const;
+        const IVector<hstring> GetCapabilities(INET_FIREWALL_AC_CAPABILITIES cap) const;
+        const IVector<hstring> PI_NetworkIsolationGetAppContainerConfig() const;
+        const IVector<AppContainer> PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> list) const;
+        const void PI_NetworkIsolationFreeAppContainers(PINET_FIREWALL_APP_CONTAINER point) const;
+        const IVector<hstring> GetEnabledLoopList(hstring list, bool isAdd = true) const;
+        const IVector<hstring> GetEnabledLoopList(IIterable<hstring> list, bool isAdd = true) const;
+        const IVector<hstring> GetEnabledLoopList(IIterable<AppContainer> list, bool isAdd = true) const;
 
-        HINSTANCE GetFirewallAPI()
+        const decltype(&NetworkIsolationGetAppContainerConfig) NetworkIsolationGetAppContainerConfig = GetNetworkIsolationGetAppContainerConfig();
+        const decltype(&NetworkIsolationSetAppContainerConfig) NetworkIsolationSetAppContainerConfig = GetNetworkIsolationSetAppContainerConfig();
+        const decltype(&NetworkIsolationEnumAppContainers) NetworkIsolationEnumAppContainers = GetNetworkIsolationEnumAppContainers();
+        const decltype(&NetworkIsolationFreeAppContainers) NetworkIsolationFreeAppContainers = GetNetworkIsolationFreeAppContainers();
+
+        const decltype(NetworkIsolationGetAppContainerConfig) GetNetworkIsolationGetAppContainerConfig() const
         {
-            if (firewallAPI == nullptr)
-            {
-                firewallAPI = LoadLibrary(L"FirewallAPI.dll");
-            }
-            return firewallAPI;
-        }
-
-        decltype(NetworkIsolationGetAppContainerConfig)* GetNetworkIsolationGetAppContainerConfig()
-        {
-            HINSTANCE instance = GetFirewallAPI();
-            decltype(NetworkIsolationGetAppContainerConfig)* func =
-                (decltype(NetworkIsolationGetAppContainerConfig)*)GetProcAddress(
-                    instance,
+            decltype(NetworkIsolationGetAppContainerConfig) func =
+                (decltype(NetworkIsolationGetAppContainerConfig))GetProcAddress(
+                    firewallAPI,
                     "NetworkIsolationGetAppContainerConfig");
             return func;
         }
 
-        decltype(NetworkIsolationSetAppContainerConfig)* GetNetworkIsolationSetAppContainerConfig()
+        const decltype(NetworkIsolationSetAppContainerConfig) GetNetworkIsolationSetAppContainerConfig() const
         {
-            HINSTANCE instance = GetFirewallAPI();
-            decltype(NetworkIsolationSetAppContainerConfig)* func =
-                (decltype(NetworkIsolationSetAppContainerConfig)*)GetProcAddress(
-                    instance,
+            decltype(NetworkIsolationSetAppContainerConfig) func =
+                (decltype(NetworkIsolationSetAppContainerConfig))GetProcAddress(
+                    firewallAPI,
                     "NetworkIsolationSetAppContainerConfig");
             return func;
         }
 
-        decltype(NetworkIsolationEnumAppContainers)* GetNetworkIsolationEnumAppContainers()
+        const decltype(NetworkIsolationEnumAppContainers) GetNetworkIsolationEnumAppContainers() const
         {
-            HINSTANCE instance = GetFirewallAPI();
-            decltype(NetworkIsolationEnumAppContainers)* func =
-                (decltype(NetworkIsolationEnumAppContainers)*)GetProcAddress(
-                    instance,
+            decltype(NetworkIsolationEnumAppContainers) func =
+                (decltype(NetworkIsolationEnumAppContainers))GetProcAddress(
+                    firewallAPI,
                     "NetworkIsolationEnumAppContainers");
             return func;
         }
 
-        decltype(NetworkIsolationFreeAppContainers)* GetNetworkIsolationFreeAppContainers()
+        const decltype(NetworkIsolationFreeAppContainers) GetNetworkIsolationFreeAppContainers() const
         {
-            HINSTANCE instance = GetFirewallAPI();
-            decltype(NetworkIsolationFreeAppContainers)* func =
-                (decltype(NetworkIsolationFreeAppContainers)*)GetProcAddress(
-                    instance,
+            decltype(NetworkIsolationFreeAppContainers) func =
+                (decltype(NetworkIsolationFreeAppContainers))GetProcAddress(
+                    firewallAPI,
                     "NetworkIsolationFreeAppContainers");
             return func;
         }

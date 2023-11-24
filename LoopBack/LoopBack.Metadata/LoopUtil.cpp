@@ -15,7 +15,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return PI_NetworkIsolationEnumAppContainers(apps);
     }
 
-    bool LoopUtil::SetLoopbackList(IIterable<hstring> list)
+    HRESULT LoopUtil::SetLoopbackList(const IIterable<hstring> list) const try
     {
         vector<SID_AND_ATTRIBUTES> arr;
         DWORD count = 0;
@@ -32,12 +32,40 @@ namespace winrt::LoopBack::Metadata::implementation
             count++;
         }
 
-        return GetNetworkIsolationSetAppContainerConfig()(count, arr.data()) == 0;
+        return NetworkIsolationSetAppContainerConfig(count, arr.data());
+    }
+    catch (...)
+    {
+        return to_hresult();
     }
 
-    bool LoopUtil::AddLookback(IIterable<hstring> list)
+    HRESULT LoopUtil::SetLoopbackList(const IIterable<AppContainer> list) const try
     {
-        IVector<hstring> enabledList = GetEnabledLoopList(list, true);
+        vector<SID_AND_ATTRIBUTES> arr;
+        DWORD count = 0;
+
+        for (AppContainer app : list)
+        {
+            SID_AND_ATTRIBUTES sid{};
+            sid.Attributes = 0;
+            //TO DO:
+            PSID ptr = nullptr;
+            ConvertStringSidToSid(app.AppContainerSid().c_str(), &ptr);
+            sid.Sid = ptr;
+            arr.push_back(sid);
+            count++;
+        }
+
+        return NetworkIsolationSetAppContainerConfig(count, arr.data());
+    }
+    catch (...)
+    {
+        return to_hresult();
+    }
+
+    HRESULT LoopUtil::AddLookback(const hstring stringSid) const try
+    {
+        const IVector<hstring> enabledList = GetEnabledLoopList(stringSid, true);
         vector<SID_AND_ATTRIBUTES> arr;
         DWORD count = 0;
 
@@ -53,12 +81,16 @@ namespace winrt::LoopBack::Metadata::implementation
             count++;
         }
 
-        return GetNetworkIsolationSetAppContainerConfig()(count, arr.data()) == 0;
+        return NetworkIsolationSetAppContainerConfig(count, arr.data());
+    }
+    catch (...)
+    {
+        return to_hresult();
     }
 
-    bool LoopUtil::RemoveLookback(IIterable<hstring> list)
+    HRESULT LoopUtil::AddLookback(AppContainer appContainer) const try
     {
-        IVector<hstring> enabledList = GetEnabledLoopList(list, false);
+        const IVector<hstring> enabledList = GetEnabledLoopList(appContainer.AppContainerSid(), true);
         vector<SID_AND_ATTRIBUTES> arr;
         DWORD count = 0;
 
@@ -74,12 +106,16 @@ namespace winrt::LoopBack::Metadata::implementation
             count++;
         }
 
-        return GetNetworkIsolationSetAppContainerConfig()(count, arr.data()) == 0;
+        return NetworkIsolationSetAppContainerConfig(count, arr.data());
+    }
+    catch (...)
+    {
+        return to_hresult();
     }
 
-    bool LoopUtil::AddLookback(hstring stringSid)
+    HRESULT LoopUtil::AddLookbacks(const IIterable<hstring> list) const try
     {
-        IVector<hstring> enabledList = GetEnabledLoopList(stringSid, true);
+        const IVector<hstring> enabledList = GetEnabledLoopList(list, true);
         vector<SID_AND_ATTRIBUTES> arr;
         DWORD count = 0;
 
@@ -95,12 +131,16 @@ namespace winrt::LoopBack::Metadata::implementation
             count++;
         }
 
-        return GetNetworkIsolationSetAppContainerConfig()(count, arr.data()) == 0;
+        return NetworkIsolationSetAppContainerConfig(count, arr.data());
+    }
+    catch (...)
+    {
+        return to_hresult();
     }
 
-    bool LoopUtil::RemoveLookback(hstring stringSid)
+    HRESULT LoopUtil::AddLookbacks(const IIterable<AppContainer> list) const try
     {
-        IVector<hstring> enabledList = GetEnabledLoopList(stringSid, false);
+        const IVector<hstring> enabledList = GetEnabledLoopList(list, true);
         vector<SID_AND_ATTRIBUTES> arr;
         DWORD count = 0;
 
@@ -116,15 +156,120 @@ namespace winrt::LoopBack::Metadata::implementation
             count++;
         }
 
-        return GetNetworkIsolationSetAppContainerConfig()(count, arr.data()) == 0;
+        return NetworkIsolationSetAppContainerConfig(count, arr.data());
+    }
+    catch (...)
+    {
+        return to_hresult();
     }
 
-    AppContainer LoopUtil::CreateAppContainer(INET_FIREWALL_APP_CONTAINER PI_app, bool loopUtil)
+    HRESULT LoopUtil::RemoveLookback(const hstring stringSid) const try
+    {
+        const IVector<hstring> enabledList = GetEnabledLoopList(stringSid, false);
+        vector<SID_AND_ATTRIBUTES> arr;
+        DWORD count = 0;
+
+        for (hstring app : enabledList)
+        {
+            SID_AND_ATTRIBUTES sid{};
+            sid.Attributes = 0;
+            //TO DO:
+            PSID ptr = nullptr;
+            ConvertStringSidToSid(app.c_str(), &ptr);
+            sid.Sid = ptr;
+            arr.push_back(sid);
+            count++;
+        }
+
+        return NetworkIsolationSetAppContainerConfig(count, arr.data());
+    }
+    catch (...)
+    {
+        return to_hresult();
+    }
+
+    HRESULT LoopUtil::RemoveLookback(const AppContainer appContainer) const try
+    {
+        const IVector<hstring> enabledList = GetEnabledLoopList(appContainer.AppContainerSid(), false);
+        vector<SID_AND_ATTRIBUTES> arr;
+        DWORD count = 0;
+
+        for (hstring app : enabledList)
+        {
+            SID_AND_ATTRIBUTES sid{};
+            sid.Attributes = 0;
+            //TO DO:
+            PSID ptr = nullptr;
+            ConvertStringSidToSid(app.c_str(), &ptr);
+            sid.Sid = ptr;
+            arr.push_back(sid);
+            count++;
+        }
+
+        return NetworkIsolationSetAppContainerConfig(count, arr.data());
+    }
+    catch (...)
+    {
+        return to_hresult();
+    }
+
+    HRESULT LoopUtil::RemoveLookbacks(const IIterable<hstring> list) const try
+    {
+        const IVector<hstring> enabledList = GetEnabledLoopList(list, false);
+        vector<SID_AND_ATTRIBUTES> arr;
+        DWORD count = 0;
+
+        for (hstring app : enabledList)
+        {
+            SID_AND_ATTRIBUTES sid{};
+            sid.Attributes = 0;
+            //TO DO:
+            PSID ptr = nullptr;
+            ConvertStringSidToSid(app.c_str(), &ptr);
+            sid.Sid = ptr;
+            arr.push_back(sid);
+            count++;
+        }
+
+        return NetworkIsolationSetAppContainerConfig(count, arr.data());
+    }
+    catch (...)
+    {
+        return to_hresult();
+    }
+
+    HRESULT LoopUtil::RemoveLookbacks(const IIterable<AppContainer> list) const try
+    {
+        const IVector<hstring> enabledList = GetEnabledLoopList(list, false);
+        vector<SID_AND_ATTRIBUTES> arr;
+        DWORD count = 0;
+
+        for (hstring app : enabledList)
+        {
+            SID_AND_ATTRIBUTES sid{};
+            sid.Attributes = 0;
+            //TO DO:
+            PSID ptr = nullptr;
+            ConvertStringSidToSid(app.c_str(), &ptr);
+            sid.Sid = ptr;
+            arr.push_back(sid);
+            count++;
+        }
+
+        return NetworkIsolationSetAppContainerConfig(count, arr.data());
+    }
+    catch (...)
+    {
+        return to_hresult();
+    }
+
+    const AppContainer LoopUtil::CreateAppContainer(const INET_FIREWALL_APP_CONTAINER PI_app, const bool loopUtil) const
     {
         AppContainer app = AppContainer::AppContainer();
 
         app.IsEnableLoop(loopUtil);
         if (PI_app.displayName != nullptr) { app.DisplayName(PI_app.displayName); }
+        if (PI_app.description != nullptr) { app.DisplayName(PI_app.description); }
         if (PI_app.appContainerName != nullptr) { app.AppContainerName(PI_app.appContainerName); }
         if (PI_app.packageFullName != nullptr) { app.PackageFullName(PI_app.packageFullName); }
         if (PI_app.workingDirectory != nullptr) { app.WorkingDirectory(PI_app.workingDirectory); }
@@ -143,16 +288,16 @@ namespace winrt::LoopBack::Metadata::implementation
             if (tempSid != nullptr) { app.UserSid(tempSid); }
         }
 
-        IVector<hstring> capabilities = GetCapabilities(PI_app.capabilities);
+        const IVector<hstring> capabilities = GetCapabilities(PI_app.capabilities);
         app.Capabilities(capabilities);
 
-        IVector<hstring> app_binaries = GetBinaries(PI_app.binaries);
+        const IVector<hstring> app_binaries = GetBinaries(PI_app.binaries);
         app.Binaries(app_binaries);
 
         return app;
     }
 
-    bool LoopUtil::CheckLoopback(SID* intPtr)
+    const bool LoopUtil::CheckLoopback(SID* intPtr) const
     {
         if (intPtr != nullptr)
         {
@@ -172,17 +317,17 @@ namespace winrt::LoopBack::Metadata::implementation
         return false;
     }
 
-    IVector<hstring> LoopUtil::GetBinaries(INET_FIREWALL_AC_BINARIES cap)
+    const IVector<hstring> LoopUtil::GetBinaries(const INET_FIREWALL_AC_BINARIES cap) const
     {
-        IVector<hstring> myCap = single_threaded_vector<hstring>();
+        const IVector<hstring> myCap = single_threaded_vector<hstring>();
 
         if (cap.binaries != nullptr)
         {
-            LPWSTR* arrayValue = cap.binaries;
+            const LPWSTR* arrayValue = cap.binaries;
 
             for (DWORD i = 0; i < cap.count; i++)
             {
-                LPWSTR cur = arrayValue[i];
+                const LPWSTR cur = arrayValue[i];
                 if (cur != nullptr)
                 {
                     myCap.Append(cur);
@@ -193,17 +338,17 @@ namespace winrt::LoopBack::Metadata::implementation
         return myCap;
     }
 
-    IVector<hstring> LoopUtil::GetCapabilities(INET_FIREWALL_AC_CAPABILITIES cap)
+    const IVector<hstring> LoopUtil::GetCapabilities(const INET_FIREWALL_AC_CAPABILITIES cap) const
     {
-        IVector<hstring> myCap = single_threaded_vector<hstring>();
+        const IVector<hstring> myCap = single_threaded_vector<hstring>();
 
         if (cap.capabilities != nullptr)
         {
-            SID_AND_ATTRIBUTES* arrayValue = cap.capabilities;
+            const SID_AND_ATTRIBUTES* arrayValue = cap.capabilities;
 
             for (DWORD i = 0; i < cap.count; i++)
             {
-                SID_AND_ATTRIBUTES cur = arrayValue[i];
+                const SID_AND_ATTRIBUTES cur = arrayValue[i];
                 if (cur.Sid != nullptr)
                 {
                     LPWSTR mysid;
@@ -219,20 +364,20 @@ namespace winrt::LoopBack::Metadata::implementation
         return myCap;
     }
 
-    IVector<hstring> LoopUtil::PI_NetworkIsolationGetAppContainerConfig()
+    const IVector<hstring> LoopUtil::PI_NetworkIsolationGetAppContainerConfig() const
     {
         DWORD size = 0;
         PSID_AND_ATTRIBUTES arrayValue = nullptr;
-        IVector<hstring> list = single_threaded_vector<hstring>();
+        const IVector<hstring> list = single_threaded_vector<hstring>();
 
-        if (GetNetworkIsolationGetAppContainerConfig()(&size, &arrayValue) == S_OK)
+        if (NetworkIsolationGetAppContainerConfig(&size, &arrayValue) == S_OK)
         {
             if (arrayValue != nullptr)
             {
                 for (DWORD i = 0; i < size; i++)
                 {
                     LPWSTR sid;
-                    SID_AND_ATTRIBUTES cur = arrayValue[i];
+                    const SID_AND_ATTRIBUTES cur = arrayValue[i];
                     if (cur.Sid != nullptr)
                     {
                         ConvertSidToStringSid(cur.Sid, &sid);
@@ -248,30 +393,24 @@ namespace winrt::LoopBack::Metadata::implementation
         return list;
     }
 
-    IVector<AppContainer> LoopUtil::PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> &list)
+    const IVector<AppContainer> LoopUtil::PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> list) const
     {
-        if (list)
-        {
-            list.Clear();
-        }
-        else
-        {
-            list = single_threaded_vector<AppContainer>();
-        }
+        if (!list) { return list; }
+        list.Clear();
 
         DWORD size = 0;
         PINET_FIREWALL_APP_CONTAINER arrayValue = nullptr;
 
-        if (GetNetworkIsolationEnumAppContainers()(NETISO_FLAG::NETISO_FLAG_MAX, &size, &arrayValue) == S_OK)
+        if (NetworkIsolationEnumAppContainers(NETISO_FLAG::NETISO_FLAG_MAX, &size, &arrayValue) == S_OK)
         {
             if (arrayValue != nullptr)
             {
-                PINET_FIREWALL_APP_CONTAINER _PACs = arrayValue; //store the pointer so it can be freed when we close the form
+                const PINET_FIREWALL_APP_CONTAINER _PACs = arrayValue; //store the pointer so it can be freed when we close the form
 
                 for (DWORD i = 0; i < size; i++)
                 {
-                    INET_FIREWALL_APP_CONTAINER cur = arrayValue[i];
-                    AppContainer app = CreateAppContainer(cur, CheckLoopback(cur.appContainerSid));
+                    const INET_FIREWALL_APP_CONTAINER cur = arrayValue[i];
+                    const AppContainer app = CreateAppContainer(cur, CheckLoopback(cur.appContainerSid));
                     list.Append(app);
                 }
 
@@ -282,22 +421,22 @@ namespace winrt::LoopBack::Metadata::implementation
         return list;
     }
 
-    void LoopUtil::PI_NetworkIsolationFreeAppContainers(PINET_FIREWALL_APP_CONTAINER point)
+    const void LoopUtil::PI_NetworkIsolationFreeAppContainers(const PINET_FIREWALL_APP_CONTAINER point) const
     {
         if (point != nullptr)
         {
-            GetNetworkIsolationFreeAppContainers()(point);
+            NetworkIsolationFreeAppContainers(point);
         }
     }
 
-    IVector<hstring> LoopUtil::GetEnabledLoopList(hstring sid, bool isAdd)
+    const IVector<hstring> LoopUtil::GetEnabledLoopList(const hstring sid, const bool isAdd) const
     {
-        IVector<hstring> enabledList = single_threaded_vector<hstring>();
+        const IVector<hstring> enabledList = single_threaded_vector<hstring>();
         for (AppContainer app : apps)
         {
             if (app.IsEnableLoop())
             {
-                hstring stringSid = app.AppContainerSid();
+                const hstring stringSid = app.AppContainerSid();
                 if (stringSid != sid)
                 {
                     enabledList.Append(app.AppContainerSid());
@@ -311,15 +450,15 @@ namespace winrt::LoopBack::Metadata::implementation
         return enabledList;
     }
 
-    IVector<hstring> LoopUtil::GetEnabledLoopList(IIterable<hstring> list, bool isAdd)
+    const IVector<hstring> LoopUtil::GetEnabledLoopList(const IIterable<hstring> list, const bool isAdd) const
     {
-        IVector<hstring> enabledList = single_threaded_vector<hstring>();
+        const IVector<hstring> enabledList = single_threaded_vector<hstring>();
         for (AppContainer app : apps)
         {
             if (app.IsEnableLoop())
             {
                 bool found = false;
-                hstring stringSid = app.AppContainerSid();
+                const hstring stringSid = app.AppContainerSid();
                 for (hstring sid : list)
                 {
                     if (stringSid == sid)
@@ -344,7 +483,40 @@ namespace winrt::LoopBack::Metadata::implementation
         return enabledList;
     }
 
-    void LoopUtil::Close()
+    const IVector<hstring> LoopUtil::GetEnabledLoopList(const IIterable<AppContainer> list, const bool isAdd) const
+    {
+        const IVector<hstring> enabledList = single_threaded_vector<hstring>();
+        for (AppContainer app : apps)
+        {
+            if (app.IsEnableLoop())
+            {
+                bool found = false;
+                const hstring stringSid = app.AppContainerSid();
+                for (AppContainer container : list)
+                {
+                    if (stringSid == container.AppContainerSid())
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    enabledList.Append(app.AppContainerSid());
+                }
+            }
+        }
+        if (isAdd)
+        {
+            for (AppContainer container : list)
+            {
+                enabledList.Append(container.AppContainerSid());
+            }
+        }
+        return enabledList;
+    }
+
+    const void LoopUtil::Close()
     {
         if (firewallAPI != nullptr)
         {

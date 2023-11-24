@@ -48,7 +48,7 @@ catch (...)
     return to_hresult();
 }
 
-HRESULT STDMETHODCALLTYPE Factory::LockServer(BOOL fLock)
+HRESULT STDMETHODCALLTYPE Factory::LockServer(BOOL fLock) try
 {
     if (fLock)
     {
@@ -59,6 +59,10 @@ HRESULT STDMETHODCALLTYPE Factory::LockServer(BOOL fLock)
         _releaseNotifier();
     }
     return S_OK;
+}
+catch (...)
+{
+    return to_hresult();
 }
 
 const bool Factory::IsRunAsAdministrator()

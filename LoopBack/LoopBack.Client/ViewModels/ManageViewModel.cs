@@ -14,6 +14,7 @@ namespace LoopBack.Client.ViewModels
 {
     public class ManageViewModel : INotifyPropertyChanged
     {
+        private bool isLoading;
         private LoopUtil loopUtil;
 
         public DispatcherQueue Dispatcher { get; } = DispatcherQueue.GetForCurrentThread();
@@ -73,6 +74,8 @@ namespace LoopBack.Client.ViewModels
         {
             try
             {
+                if (isLoading) { return; }
+                isLoading = true;
                 ShowMessage("Loading...");
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 loopUtil ??= LoopBackProjectionFactory.ServerManager.GetLoopUtil();
@@ -100,6 +103,10 @@ namespace LoopBack.Client.ViewModels
             {
                 SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(ex.ExceptionToMessage());
                 ShowMessage(ex.Message);
+            }
+            finally
+            {
+                isLoading = false;
             }
         }
 
@@ -234,14 +241,15 @@ namespace LoopBack.Client.ViewModels
                 }
 
                 IsDirty = false;
-                IEnumerable<string> enableList = AppContainers.Where(x => x.IsEnableLoop).Select(x => x.AppContainerSid);
-                if (loopUtil.SetLoopbackList(enableList))
+                IEnumerable<AppContainer> enableList = AppContainers.Where(x => x.IsEnableLoop);
+                if (loopUtil.SetLoopbackList(enableList) is Exception exception)
                 {
-                    ShowMessage("Saved loopback exemptions");
+                    SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(exception.ExceptionToMessage());
+                    ShowMessage($"ERROR SAVING: {exception.Message}");
                 }
                 else
                 {
-                    ShowMessage("ERROR SAVING");
+                    ShowMessage("Saved loopback exemptions");
                 }
             }
             catch (Exception ex)

@@ -11,7 +11,7 @@ namespace winrt::LoopBack::Metadata::implementation
         m_serverManagerDestructedEvent(*this, true);
     }
 
-    const bool ServerManager::IsRunAsAdministrator()
+    bool ServerManager::IsRunAsAdministrator() const
     {
         SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
         PSID AdministratorsGroup;
@@ -46,12 +46,12 @@ namespace winrt::LoopBack::Metadata::implementation
         m_serverManagerDestructedEvent.remove(token);
     }
 
-    LoopUtil ServerManager::GetLoopUtil()
+    LoopUtil ServerManager::GetLoopUtil() const
     {
         return LoopUtil::LoopUtil();
     }
 
-    void ServerManager::RunAsAdministrator()
+    void ServerManager::RunAsAdministrator() const
     {
         if (!IsRunAsAdministrator())
         {
@@ -73,7 +73,7 @@ namespace winrt::LoopBack::Metadata::implementation
         }
     }
 
-    IAsyncAction ServerManager::StopServerAsync()
+    IAsyncAction ServerManager::StopServerAsync() const
     {
         co_await resume_after(milliseconds(50));
         ExitProcess(S_OK);

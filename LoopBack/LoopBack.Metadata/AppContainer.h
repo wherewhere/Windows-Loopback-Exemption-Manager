@@ -12,17 +12,19 @@ namespace winrt::LoopBack::Metadata::implementation
         AppContainer() = default;
 
         bool IsEnableLoop() const { return isEnableLoop; }
-        hstring DisplayName() { return displayName; }
-        hstring AppContainerName() { return appContainerName; }
-        hstring PackageFullName() { return packageFullName; }
-        hstring WorkingDirectory() { return workingDirectory; }
-        hstring AppContainerSid() { return appContainerSid; }
-        hstring UserSid() { return userSid; }
-        IIterable<hstring> Capabilities() { return capabilities; }
-        IIterable<hstring> Binaries() { return binaries; }
+        hstring DisplayName() const { return displayName; }
+        hstring Description() const { return description; }
+        hstring AppContainerName() const { return appContainerName; }
+        hstring PackageFullName() const { return packageFullName; }
+        hstring WorkingDirectory() const { return workingDirectory; }
+        hstring AppContainerSid() const { return appContainerSid; }
+        hstring UserSid() const { return userSid; }
+        IIterable<hstring> Capabilities() const { return capabilities; }
+        IIterable<hstring> Binaries() const { return binaries; }
 
         void IsEnableLoop(bool value) { isEnableLoop = value; }
         void DisplayName(hstring value) { displayName = value; }
+        void Description(hstring value) { description = value; }
         void AppContainerName(hstring value) { appContainerName = value; }
         void PackageFullName(hstring value) { packageFullName = value; }
         void WorkingDirectory(hstring value) { workingDirectory = value; }
@@ -31,11 +33,12 @@ namespace winrt::LoopBack::Metadata::implementation
         void Capabilities(IIterable<hstring> value) { capabilities = value; }
         void Binaries(IIterable<hstring> value) { binaries = value; }
 
-        hstring ToString();
+        hstring ToString() const;
 
     private:
         bool isEnableLoop = false;
         hstring displayName = L"";
+        hstring description = L"";
         hstring appContainerName = L"";
         hstring packageFullName = L"";
         hstring workingDirectory = L"";

@@ -5,19 +5,33 @@ import "LoopBackManagerContract.idl";
 namespace LoopBack.Metadata
 {
     [default_interface]
-    [contract(LoopBack.Metadata.LoopBackManagerContract, 1)]
+    [contract(LoopBackManagerContract, 1)]
     runtimeclass LoopUtil : Windows.Foundation.IClosable
     {
+        LoopUtil();
+
         Windows.Foundation.Collections.IIterable<AppContainer> Apps { get; };
 
-        LoopUtil();
         Windows.Foundation.Collections.IIterable<AppContainer> GetAppContainers();
-        Boolean SetLoopbackList(Windows.Foundation.Collections.IIterable<String> list);
         [default_overload]
-        Boolean AddLookback(Windows.Foundation.Collections.IIterable<String> list);
+        HRESULT SetLoopbackList(Windows.Foundation.Collections.IIterable<AppContainer> list);
+        [method_name("SetLoopbackListBySid")]
+        HRESULT SetLoopbackList(Windows.Foundation.Collections.IIterable<String> list);
         [default_overload]
-        Boolean RemoveLookback(Windows.Foundation.Collections.IIterable<String> list);
-        Boolean AddLookback(String stringSid);
-        Boolean RemoveLookback(String stringSid);
+        HRESULT AddLookback(AppContainer appContainer);
+        [method_name("AddLookbackBySid")]
+        HRESULT AddLookback(String stringSid);
+        [default_overload]
+        HRESULT AddLookbacks(Windows.Foundation.Collections.IIterable<AppContainer> list);
+        [method_name("AddLookbacksBySid")]
+        HRESULT AddLookbacks(Windows.Foundation.Collections.IIterable<String> list);
+        [default_overload]
+        HRESULT RemoveLookback(AppContainer stringSid);
+        [method_name("RemoveLookbackBySid")]
+        HRESULT RemoveLookback(String stringSid);
+        [default_overload]
+        HRESULT RemoveLookbacks(Windows.Foundation.Collections.IIterable<AppContainer> list);
+        [method_name("RemoveLookbacksBySid")]
+        HRESULT RemoveLookbacks(Windows.Foundation.Collections.IIterable<String> list);
     }
 }

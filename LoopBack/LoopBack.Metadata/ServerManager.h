@@ -14,15 +14,15 @@ namespace winrt::LoopBack::Metadata::implementation
         ServerManager() = default;
         ~ServerManager();
 
-        const bool IsServerRunning() { return true; }
-        const bool IsRunAsAdministrator();
+        bool IsServerRunning() const { return true; }
+        bool IsRunAsAdministrator() const;
 
         event_token ServerManagerDestructed(EventHandler<bool> const& handler);
         void ServerManagerDestructed(winrt::event_token const& token);
 
-        LoopUtil GetLoopUtil();
-        void RunAsAdministrator();
-        IAsyncAction StopServerAsync();
+        LoopUtil GetLoopUtil() const;
+        void RunAsAdministrator() const;
+        IAsyncAction StopServerAsync() const;
         IAsyncOperation<LoopBack::Metadata::ServerManager> GetAdminServerManagerAsync();
 
     private:
