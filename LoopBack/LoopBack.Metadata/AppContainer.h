@@ -19,8 +19,8 @@ namespace winrt::LoopBack::Metadata::implementation
         hstring WorkingDirectory() const { return workingDirectory; }
         hstring AppContainerSid() const { return appContainerSid; }
         hstring UserSid() const { return userSid; }
-        IIterable<hstring> Capabilities() const { return capabilities; }
-        IIterable<hstring> Binaries() const { return binaries; }
+        IVector<hstring> Capabilities() const { return capabilities; }
+        IVector<hstring> Binaries() const { return binaries; }
 
         void IsEnableLoop(bool value) { isEnableLoop = value; }
         void DisplayName(hstring value) { displayName = value; }
@@ -30,8 +30,8 @@ namespace winrt::LoopBack::Metadata::implementation
         void WorkingDirectory(hstring value) { workingDirectory = value; }
         void AppContainerSid(hstring value) { appContainerSid = value; }
         void UserSid(hstring value) { userSid = value; }
-        void Capabilities(IIterable<hstring> value) { capabilities = value; }
-        void Binaries(IIterable<hstring> value) { binaries = value; }
+        void Capabilities(IVector<hstring> value) { capabilities = value; }
+        void Binaries(IVector<hstring> value) { binaries = value; }
 
         hstring ToString() const;
 
@@ -44,8 +44,8 @@ namespace winrt::LoopBack::Metadata::implementation
         hstring workingDirectory = L"";
         hstring appContainerSid = L"";
         hstring userSid = L"";
-        IIterable<hstring> capabilities = nullptr;
-        IIterable<hstring> binaries = nullptr;
+        IVector<hstring> capabilities = nullptr;
+        IVector<hstring> binaries = nullptr;
     };
 }
 

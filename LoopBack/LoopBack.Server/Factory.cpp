@@ -4,9 +4,9 @@
 
 const CLSID& Factory::GetCLSID()
 {
-    static const CLSID CLSID_LoopUtil = { 0x50169480, 0x3fb8, 0x4a19, { 0xaa, 0xed, 0xed, 0x91, 0x70, 0x81, 0x1a, 0x3a } }; // 50169480-3FB8-4A19-AAED-ED9170811A3A
-    static const CLSID CLSID_LoopUtil_Admin = { 0xf745ac80, 0xd07e, 0x4f0f, { 0xb5, 0x41, 0xbd, 0xa6, 0x19, 0x07, 0xf2, 0x34 } }; // F745AC80-D07E-4F0F-B541-BDA61907F234
-    return IsRunAsAdministrator() ? CLSID_LoopUtil_Admin : CLSID_LoopUtil;
+    static const CLSID CLSID_ServerManager = { 0x50169480, 0x3fb8, 0x4a19, { 0xaa, 0xed, 0xed, 0x91, 0x70, 0x81, 0x1a, 0x3a } }; // 50169480-3FB8-4A19-AAED-ED9170811A3A
+    static const CLSID CLSID_ServerManager_Admin = { 0xf745ac80, 0xd07e, 0x4f0f, { 0xb5, 0x41, 0xbd, 0xa6, 0x19, 0x07, 0xf2, 0x34 } }; // F745AC80-D07E-4F0F-B541-BDA61907F234
+    return IsRunAsAdministrator() ? CLSID_ServerManager_Admin : CLSID_ServerManager;
 }
 
 winrt::Windows::Foundation::IInspectable Factory::ActivateInstance()

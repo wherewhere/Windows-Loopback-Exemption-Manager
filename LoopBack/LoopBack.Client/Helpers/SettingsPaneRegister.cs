@@ -1,9 +1,11 @@
 ﻿using LoopBack.Client.Pages;
 using LoopBack.Metadata;
+using LoopBack.Projection;
 using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Windows.ApplicationModel;
@@ -70,7 +72,7 @@ namespace LoopBack.Client.Helpers
             await Task.Run(() =>
             {
                 results = new List<string>();
-                foreach (AppContainer app in LoopBackProjectionFactory.ServerManager.GetLoopUtil().GetAppContainers())
+                foreach (AppContainer app in LoopBackProjectionFactory.ServerManager.GetLoopUtil().Apps?.ToArray())
                 {
                     if (app != null)
                     {

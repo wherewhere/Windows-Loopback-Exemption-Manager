@@ -4,12 +4,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.4.33006.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopBack.Client", "LoopBack\LoopBack.Client\LoopBack.Client.csproj", "{90FF9871-E706-47C4-95ED-24EC55AF281F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8BEF428A-76E0-45B4-B2B0-DB66A88C1406} = {8BEF428A-76E0-45B4-B2B0-DB66A88C1406}
+	EndProjectSection
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "LoopBack.Package", "LoopBack\LoopBack.Package\LoopBack.Package.wapproj", "{E7898BB9-B024-4244-AEEB-2563C1B5D61A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoopBack.Metadata", "LoopBack\LoopBack.Metadata\LoopBack.Metadata.vcxproj", "{8BEF428A-76E0-45B4-B2B0-DB66A88C1406}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoopBack.Server", "LoopBack\LoopBack.Server\LoopBack.Server.vcxproj", "{5BEAB98A-6A59-4B05-96B0-8ADCE5B39CE7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoopBack.Projection", "LoopBack\LoopBack.Projection\LoopBack.Projection.vcxproj", "{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8BEF428A-76E0-45B4-B2B0-DB66A88C1406} = {8BEF428A-76E0-45B4-B2B0-DB66A88C1406}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +103,22 @@ Global
 		{5BEAB98A-6A59-4B05-96B0-8ADCE5B39CE7}.Release|x64.Build.0 = Release|x64
 		{5BEAB98A-6A59-4B05-96B0-8ADCE5B39CE7}.Release|x86.ActiveCfg = Release|Win32
 		{5BEAB98A-6A59-4B05-96B0-8ADCE5B39CE7}.Release|x86.Build.0 = Release|Win32
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Debug|ARM.ActiveCfg = Debug|ARM
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Debug|ARM.Build.0 = Debug|ARM
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Debug|ARM64.Build.0 = Debug|ARM64
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Debug|x64.ActiveCfg = Debug|x64
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Debug|x64.Build.0 = Debug|x64
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Debug|x86.ActiveCfg = Debug|Win32
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Debug|x86.Build.0 = Debug|Win32
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Release|ARM.ActiveCfg = Release|ARM
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Release|ARM.Build.0 = Release|ARM
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Release|ARM64.ActiveCfg = Release|ARM64
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Release|ARM64.Build.0 = Release|ARM64
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Release|x64.ActiveCfg = Release|x64
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Release|x64.Build.0 = Release|x64
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Release|x86.ActiveCfg = Release|Win32
+		{9FBFAAF4-1001-4BBC-883A-5B7C86F2F0C7}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

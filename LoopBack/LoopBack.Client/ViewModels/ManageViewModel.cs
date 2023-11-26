@@ -1,5 +1,6 @@
 ﻿using LoopBack.Client.Helpers;
 using LoopBack.Metadata;
+using LoopBack.Projection;
 using Microsoft.Toolkit.Uwp;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace LoopBack.Client.ViewModels
         public DispatcherQueue Dispatcher { get; } = DispatcherQueue.GetForCurrentThread();
 
         public string CachedSortedColumn { get; set; }
-        public IEnumerable<AppContainer> AppContainers { get; private set; }
+        public AppContainer[] AppContainers { get; private set; }
 
         private bool isDirty;
         public bool IsDirty
@@ -82,7 +83,7 @@ namespace LoopBack.Client.ViewModels
                 if (loopUtil != null)
                 {
                     IsRunAsAdministrator = LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
-                    AppContainers = loopUtil.GetAppContainers();
+                    AppContainers = loopUtil.GetAppContainers()?.ToArray();
                     FilteredAppContainers = new(AppContainers);
                     ShowMessage("Loaded");
                 }
@@ -94,8 +95,9 @@ namespace LoopBack.Client.ViewModels
             catch (Exception ex) when (ex.HResult == -2147023174)
             {
                 loopUtil = null;
+                AppContainers = null;
+                FilteredAppContainers = null;
                 IsDirty = IsRunAsAdministrator = false;
-                AppContainers = FilteredAppContainers = null;
                 SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Warn(ex.ExceptionToMessage());
                 ShowMessage(ex.Message);
             }
@@ -275,7 +277,7 @@ namespace LoopBack.Client.ViewModels
                     {
                         loopUtil = LoopBackProjectionFactory.ServerManager.GetLoopUtil();
                         IsRunAsAdministrator = LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
-                        AppContainers = loopUtil.GetAppContainers();
+                        AppContainers = loopUtil.GetAppContainers()?.ToArray();
                         FilteredAppContainers = new(AppContainers);
                         if (isRunAsAdministrator)
                         {

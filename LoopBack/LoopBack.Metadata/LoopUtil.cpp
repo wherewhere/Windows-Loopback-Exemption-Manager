@@ -6,7 +6,7 @@ using namespace std;
 
 namespace winrt::LoopBack::Metadata::implementation
 {
-    IIterable<AppContainer> LoopUtil::GetAppContainers()
+    IVector<AppContainer> LoopUtil::GetAppContainers()
     {
         apps.Clear();
         //List of Apps that have LoopUtil enabled.

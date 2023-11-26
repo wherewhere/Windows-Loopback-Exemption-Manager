@@ -21,7 +21,7 @@ namespace winrt::LoopBack::Metadata::implementation
             }
         }
 
-        IIterable<AppContainer> Apps()
+        IVector<AppContainer> Apps()
         {
             if (apps.Size() == 0)
             {
@@ -30,7 +30,7 @@ namespace winrt::LoopBack::Metadata::implementation
             return apps;
         }
 
-        IIterable<AppContainer> GetAppContainers();
+        IVector<AppContainer> GetAppContainers();
         HRESULT SetLoopbackList(IIterable<hstring> list) const;
         HRESULT SetLoopbackList(IIterable<AppContainer> list) const;
         HRESULT AddLookback(hstring stringSid) const;

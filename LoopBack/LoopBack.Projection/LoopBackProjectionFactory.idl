@@ -1,0 +1,8 @@
+namespace LoopBack.Projection
+{
+    [default_interface]
+    runtimeclass LoopBackProjectionFactory
+    {
+        static LoopBack.Metadata.ServerManager ServerManager { get; };
+    }
+}

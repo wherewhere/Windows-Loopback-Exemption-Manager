@@ -10,9 +10,9 @@ namespace LoopBack.Metadata
     {
         LoopUtil();
 
-        Windows.Foundation.Collections.IIterable<AppContainer> Apps { get; };
+        Windows.Foundation.Collections.IVector<AppContainer> Apps { get; };
 
-        Windows.Foundation.Collections.IIterable<AppContainer> GetAppContainers();
+        Windows.Foundation.Collections.IVector<AppContainer> GetAppContainers();
         [default_overload]
         HRESULT SetLoopbackList(Windows.Foundation.Collections.IIterable<AppContainer> list);
         [method_name("SetLoopbackListBySid")]
