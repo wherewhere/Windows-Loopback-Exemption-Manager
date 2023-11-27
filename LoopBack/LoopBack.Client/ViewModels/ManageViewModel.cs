@@ -21,7 +21,7 @@ namespace LoopBack.Client.ViewModels
         public DispatcherQueue Dispatcher { get; } = DispatcherQueue.GetForCurrentThread();
 
         public string CachedSortedColumn { get; set; }
-        public AppContainer[] AppContainers { get; private set; }
+        public IReadOnlyList<AppContainer> AppContainers { get; private set; }
 
         private bool isDirty;
         public bool IsDirty
@@ -83,8 +83,13 @@ namespace LoopBack.Client.ViewModels
                 if (loopUtil != null)
                 {
                     IsRunAsAdministrator = LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
-                    AppContainers = loopUtil.GetAppContainers()?.ToArray();
-                    FilteredAppContainers = new(AppContainers);
+                    AppContainers = loopUtil.GetAppContainers();
+                    await Dispatcher.EnqueueAsync(FilteredAppContainers.Clear);
+                    for (int i = 0; i < AppContainers.Count; i++)
+                    {
+                        AppContainer appContainer = AppContainers[i];
+                        await Dispatcher.EnqueueAsync(() => FilteredAppContainers.Add(appContainer));
+                    }
                     ShowMessage("Loaded");
                 }
                 else
@@ -119,7 +124,12 @@ namespace LoopBack.Client.ViewModels
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 if (string.IsNullOrWhiteSpace(filter))
                 {
-                    FilteredAppContainers = new(AppContainers);
+                    await Dispatcher.EnqueueAsync(FilteredAppContainers.Clear);
+                    for (int i = 0; i < AppContainers.Count; i++)
+                    {
+                        AppContainer appContainer = AppContainers[i];
+                        await Dispatcher.EnqueueAsync(() => FilteredAppContainers.Add(appContainer));
+                    }
                     return;
                 }
                 else
@@ -127,8 +137,9 @@ namespace LoopBack.Client.ViewModels
                     ShowMessage("Filtering...");
                     string appsInFilter = filter;
                     await Dispatcher.EnqueueAsync(filteredAppContainers.Clear);
-                    foreach (AppContainer app in AppContainers)
+                    for (int i = 0; i < AppContainers.Count; i++)
                     {
+                        AppContainer app = AppContainers[i];
                         if (app != null)
                         {
                             string appName = app.DisplayName;
@@ -158,42 +169,44 @@ namespace LoopBack.Client.ViewModels
                 ShowMessage("Sorting...");
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 CachedSortedColumn = sortBy;
+                AppContainer[] temp = [.. filteredAppContainers];
+                await Dispatcher.EnqueueAsync(filteredAppContainers.Clear);
                 switch (sortBy)
                 {
                     case "IsEnableLoop":
-                        FilteredAppContainers = ascending
-                            ? new(filteredAppContainers.OrderBy(item => item.IsEnableLoop))
-                            : new(filteredAppContainers.OrderByDescending(item => item.IsEnableLoop));
+                        await FilteredAppContainers.AddRangeAsync(ascending
+                            ? temp.OrderBy(item => item.IsEnableLoop)
+                            : temp.OrderByDescending(item => item.IsEnableLoop), Dispatcher);
                         break;
                     case "DisplayName":
-                        FilteredAppContainers = ascending
-                            ? new(filteredAppContainers.OrderBy(item => item.DisplayName))
-                            : new(filteredAppContainers.OrderByDescending(item => item.DisplayName));
+                        await FilteredAppContainers.AddRangeAsync(ascending
+                            ? temp.OrderBy(item => item.DisplayName)
+                            : temp.OrderByDescending(item => item.DisplayName), Dispatcher);
                         break;
                     case "AppContainerName":
-                        FilteredAppContainers = ascending
-                            ? new(filteredAppContainers.OrderBy(item => item.AppContainerName))
-                            : new(filteredAppContainers.OrderByDescending(item => item.AppContainerName));
+                        await FilteredAppContainers.AddRangeAsync(ascending
+                            ? temp.OrderBy(item => item.AppContainerName)
+                            : temp.OrderByDescending(item => item.AppContainerName), Dispatcher);
                         break;
                     case "WorkingDirectory":
-                        FilteredAppContainers = ascending
-                            ? new(filteredAppContainers.OrderBy(item => item.WorkingDirectory))
-                            : new(filteredAppContainers.OrderByDescending(item => item.WorkingDirectory));
+                        await FilteredAppContainers.AddRangeAsync(ascending
+                            ? temp.OrderBy(item => item.WorkingDirectory)
+                            : temp.OrderByDescending(item => item.WorkingDirectory), Dispatcher);
                         break;
                     case "PackageFullName":
-                        FilteredAppContainers = ascending
-                            ? new(filteredAppContainers.OrderBy(item => item.PackageFullName))
-                            : new(filteredAppContainers.OrderByDescending(item => item.PackageFullName));
+                        await FilteredAppContainers.AddRangeAsync(ascending
+                            ? temp.OrderBy(item => item.PackageFullName)
+                            : temp.OrderByDescending(item => item.PackageFullName), Dispatcher);
                         break;
                     case "Range":
-                        FilteredAppContainers = ascending
-                            ? new(filteredAppContainers.OrderBy(item => item.AppContainerSid))
-                            : new(filteredAppContainers.OrderByDescending(item => item.AppContainerSid));
+                        await FilteredAppContainers.AddRangeAsync(ascending
+                            ? temp.OrderBy(item => item.AppContainerSid)
+                            : temp.OrderByDescending(item => item.AppContainerSid), Dispatcher);
                         break;
                     case "UserSid":
-                        FilteredAppContainers = ascending
-                            ? new(filteredAppContainers.OrderBy(item => item.UserSid))
-                            : new(filteredAppContainers.OrderByDescending(item => item.UserSid));
+                        await FilteredAppContainers.AddRangeAsync(ascending
+                            ? temp.OrderBy(item => item.UserSid)
+                            : temp.OrderByDescending(item => item.UserSid), Dispatcher);
                         break;
                     default:
                         break;
@@ -213,7 +226,7 @@ namespace LoopBack.Client.ViewModels
             {
                 ShowMessage("Switching...");
                 await ThreadSwitcher.ResumeBackgroundAsync();
-                foreach (AppContainer app in AppContainers)
+                foreach (AppContainer app in FilteredAppContainers)
                 {
                     if (app != null)
                     {
@@ -221,6 +234,7 @@ namespace LoopBack.Client.ViewModels
                     }
                 }
                 FilteredAppContainers = new(FilteredAppContainers);
+                IsDirty = true;
                 ShowMessage("Switched");
             }
             catch (Exception ex)
@@ -243,7 +257,7 @@ namespace LoopBack.Client.ViewModels
                 }
 
                 IsDirty = false;
-                IEnumerable<AppContainer> enableList = AppContainers.Where(x => x.IsEnableLoop);
+                IEnumerable<AppContainer> enableList = GetAppContainers(AppContainers).Where(x => x.IsEnableLoop);
                 if (loopUtil.SetLoopbackList(enableList) is Exception exception)
                 {
                     SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(exception.ExceptionToMessage());
@@ -252,6 +266,14 @@ namespace LoopBack.Client.ViewModels
                 else
                 {
                     ShowMessage("Saved loopback exemptions");
+                }
+
+                static IEnumerable<AppContainer> GetAppContainers(IReadOnlyList<AppContainer> appContainers)
+                {
+                    for (int i = 0; i < appContainers.Count; i++)
+                    {
+                        yield return appContainers[i];
+                    }
                 }
             }
             catch (Exception ex)
@@ -277,8 +299,13 @@ namespace LoopBack.Client.ViewModels
                     {
                         loopUtil = LoopBackProjectionFactory.ServerManager.GetLoopUtil();
                         IsRunAsAdministrator = LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
-                        AppContainers = loopUtil.GetAppContainers()?.ToArray();
-                        FilteredAppContainers = new(AppContainers);
+                        AppContainers = loopUtil.GetAppContainers();
+                        await Dispatcher.EnqueueAsync(FilteredAppContainers.Clear);
+                        for (int i = 0; i < AppContainers.Count; i++)
+                        {
+                            AppContainer appContainer = AppContainers[i];
+                            await Dispatcher.EnqueueAsync(() => FilteredAppContainers.Add(appContainer));
+                        }
                         if (isRunAsAdministrator)
                         {
                             ShowMessage("Run as administrator now");

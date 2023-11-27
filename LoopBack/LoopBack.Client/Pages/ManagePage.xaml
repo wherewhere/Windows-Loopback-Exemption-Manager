@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:metadata="using:LoopBack.Metadata"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     xmlns:viewmodels="using:LoopBack.Client.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:ManageViewModel}"
     DataContext="{x:Bind Provider}"
@@ -50,6 +51,7 @@
                     Width="250"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
+                    PlaceholderText="Searching Name and ID..."
                     QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                     TextChanged="AutoSuggestBox_TextChanged">
                     <AutoSuggestBox.QueryIcon>
@@ -70,7 +72,8 @@
                     MinWidth="0"
                     VerticalAlignment="Center"
                     Click="CheckBox_Click"
-                    Content="Exempt All">
+                    Content="Exempt All"
+                    ToolTipService.ToolTip="Exempt All (Ctrl+A)">
                     <CheckBox.KeyboardAccelerators>
                         <KeyboardAccelerator Key="A" Modifiers="Control" />
                     </CheckBox.KeyboardAccelerators>
@@ -81,7 +84,8 @@
                     VerticalAlignment="Center"
                     Content="Save"
                     IsEnabled="{x:Bind Provider.IsDirty, Mode=OneWay}"
-                    Style="{StaticResource AccentButtonStyle}">
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.ToolTip="Save (Ctrl+S)">
                     <Button.KeyboardAccelerators>
                         <KeyboardAccelerator Key="S" Modifiers="Control" />
                     </Button.KeyboardAccelerators>
@@ -105,7 +109,8 @@
                     VerticalAlignment="Center"
                     Click="Button_Click"
                     Content="Refresh"
-                    Tag="Refresh">
+                    Tag="Refresh"
+                    ToolTipService.ToolTip="Refresh (F5)">
                     <Button.KeyboardAccelerators>
                         <KeyboardAccelerator Key="F5" />
                     </Button.KeyboardAccelerators>
@@ -119,9 +124,153 @@
             CanUserReorderColumns="True"
             CanUserResizeColumns="True"
             CanUserSortColumns="True"
+            FrozenColumnCount="1"
             GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind Provider.FilteredAppContainers, Mode=OneWay}"
+            RowDetailsVisibilityMode="{Binding SelectedValue, ElementName=DataGridRowDetailsVisibilityMode}"
             Sorting="DataGrid_Sorting">
+            <cwuc:DataGrid.RowDetailsTemplate>
+                <DataTemplate x:DataType="metadata:AppContainer">
+                    <Grid
+                        Padding="12,8"
+                        ColumnSpacing="8"
+                        RowSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="Display Name" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind DisplayName}"
+                            TextWrapping="WrapWholeWords" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="App Container Name" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind AppContainerName}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="Package Full Name" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind PackageFullName}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="App Container Sid" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind AppContainerSid}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="User Sid" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind UserSid}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="Working Directory" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind WorkingDirectory}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="Capabilities" />
+                        <ItemsControl
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            ItemsSource="{x:Bind Capabilities}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <TextBlock
+                                        HorizontalAlignment="Left"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind}"
+                                        TextWrapping="Wrap" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </DataTemplate>
+            </cwuc:DataGrid.RowDetailsTemplate>
             <cwuc:DataGrid.Columns>
                 <cwuc:DataGridTemplateColumn
                     Width="85"
@@ -377,16 +526,35 @@
         <Grid
             Grid.Row="2"
             Height="30"
-            Padding="10,0"
-            VerticalAlignment="Bottom">
+            Padding="2,0"
+            VerticalAlignment="Bottom"
+            ColumnSpacing="2">
+            <Grid.Resources>
+                <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
             <TextBlock
+                Grid.Column="0"
+                Padding="10,0"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontWeight="Bold"
                 TextTrimming="CharacterEllipsis"
                 ToolTipService.ToolTip="{x:Bind Provider.Message, Mode=OneWay}">
-                <Run Text="Status: " />
+                <Run Text="Status:" />
                 <Run Text="{x:Bind Provider.Message, Mode=OneWay}" />
             </TextBlock>
+            <ComboBox
+                x:Name="DataGridRowDetailsVisibilityMode"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                ItemsSource="{ui:EnumValues Type=cwuc:DataGridRowDetailsVisibilityMode}"
+                SelectedIndex="0"
+                ToolTipService.ToolTip="Data Grid Row Details Visibility Mode" />
         </Grid>
     </Grid>
 </Page>

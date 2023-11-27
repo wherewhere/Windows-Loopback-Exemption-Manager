@@ -19,4 +19,11 @@ namespace LoopBack.Metadata
         IVector<String> Capabilities { get; set; };
         IVector<String> Binaries { get; set; };
     }
+
+    /// Force midl3 to generate vector marshalling info. 
+    declare
+    {
+        interface IVector<AppContainer>;
+        interface IVectorView<AppContainer>;
+    }
 }

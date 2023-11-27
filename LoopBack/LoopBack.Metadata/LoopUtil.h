@@ -21,16 +21,16 @@ namespace winrt::LoopBack::Metadata::implementation
             }
         }
 
-        IVector<AppContainer> Apps()
+        IVectorView<AppContainer> Apps()
         {
             if (apps.Size() == 0)
             {
                 return GetAppContainers();
             }
-            return apps;
+            return apps.GetView();
         }
 
-        IVector<AppContainer> GetAppContainers();
+        IVectorView<AppContainer> GetAppContainers();
         HRESULT SetLoopbackList(IIterable<hstring> list) const;
         HRESULT SetLoopbackList(IIterable<AppContainer> list) const;
         HRESULT AddLookback(hstring stringSid) const;
@@ -53,7 +53,7 @@ namespace winrt::LoopBack::Metadata::implementation
         const IVector<hstring> GetBinaries(INET_FIREWALL_AC_BINARIES cap) const;
         const IVector<hstring> GetCapabilities(INET_FIREWALL_AC_CAPABILITIES cap) const;
         const IVector<hstring> PI_NetworkIsolationGetAppContainerConfig() const;
-        const IVector<AppContainer> PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> list) const;
+        const IVectorView<AppContainer> PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> list) const;
         const void PI_NetworkIsolationFreeAppContainers(PINET_FIREWALL_APP_CONTAINER point) const;
         const IVector<hstring> GetEnabledLoopList(hstring list, bool isAdd = true) const;
         const IVector<hstring> GetEnabledLoopList(IIterable<hstring> list, bool isAdd = true) const;

@@ -10,9 +10,9 @@ namespace LoopBack.Metadata
     {
         LoopUtil();
 
-        IVector<AppContainer> Apps { get; };
+        IVectorView<AppContainer> Apps { get; };
 
-        IVector<AppContainer> GetAppContainers();
+        IVectorView<AppContainer> GetAppContainers();
         [default_overload]
         HRESULT SetLoopbackList(IIterable<AppContainer> list);
         [method_name("SetLoopbackListBySid")]

@@ -5,7 +5,6 @@ using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Windows.ApplicationModel;
@@ -70,8 +69,11 @@ namespace LoopBack.Client.Helpers
             await Task.Run(() =>
             {
                 results = new List<string>();
-                foreach (AppContainer app in LoopBackProjectionFactory.ServerManager.GetLoopUtil().Apps?.ToArray())
+                using LoopUtil loopUtil = LoopBackProjectionFactory.ServerManager.GetLoopUtil();
+                IReadOnlyList<AppContainer> appContainers = loopUtil.Apps;
+                for (int i = 0; i < appContainers.Count; i++)
                 {
+                    AppContainer app = appContainers[i];
                     if (app != null)
                     {
                         string appName = app.DisplayName;

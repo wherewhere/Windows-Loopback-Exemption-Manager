@@ -68,8 +68,9 @@ namespace LoopBack.Client.Pages
                 if (!string.IsNullOrEmpty(filter))
                 {
                     string appsInFilter = filter;
-                    foreach (AppContainer app in Provider.AppContainers)
+                    for (int i = 0; i < Provider.AppContainers.Count; i++)
                     {
+                        AppContainer app = Provider.AppContainers[i];
                         if (app != null)
                         {
                             string appName = app.DisplayName;

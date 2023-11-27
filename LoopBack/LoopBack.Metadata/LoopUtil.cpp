@@ -6,7 +6,7 @@ using namespace std;
 
 namespace winrt::LoopBack::Metadata::implementation
 {
-    IVector<AppContainer> LoopUtil::GetAppContainers()
+    IVectorView<AppContainer> LoopUtil::GetAppContainers()
     {
         apps.Clear();
         //List of Apps that have LoopUtil enabled.
@@ -307,7 +307,7 @@ namespace winrt::LoopBack::Metadata::implementation
             {
                 for (hstring left : appListConfig)
                 {
-                    if ((hstring)left == (hstring)right)
+                    if (left == (hstring)right)
                     {
                         return true;
                     }
@@ -393,9 +393,9 @@ namespace winrt::LoopBack::Metadata::implementation
         return list;
     }
 
-    const IVector<AppContainer> LoopUtil::PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> list) const
+    const IVectorView<AppContainer> LoopUtil::PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> list) const
     {
-        if (!list) { return list; }
+        if (!list) { return nullptr; }
         list.Clear();
 
         DWORD size = 0;
@@ -418,7 +418,7 @@ namespace winrt::LoopBack::Metadata::implementation
             }
         }
 
-        return list;
+        return list.GetView();
     }
 
     const void LoopUtil::PI_NetworkIsolationFreeAppContainers(const PINET_FIREWALL_APP_CONTAINER point) const
@@ -525,5 +525,6 @@ namespace winrt::LoopBack::Metadata::implementation
         }
         apps.Clear();
         appListConfig.Clear();
+        appListConfig = nullptr;
     }
 }
