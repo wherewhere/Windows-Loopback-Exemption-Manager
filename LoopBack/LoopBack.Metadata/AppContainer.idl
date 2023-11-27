@@ -16,7 +16,7 @@ namespace LoopBack.Metadata
         String WorkingDirectory { get; set; };
         String AppContainerSid { get; set; };
         String UserSid { get; set; };
-        Windows.Foundation.Collections.IVector<String> Capabilities { get; set; };
-        Windows.Foundation.Collections.IVector<String> Binaries { get; set; };
+        IVector<String> Capabilities { get; set; };
+        IVector<String> Binaries { get; set; };
     }
 }

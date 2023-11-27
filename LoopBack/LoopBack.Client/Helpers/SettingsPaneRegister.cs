@@ -52,9 +52,7 @@ namespace LoopBack.Client.Helpers
             {
                 SearchPane searchPane = SearchPane.GetForCurrentView();
                 searchPane.QuerySubmitted -= SearchPane_QuerySubmitted;
-                searchPane.QuerySubmitted += SearchPane_QuerySubmitted;
                 searchPane.SuggestionsRequested -= SearchPane_SuggestionsRequested;
-                searchPane.SuggestionsRequested += SearchPane_SuggestionsRequested;
             }
 
             if (IsSettingsPaneSupported)

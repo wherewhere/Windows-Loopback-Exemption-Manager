@@ -24,10 +24,12 @@ namespace winrt::LoopBack::Metadata::implementation
         void RunAsAdministrator() const;
         IAsyncAction StopServerAsync() const;
         IAsyncOperation<LoopBack::Metadata::ServerManager> GetAdminServerManagerAsync();
+        const void Close();
 
     private:
         event<EventHandler<bool>> m_serverManagerDestructedEvent;
         LoopBack::Metadata::ServerManager m_adminServerManager = nullptr;
+        bool m_isDisposed = false;
     };
 }
 

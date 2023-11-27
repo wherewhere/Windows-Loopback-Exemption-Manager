@@ -14,11 +14,17 @@ namespace LoopBack.Client.Helpers
     {
         public static void TrackWindow(this Window window)
         {
-            window.Closed += (sender, args) =>
+            if (!ActiveWindows.Contains(window))
             {
-                ActiveWindows?.Remove(window);
-            };
-            ActiveWindows?.Add(window);
+                SettingsPaneRegister.Register(window);
+                window.Closed += (sender, args) =>
+                {
+                    ActiveWindows.Remove(window);
+                    SettingsPaneRegister.Unregister(window);
+                    window = null;
+                };
+                ActiveWindows.Add(window);
+            }
         }
 
         public static HashSet<Window> ActiveWindows { get; } = new HashSet<Window>(1);

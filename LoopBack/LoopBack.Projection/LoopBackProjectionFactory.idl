@@ -1,7 +1,8 @@
 namespace LoopBack.Projection
 {
     [default_interface]
-    runtimeclass LoopBackProjectionFactory
+    [contract(LoopBack.Metadata.LoopBackManagerContract, 1)]
+    static runtimeclass LoopBackProjectionFactory
     {
         static LoopBack.Metadata.ServerManager ServerManager { get; };
     }

@@ -8,7 +8,9 @@ namespace winrt::LoopBack::Metadata::implementation
 {
     ServerManager::~ServerManager()
     {
+        if (m_isDisposed) { return; }
         m_serverManagerDestructedEvent(*this, true);
+        m_isDisposed = true;
     }
 
     bool ServerManager::IsRunAsAdministrator() const
@@ -119,5 +121,12 @@ namespace winrt::LoopBack::Metadata::implementation
                 }
             }
         }
+    }
+
+    const void ServerManager::Close()
+    {
+        if (m_isDisposed) { return; }
+        m_serverManagerDestructedEvent(*this, true);
+        m_isDisposed = true;
     }
 }
