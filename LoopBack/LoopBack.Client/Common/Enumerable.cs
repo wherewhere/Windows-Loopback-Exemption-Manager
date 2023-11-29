@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
 
-namespace LoopBack.Client.Helpers
+namespace LoopBack.Client.Common
 {
     public static class Enumerable
     {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using LoopBack.Client.Common;
+using System.Collections.Generic;
 using Windows.UI.Xaml;
 
 namespace LoopBack.Client.Helpers

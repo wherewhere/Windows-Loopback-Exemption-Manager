@@ -1,4 +1,5 @@
-﻿using LoopBack.Client.Helpers;
+﻿using LoopBack.Client.Common;
+using LoopBack.Client.Helpers;
 using LoopBack.Client.Pages;
 using System;
 using Windows.ApplicationModel;
@@ -157,7 +158,7 @@ namespace LoopBack.Client
                 .UnhandledException += SynchronizationContext_UnhandledException;
         }
 
-        private void SynchronizationContext_UnhandledException(object sender, Helpers.UnhandledExceptionEventArgs e)
+        private void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)
         {
             SettingsHelper.LogManager.GetLogger("Unhandled Exception - SynchronizationContext").Error(e.Exception.ExceptionToMessage(), e.Exception);
             e.Handled = true;

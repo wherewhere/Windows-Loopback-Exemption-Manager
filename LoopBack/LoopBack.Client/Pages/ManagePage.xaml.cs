@@ -1,4 +1,4 @@
-﻿using LoopBack.Client.Helpers;
+﻿using LoopBack.Client.Common;
 using LoopBack.Client.ViewModels;
 using LoopBack.Metadata;
 using Microsoft.Toolkit.Uwp.UI.Controls;
@@ -68,9 +68,8 @@ namespace LoopBack.Client.Pages
                 if (!string.IsNullOrEmpty(filter))
                 {
                     string appsInFilter = filter;
-                    for (int i = 0; i < Provider.AppContainers.Count; i++)
+                    foreach (AppContainer app in Provider.AppContainers)
                     {
-                        AppContainer app = Provider.AppContainers[i];
                         if (app != null)
                         {
                             string appName = app.DisplayName;

@@ -8,7 +8,7 @@ using Windows.System.Threading;
 using Windows.UI.Core;
 using ThreadPool = Windows.System.Threading.ThreadPool;
 
-namespace LoopBack.Client.Helpers
+namespace LoopBack.Client.Common
 {
     /// <summary>
     /// The interface of helper type for switch thread.
@@ -69,7 +69,7 @@ namespace LoopBack.Client.Helpers
     {
         /// <inheritdoc/>
         public bool IsCompleted => Dispatcher is not DispatcherQueue dispatcher
-            || (ThreadSwitcher.IsHasThreadAccessPropertyAvailable && dispatcher.HasThreadAccess);
+            || ThreadSwitcher.IsHasThreadAccessPropertyAvailable && dispatcher.HasThreadAccess;
 
         /// <inheritdoc/>
         public void GetResult() { }

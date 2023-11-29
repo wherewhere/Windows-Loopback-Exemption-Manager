@@ -16,7 +16,7 @@ using Windows.UI.ApplicationSettings;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
-namespace LoopBack.Client.Helpers
+namespace LoopBack.Client.Common
 {
 #pragma warning disable CS0618
     public static class SettingsPaneRegister

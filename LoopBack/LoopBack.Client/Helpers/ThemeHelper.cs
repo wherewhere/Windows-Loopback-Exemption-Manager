@@ -1,4 +1,5 @@
-﻿using Windows.ApplicationModel.Core;
+﻿using LoopBack.Client.Common;
+using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;

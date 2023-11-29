@@ -1,4 +1,5 @@
-﻿using LoopBack.Client.Helpers;
+﻿using LoopBack.Client.Common;
+using LoopBack.Client.Helpers;
 using LoopBack.Metadata;
 using LoopBack.Projection;
 using Microsoft.Toolkit.Uwp;
@@ -21,7 +22,7 @@ namespace LoopBack.Client.ViewModels
         public DispatcherQueue Dispatcher { get; } = DispatcherQueue.GetForCurrentThread();
 
         public string CachedSortedColumn { get; set; }
-        public IReadOnlyList<AppContainer> AppContainers { get; private set; }
+        public VectorViewReader<AppContainer> AppContainers { get; private set; }
 
         private bool isDirty;
         public bool IsDirty
@@ -83,13 +84,9 @@ namespace LoopBack.Client.ViewModels
                 if (loopUtil != null)
                 {
                     IsRunAsAdministrator = LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
-                    AppContainers = loopUtil.GetAppContainers();
+                    AppContainers = new(loopUtil.GetAppContainers());
                     await Dispatcher.EnqueueAsync(FilteredAppContainers.Clear);
-                    for (int i = 0; i < AppContainers.Count; i++)
-                    {
-                        AppContainer appContainer = AppContainers[i];
-                        await Dispatcher.EnqueueAsync(() => FilteredAppContainers.Add(appContainer));
-                    }
+                    await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
                     ShowMessage("Loaded");
                 }
                 else
@@ -125,11 +122,7 @@ namespace LoopBack.Client.ViewModels
                 if (string.IsNullOrWhiteSpace(filter))
                 {
                     await Dispatcher.EnqueueAsync(FilteredAppContainers.Clear);
-                    for (int i = 0; i < AppContainers.Count; i++)
-                    {
-                        AppContainer appContainer = AppContainers[i];
-                        await Dispatcher.EnqueueAsync(() => FilteredAppContainers.Add(appContainer));
-                    }
+                    await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
                     return;
                 }
                 else
@@ -137,9 +130,8 @@ namespace LoopBack.Client.ViewModels
                     ShowMessage("Filtering...");
                     string appsInFilter = filter;
                     await Dispatcher.EnqueueAsync(filteredAppContainers.Clear);
-                    for (int i = 0; i < AppContainers.Count; i++)
+                    foreach (AppContainer app in AppContainers)
                     {
-                        AppContainer app = AppContainers[i];
                         if (app != null)
                         {
                             string appName = app.DisplayName;
@@ -257,7 +249,7 @@ namespace LoopBack.Client.ViewModels
                 }
 
                 IsDirty = false;
-                IEnumerable<AppContainer> enableList = GetAppContainers(AppContainers).Where(x => x.IsEnableLoop);
+                IEnumerable<AppContainer> enableList = AppContainers.Where(x => x.IsEnableLoop);
                 if (loopUtil.SetLoopbackList(enableList) is Exception exception)
                 {
                     SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(exception.ExceptionToMessage());
@@ -266,14 +258,6 @@ namespace LoopBack.Client.ViewModels
                 else
                 {
                     ShowMessage("Saved loopback exemptions");
-                }
-
-                static IEnumerable<AppContainer> GetAppContainers(IReadOnlyList<AppContainer> appContainers)
-                {
-                    for (int i = 0; i < appContainers.Count; i++)
-                    {
-                        yield return appContainers[i];
-                    }
                 }
             }
             catch (Exception ex)
@@ -299,13 +283,9 @@ namespace LoopBack.Client.ViewModels
                     {
                         loopUtil = LoopBackProjectionFactory.ServerManager.GetLoopUtil();
                         IsRunAsAdministrator = LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
-                        AppContainers = loopUtil.GetAppContainers();
+                        AppContainers = new(loopUtil.GetAppContainers());
                         await Dispatcher.EnqueueAsync(FilteredAppContainers.Clear);
-                        for (int i = 0; i < AppContainers.Count; i++)
-                        {
-                            AppContainer appContainer = AppContainers[i];
-                            await Dispatcher.EnqueueAsync(() => FilteredAppContainers.Add(appContainer));
-                        }
+                        await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
                         if (isRunAsAdministrator)
                         {
                             ShowMessage("Run as administrator now");
