@@ -5,7 +5,7 @@ using Windows.Foundation.Metadata;
 
 namespace LoopBack.Client.Helpers
 {
-    internal static partial class UIHelper
+    public static class UIHelper
     {
         public static bool HasTitleBar => !CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
         public static bool HasStatusBar => ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
