@@ -68,7 +68,7 @@ namespace LoopBack.Client.Common
             IList<string> results = null;
             await Task.Run(() =>
             {
-                results = new List<string>();
+                results = [];
                 using LoopUtil loopUtil = LoopBackProjectionFactory.ServerManager.GetLoopUtil();
                 IReadOnlyList<AppContainer> appContainers = loopUtil.Apps;
                 for (int i = 0; i < appContainers.Count; i++)
