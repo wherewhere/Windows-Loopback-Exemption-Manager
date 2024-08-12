@@ -7,8 +7,8 @@ namespace LoopBack.Client.Common
     /// <summary>
     /// The reader of <see cref="IVectorView{T}"/>
     /// </summary>
-    /// <typeparam name="T">The type of the elements of <paramref name="List"/>.</typeparam>
-    /// <param name="Source">The <typeparamref name="IVectorView{TSource}"/> to be redden.</param>
+    /// <typeparam name="T">The type of the elements of <paramref name="Source"/>.</typeparam>
+    /// <param name="Source">The <see cref="IVectorView{T}"/> to be redden.</param>
     public record class VectorViewReader<T>(IReadOnlyList<T> Source) : IReadOnlyList<T>
     {
         /// <inheritdoc/>

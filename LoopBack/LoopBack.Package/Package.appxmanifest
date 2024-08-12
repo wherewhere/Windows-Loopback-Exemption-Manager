@@ -9,7 +9,7 @@
   IgnorableNamespaces="uap com rescap">
 
   <Identity
-    Name="wherewhere.LookBack.Manager"
+    Name="wherewhere.LoopBack.Manager"
     Publisher="CN=qq251"
     Version="1.0.0.0" />
 

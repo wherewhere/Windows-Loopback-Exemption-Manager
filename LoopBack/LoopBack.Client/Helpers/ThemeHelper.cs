@@ -1,5 +1,6 @@
 ﻿using LoopBack.Client.Common;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation.Metadata;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -11,10 +12,11 @@ namespace LoopBack.Client.Helpers
     /// </summary>
     public static class ThemeHelper
     {
+        public static bool IsStatusBarSupported { get; } = ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
+
         // Keep reference so it does not get optimized/garbage collected
         public static UISettings UISettings { get; } = new UISettings();
         public static AccessibilitySettings AccessibilitySettings { get; } = new AccessibilitySettings();
-
 
         static ThemeHelper()
         {
@@ -48,7 +50,7 @@ namespace LoopBack.Client.Helpers
             {
                 await window.Dispatcher.ResumeForegroundAsync();
 
-                if (UIHelper.HasStatusBar)
+                if (IsStatusBarSupported)
                 {
                     StatusBar StatusBar = StatusBar.GetForCurrentView();
                     StatusBar.ForegroundColor = ForegroundColor;
@@ -76,7 +78,7 @@ namespace LoopBack.Client.Helpers
             Color ForegroundColor = IsDark || IsHighContrast ? Colors.White : Colors.Black;
             Color BackgroundColor = IsHighContrast ? Color.FromArgb(255, 0, 0, 0) : IsDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);
 
-            if (UIHelper.HasStatusBar)
+            if (IsStatusBarSupported)
             {
                 StatusBar StatusBar = StatusBar.GetForCurrentView();
                 StatusBar.ForegroundColor = ForegroundColor;
