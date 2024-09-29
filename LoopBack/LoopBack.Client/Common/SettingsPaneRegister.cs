@@ -18,7 +18,6 @@ using Windows.UI.Xaml;
 
 namespace LoopBack.Client.Common
 {
-#pragma warning disable CS0618
     public static class SettingsPaneRegister
     {
         public static bool IsSearchPaneSupported { get; } = ApiInformation.IsTypePresent("Windows.ApplicationModel.Search.SearchPane") && CheckSearchExtension();
@@ -129,10 +128,11 @@ namespace LoopBack.Client.Common
         {
             if (args.EventType.HasFlag(CoreAcceleratorKeyEventType.KeyDown) || args.EventType.HasFlag(CoreAcceleratorKeyEventType.SystemKeyUp))
             {
-                CoreVirtualKeyStates ctrl = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
+                CoreWindow window = CoreWindow.GetForCurrentThread();
+                CoreVirtualKeyStates ctrl = window.GetKeyState(VirtualKey.Control);
                 if (ctrl.HasFlag(CoreVirtualKeyStates.Down))
                 {
-                    CoreVirtualKeyStates shift = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift);
+                    CoreVirtualKeyStates shift = window.GetKeyState(VirtualKey.Shift);
                     if (shift.HasFlag(CoreVirtualKeyStates.Down))
                     {
                         switch (args.VirtualKey)

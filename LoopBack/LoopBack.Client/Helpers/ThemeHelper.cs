@@ -40,11 +40,11 @@ namespace LoopBack.Client.Helpers
 
         public static async void UpdateSystemCaptionButtonColors()
         {
-            bool IsDark = IsDarkTheme();
-            bool IsHighContrast = AccessibilitySettings.HighContrast;
+            bool isDark = IsDarkTheme();
+            bool isHighContrast = AccessibilitySettings.HighContrast;
 
-            Color ForegroundColor = IsDark || IsHighContrast ? Colors.White : Colors.Black;
-            Color BackgroundColor = IsHighContrast ? Color.FromArgb(255, 0, 0, 0) : IsDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);
+            Color foregroundColor = isDark || isHighContrast ? Colors.White : Colors.Black;
+            Color backgroundColor = isHighContrast ? Color.FromArgb(255, 0, 0, 0) : isDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);
 
             foreach (Window window in WindowHelper.ActiveWindows)
             {
@@ -52,19 +52,17 @@ namespace LoopBack.Client.Helpers
 
                 if (IsStatusBarSupported)
                 {
-                    StatusBar StatusBar = StatusBar.GetForCurrentView();
-                    StatusBar.ForegroundColor = ForegroundColor;
-                    StatusBar.BackgroundColor = BackgroundColor;
-                    StatusBar.BackgroundOpacity = 0; // 透明度
+                    StatusBar statusBar = StatusBar.GetForCurrentView();
+                    statusBar.ForegroundColor = foregroundColor;
+                    statusBar.BackgroundColor = backgroundColor;
+                    statusBar.BackgroundOpacity = 0; // 透明度
                 }
-                else
-                {
-                    bool ExtendViewIntoTitleBar = CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
-                    ApplicationViewTitleBar TitleBar = ApplicationView.GetForCurrentView().TitleBar;
-                    TitleBar.ForegroundColor = TitleBar.ButtonForegroundColor = ForegroundColor;
-                    TitleBar.BackgroundColor = TitleBar.InactiveBackgroundColor = BackgroundColor;
-                    TitleBar.ButtonBackgroundColor = TitleBar.ButtonInactiveBackgroundColor = ExtendViewIntoTitleBar ? Colors.Transparent : BackgroundColor;
-                }
+
+                bool extendViewIntoTitleBar = CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
+                ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+                titleBar.ForegroundColor = titleBar.ButtonForegroundColor = foregroundColor;
+                titleBar.BackgroundColor = titleBar.InactiveBackgroundColor = backgroundColor;
+                titleBar.ButtonBackgroundColor = titleBar.ButtonInactiveBackgroundColor = extendViewIntoTitleBar ? Colors.Transparent : backgroundColor;
             }
         }
 
@@ -72,27 +70,25 @@ namespace LoopBack.Client.Helpers
         {
             await window.Dispatcher.ResumeForegroundAsync();
 
-            bool IsDark = IsDarkTheme();
-            bool IsHighContrast = AccessibilitySettings.HighContrast;
+            bool isDark = IsDarkTheme();
+            bool isHighContrast = AccessibilitySettings.HighContrast;
 
-            Color ForegroundColor = IsDark || IsHighContrast ? Colors.White : Colors.Black;
-            Color BackgroundColor = IsHighContrast ? Color.FromArgb(255, 0, 0, 0) : IsDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);
+            Color foregroundColor = isDark || isHighContrast ? Colors.White : Colors.Black;
+            Color backgroundColor = isHighContrast ? Color.FromArgb(255, 0, 0, 0) : isDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);
 
             if (IsStatusBarSupported)
             {
-                StatusBar StatusBar = StatusBar.GetForCurrentView();
-                StatusBar.ForegroundColor = ForegroundColor;
-                StatusBar.BackgroundColor = BackgroundColor;
-                StatusBar.BackgroundOpacity = 0; // 透明度
+                StatusBar statusBar = StatusBar.GetForCurrentView();
+                statusBar.ForegroundColor = foregroundColor;
+                statusBar.BackgroundColor = backgroundColor;
+                statusBar.BackgroundOpacity = 0; // 透明度
             }
-            else
-            {
-                bool ExtendViewIntoTitleBar = CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
-                ApplicationViewTitleBar TitleBar = ApplicationView.GetForCurrentView().TitleBar;
-                TitleBar.ForegroundColor = TitleBar.ButtonForegroundColor = ForegroundColor;
-                TitleBar.BackgroundColor = TitleBar.InactiveBackgroundColor = BackgroundColor;
-                TitleBar.ButtonBackgroundColor = TitleBar.ButtonInactiveBackgroundColor = ExtendViewIntoTitleBar ? Colors.Transparent : BackgroundColor;
-            }
+
+            bool extendViewIntoTitleBar = CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ForegroundColor = titleBar.ButtonForegroundColor = foregroundColor;
+            titleBar.BackgroundColor = titleBar.InactiveBackgroundColor = backgroundColor;
+            titleBar.ButtonBackgroundColor = titleBar.ButtonInactiveBackgroundColor = extendViewIntoTitleBar ? Colors.Transparent : backgroundColor;
         }
     }
 }
