@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ApplicationEntryPoint>LoopBack.App</ApplicationEntryPoint>
+    <AssetTargetFallback>$(AssetTargetFallback);native</AssetTargetFallback>
+    <CsWinRTIncludes>LoopBack.Metadata</CsWinRTIncludes>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <EnableMsixTooling>True</EnableMsixTooling>
+    <OutputType>WinExe</OutputType>
+    <Platforms>x86;x64;ARM64</Platforms>
+    <PublishAot>True</PublishAot>
+    <PublishProfile>win-$(Platform).pubxml</PublishProfile>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <UseUwp>True</UseUwp>
+    <VersionPrefix>0.0.1</VersionPrefix>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Labs.Uwp.Controls.DataTable" Version="0.1.250305-build.2058" />
+    <PackageReference Include="CommunityToolkit.Uwp.Controls.Sizers" Version="8.2.250129-preview2" />
+    <PackageReference Include="CommunityToolkit.Uwp.Converters" Version="8.2.250129-preview2" />
+    <PackageReference Include="CommunityToolkit.Uwp.Extensions" Version="8.2.250129-preview2" />
+    <PackageReference Include="MetroLog.Net6" Version="2.1.0" />
+    <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" />
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LoopBack.Metadata\LoopBack.Metadata.vcxproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="AppPackages\**" />
+    <None Remove="BundleArtifacts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="CustomCapability.SCCD" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="CustomCapability.SCCD" />
+  </ItemGroup>
+</Project>

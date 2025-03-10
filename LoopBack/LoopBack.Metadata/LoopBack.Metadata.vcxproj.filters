@@ -6,23 +6,25 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServerManager.cpp" />
+    <ClCompile Include="ServerFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ServerManager.h" />
+    <ClInclude Include="ServerFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="AppContainer.idl" />
     <Midl Include="LoopUtil.idl" />
     <Midl Include="LoopBackManagerContract.idl" />
     <Midl Include="ServerManager.idl" />
+    <Midl Include="ServerFactory.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LoopBack.Metadata.def" />
     <None Include="PropertySheet.props" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />

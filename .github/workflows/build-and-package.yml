@@ -2,6 +2,9 @@ name: build and package
 
 on: [push, pull_request]
 
+env:
+  DOTNET_VERSION: '9.0.x' # The .NET SDK version to use
+
 jobs:
   build-and-package:
 
@@ -9,8 +12,8 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Solution_Name: LoopBack/LoopBack.Package/LoopBack.Package.wapproj
-      Project_Directory: LoopBack/LoopBack.Package
+      Solution_Name: LoopBack.sln
+      Project_Directory: LoopBack/LoopBack
       Signing_Certificate: LoopBack_TemporaryKey.pfx
 
     steps:
@@ -34,17 +37,15 @@ jobs:
       with:
         msbuild-architecture: x64
 
-    - name: Setup NuGet.exe
-      uses: NuGet/setup-nuget@v2
-
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      run: msbuild $env:Solution_Name `
+        /t:Restore `
+        /p:Configuration=$env:Configuration `
+        /p:Platform=$env:Platform
       env:
         Configuration: Release
-
-    - name: Nuget restore
-      run: nuget restore LoopBack.sln
+        Platform: 'x64'
 
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create the app package
@@ -60,10 +61,11 @@ jobs:
         /p:PackageCertificatePassword="$env:Password"
       env:
         Appx_Bundle: Always
-        Appx_Bundle_Platforms: x86|x64|ARM|ARM64
+        Appx_Bundle_Platforms: x64|ARM64
         Appx_Package_Build_Mode: SideloadOnly
         Appx_Package_Dir: AppxPackages\
         Configuration: Release
+        Platform: 'x64'
         Thumbprint: 0CDF4A03E9BE9DD789894BB3C7AD3DEDECD9AB25
         Password: ${{ secrets.Password }}
 
@@ -72,4 +74,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: MSIX Package
-        path: LoopBack/LoopBack.Package/AppxPackages/**
+        path: LoopBack/LoopBack/AppxPackages/**

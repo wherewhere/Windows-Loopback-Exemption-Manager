@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LoopBack": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    }
+  }
+}

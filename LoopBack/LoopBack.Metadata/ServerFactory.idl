@@ -1,0 +1,11 @@
+import "LoopBackManagerContract.idl";
+
+namespace LoopBack.Metadata
+{
+    [default_interface]
+    [contract(LoopBackManagerContract, 1)]
+    static runtimeclass ServerFactory 
+    {
+        static void StartServer();
+    }
+}
