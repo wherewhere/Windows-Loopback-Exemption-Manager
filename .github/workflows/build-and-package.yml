@@ -3,7 +3,7 @@ name: build and package
 on: [push, pull_request]
 
 jobs:
-  build-and-test:
+  build-and-package:
 
     name: build-and-package
     runs-on: windows-latest

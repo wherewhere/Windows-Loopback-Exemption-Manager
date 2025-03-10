@@ -6,7 +6,7 @@
   xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
   xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap com rescap">
+  IgnorableNamespaces="uap uap5 com rescap">
 
   <Identity
     Name="wherewhere.LoopBack.Manager"
@@ -98,7 +98,7 @@
               Executable="LoopBack.Server\LoopBack.Server.exe"
               DisplayName="LoopBack Server"
               LaunchAndActivationPermission="O:SYG:SYD:(A;;11;;;WD)(A;;11;;;RC)(A;;11;;;AC)(A;;11;;;AN)S:P(ML;;NX;;;S-1-16-0)">
-              <com:Class Id ="50169480-3FB8-4A19-AAED-ED9170811A3A" DisplayName="LoopUtil Server" />
+              <com:Class Id="50169480-3FB8-4A19-AAED-ED9170811A3A" DisplayName="LoopUtil Server" />
             </com:ExeServer>
           </com:ComServer>
         </com:Extension>

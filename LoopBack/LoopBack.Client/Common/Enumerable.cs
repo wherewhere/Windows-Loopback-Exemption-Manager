@@ -1,10 +1,10 @@
-﻿using Microsoft.Toolkit.Uwp;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.System;
+using Windows.UI.Core;
 
 namespace LoopBack.Client.Common
 {
@@ -19,10 +19,10 @@ namespace LoopBack.Client.Common
         /// <param name="collection">The collection whose elements should be added to the end of the <see cref="ICollection{TSource}"/>.
         /// The collection itself cannot be <see langword="null"/>, but it can contain elements that are
         /// <see langword="null"/>, if type <typeparamref name="TSource"/> is a reference type.</param>
-        /// <param name="dispatcherQueue">The target <see cref="DispatcherQueue"/> to invoke the code on.</param>
+        /// <param name="dispatcher">The target <see cref="CoreDispatcher"/> to invoke the code on.</param>
         /// <returns>A <see cref="Task"/> which represents the asynchronous operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="collection"/> is null.</exception>
-        public static async Task AddRangeAsync<TCollection, TSource>(this TCollection source, IEnumerable<TSource> collection, DispatcherQueue dispatcherQueue) where TCollection : ICollection<TSource>, INotifyCollectionChanged
+        public static async Task AddRangeAsync<TCollection, TSource>(this TCollection source, IEnumerable<TSource> collection, CoreDispatcher dispatcher) where TCollection : ICollection<TSource>, INotifyCollectionChanged
         {
             if (source == null)
             {
@@ -36,7 +36,7 @@ namespace LoopBack.Client.Common
 
             if (source is List<TSource> list)
             {
-                await dispatcherQueue.ResumeForegroundAsync();
+                await dispatcher.ResumeForegroundAsync();
                 list.AddRange(collection);
             }
             else if (source is TSource[] array)
@@ -50,7 +50,7 @@ namespace LoopBack.Client.Common
                         throw new ArgumentOutOfRangeException(nameof(array));
                     }
 
-                    await dispatcherQueue.ResumeForegroundAsync();
+                    await dispatcher.ResumeForegroundAsync();
                     if (collection is ICollection<TSource> c)
                     {
                         c.CopyTo(array, _size);
@@ -66,14 +66,14 @@ namespace LoopBack.Client.Common
             }
             else if (source is ISet<TSource> set)
             {
-                await dispatcherQueue.ResumeForegroundAsync();
+                await dispatcher.ResumeForegroundAsync();
                 set.UnionWith(collection);
             }
             else
             {
                 foreach (TSource item in collection)
                 {
-                    await dispatcherQueue.EnqueueAsync(() => source.Add(item));
+                    await dispatcher.AwaitableRunAsync(() => source.Add(item));
                 }
             }
         }

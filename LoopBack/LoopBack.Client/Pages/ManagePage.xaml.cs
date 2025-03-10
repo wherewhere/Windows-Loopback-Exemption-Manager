@@ -21,9 +21,13 @@ namespace LoopBack.Client.Pages
     /// </summary>
     public sealed partial class ManagePage : Page
     {
-        public ManageViewModel Provider { get; } = new();
+        public readonly ManageViewModel Provider;
 
-        public ManagePage() => InitializeComponent();
+        public ManagePage()
+        {
+            InitializeComponent();
+            Provider = new ManageViewModel(Dispatcher);
+        }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
