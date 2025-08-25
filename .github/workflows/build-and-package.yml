@@ -55,6 +55,7 @@ jobs:
         /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode `
         /p:AppxBundle=$env:Appx_Bundle `
         /p:AppxPackageDir="$env:Appx_Package_Dir" `
+        /p:GenerateAppxPackageOnBuild=true `
         /p:AppxPackageSigningEnabled=true `
         /p:PackageCertificateThumbprint="$env:Thumbprint" `
         /p:PackageCertificateKeyFile=$env:Signing_Certificate `
