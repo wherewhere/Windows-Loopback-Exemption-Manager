@@ -63,7 +63,7 @@ namespace LoopBack.Common
         {
             SearchPaneSuggestionsRequestDeferral deferral = args.Request.GetDeferral();
             string keyWord = args.QueryText;
-            IList<string> results = null;
+            List<string> results = null;
             await Task.Run(() =>
             {
                 results = [];
@@ -90,7 +90,7 @@ namespace LoopBack.Common
                     }
                 }
             });
-            args.Request.SearchSuggestionCollection.AppendQuerySuggestions(results ?? Array.Empty<string>());
+            args.Request.SearchSuggestionCollection.AppendQuerySuggestions(results ?? []);
             deferral.Complete();
         }
 

@@ -14,7 +14,7 @@
   <Identity
     Name="wherewhere.LoopBack.Manager"
     Publisher="CN=where"
-    Version="1.0.0.0" />
+    Version="0.0.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="eb02184e-8ef5-4f9b-abe6-578d647fea6d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -62,6 +62,8 @@
         </uap:InitialRotationPreference>
       </uap:VisualElements>
       <Extensions>
+        <!-- Search Pane can only be registered by Windows.Desktop -->
+        <uap:Extension Category="windows.search" />
         <com:Extension Category="windows.comServer">
           <com:ComServer>
             <com:ExeServer

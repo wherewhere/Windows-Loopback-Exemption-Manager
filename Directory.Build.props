@@ -2,11 +2,11 @@
   <PropertyGroup>
     <Authors>wherewhere</Authors>
     <Copyright>Copyright © 2017 - 2025 wherewhere. All Rights Reserved.</Copyright>
-    <Description>UWP running on .NET Core App</Description>
+    <Description>GUI to enable Loopback Exemptions for Universal Windows Apps and Windows 8, 8.1, 10 Modern UI Apps.</Description>
     <LangVersion>latest</LangVersion>
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>True</PublishRepositoryUrl>
-    <RepositoryUrl>https://github.com/wherewhere/CoreAppUWP</RepositoryUrl>
+    <RepositoryUrl>https://github.com/wherewhere/Windows-Loopback-Exemption-Manager</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup>

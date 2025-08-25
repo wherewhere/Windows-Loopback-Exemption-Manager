@@ -19,10 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Labs.Uwp.Controls.DataTable" Version="0.1.250305-build.2058" />
-    <PackageReference Include="CommunityToolkit.Uwp.Controls.Sizers" Version="8.2.250129-preview2" />
-    <PackageReference Include="CommunityToolkit.Uwp.Converters" Version="8.2.250129-preview2" />
-    <PackageReference Include="CommunityToolkit.Uwp.Extensions" Version="8.2.250129-preview2" />
+    <PackageReference Include="CommunityToolkit.Labs.Uwp.Controls.DataTable" Version="0.1.250811-build.10" />
     <PackageReference Include="MetroLog.Net6" Version="2.1.0" />
     <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" />
     <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
@@ -35,10 +32,6 @@
   <ItemGroup>
     <None Remove="AppPackages\**" />
     <None Remove="BundleArtifacts\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="CustomCapability.SCCD" />
   </ItemGroup>
 
   <ItemGroup>
