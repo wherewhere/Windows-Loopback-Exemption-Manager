@@ -1,6 +1,7 @@
 ﻿using LoopBack.Common;
 using LoopBack.Helpers;
 using LoopBack.Metadata;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -105,12 +106,12 @@ namespace LoopBack.ViewModels
                 AppContainers = null;
                 FilteredAppContainers = null;
                 IsDirty = IsRunAsAdministrator = false;
-                SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Warn(ex.ExceptionToMessage());
+                SettingsHelper.LoggerFactory.CreateLogger<ManageViewModel>().LogWarning(ex, "The loop utility is offline. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
                 ShowMessage(ex.Message);
             }
             catch (Exception ex)
             {
-                SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(ex.ExceptionToMessage());
+                SettingsHelper.LoggerFactory.CreateLogger<ManageViewModel>().LogError(ex, "Failed to refresh manage page. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
                 ShowMessage(ex.Message);
             }
             finally
@@ -154,7 +155,7 @@ namespace LoopBack.ViewModels
             }
             catch (Exception ex)
             {
-                SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(ex.ExceptionToMessage());
+                SettingsHelper.LoggerFactory.CreateLogger<ManageViewModel>().LogError(ex, "Failed to filter data. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
                 ShowMessage(ex.Message);
             }
         }
@@ -212,7 +213,7 @@ namespace LoopBack.ViewModels
             }
             catch (Exception ex)
             {
-                SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(ex.ExceptionToMessage());
+                SettingsHelper.LoggerFactory.CreateLogger<ManageViewModel>().LogError(ex, "Failed to sort data. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
                 ShowMessage(ex.Message);
             }
         }
@@ -236,7 +237,7 @@ namespace LoopBack.ViewModels
             }
             catch (Exception ex)
             {
-                SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(ex.ExceptionToMessage());
+                SettingsHelper.LoggerFactory.CreateLogger<ManageViewModel>().LogError(ex, "Failed to exempt all. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
                 ShowMessage(ex.Message);
             }
         }
@@ -257,7 +258,7 @@ namespace LoopBack.ViewModels
                 IEnumerable<AppContainer> enableList = AppContainers.Where(x => x.IsEnableLoop);
                 if (loopUtil.SetLoopbackList(enableList) is Exception exception)
                 {
-                    SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(exception.ExceptionToMessage());
+                    SettingsHelper.LoggerFactory.CreateLogger<ManageViewModel>().LogError(exception, "Failed to saving data. {message} (0x{hResult:X})", exception.GetMessage(), exception.HResult);
                     ShowMessage($"ERROR SAVING: {exception.Message}");
                 }
                 else
@@ -267,7 +268,7 @@ namespace LoopBack.ViewModels
             }
             catch (Exception ex)
             {
-                SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(ex.ExceptionToMessage());
+                SettingsHelper.LoggerFactory.CreateLogger<ManageViewModel>().LogError(ex, "Failed to save configure. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
                 ShowMessage(ex.Message);
             }
         }
@@ -310,7 +311,7 @@ namespace LoopBack.ViewModels
             }
             catch (Exception ex)
             {
-                SettingsHelper.LogManager.GetLogger(nameof(ManageViewModel)).Error(ex.ExceptionToMessage());
+                SettingsHelper.LoggerFactory.CreateLogger<ManageViewModel>().LogError(ex, "Failed to run as administrator. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
                 ShowMessage(ex.Message);
             }
         }

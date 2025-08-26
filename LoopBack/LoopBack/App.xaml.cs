@@ -1,6 +1,7 @@
 ﻿using LoopBack.Common;
 using LoopBack.Helpers;
 using LoopBack.Pages;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using Windows.ApplicationModel;
@@ -177,24 +178,27 @@ namespace LoopBack
             deferral.Complete();
         }
 
-        private void Application_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        private static void Application_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
-            SettingsHelper.LogManager.GetLogger("Unhandled Exception - Application").Error(e.Exception.ExceptionToMessage(), e.Exception);
+            if (e.Exception is Exception ex)
+            {
+                SettingsHelper.LoggerFactory.CreateLogger("Unhandled Exception - Application").LogError(ex, "Unhandled exception. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
+            }
             e.Handled = true;
         }
 
-        private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        private static void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
         {
-            if (e.ExceptionObject is Exception Exception)
+            if (e.ExceptionObject is Exception ex)
             {
-                SettingsHelper.LogManager.GetLogger("Unhandled Exception - CurrentDomain").Error(Exception.ExceptionToMessage(), Exception);
+                SettingsHelper.LoggerFactory.CreateLogger("Unhandled Exception - CurrentDomain").LogError(ex, "Unhandled exception. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
             }
         }
 
         /// <summary>
         /// Should be called from OnActivated and OnLaunched.
         /// </summary>
-        private void RegisterExceptionHandlingSynchronizationContext()
+        private static void RegisterExceptionHandlingSynchronizationContext()
         {
             if (ExceptionHandlingSynchronizationContext.TryRegister(out ExceptionHandlingSynchronizationContext context))
             {
@@ -202,9 +206,12 @@ namespace LoopBack
             }
         }
 
-        private void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)
+        private static void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)
         {
-            SettingsHelper.LogManager.GetLogger("Unhandled Exception - SynchronizationContext").Error(e.Exception.ExceptionToMessage(), e.Exception);
+            if (e.Exception is Exception ex)
+            {
+                SettingsHelper.LoggerFactory.CreateLogger("Unhandled Exception - SynchronizationContext").LogError(ex, "Unhandled exception. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
+            }
             e.Handled = true;
         }
 

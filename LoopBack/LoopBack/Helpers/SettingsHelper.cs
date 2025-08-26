@@ -1,21 +1,25 @@
-﻿using MetroLog;
-using MetroLog.Targets;
-using System.IO;
+﻿using Karambolo.Extensions.Logging.File;
+using Microsoft.Extensions.Logging;
 using Windows.Storage;
 
 namespace LoopBack.Helpers
 {
     public static partial class SettingsHelper
     {
-        public static ILogManager LogManager { get; } = CreateLogManager();
+        public static ILoggerFactory LoggerFactory { get; } = CreateLoggerFactory();
 
-        public static ILogManager CreateLogManager()
-        {
-            string path = Path.Combine(ApplicationData.Current.LocalFolder.Path, "MetroLogs");
-            if (!Directory.Exists(path)) { Directory.CreateDirectory(path); }
-            LoggingConfiguration loggingConfiguration = new();
-            loggingConfiguration.AddTarget(LogLevel.Info, LogLevel.Fatal, new StreamingFileTarget(path, 7));
-            return LogManagerFactory.CreateLogManager(loggingConfiguration);
-        }
+        public static ILoggerFactory CreateLoggerFactory() =>
+            Microsoft.Extensions.Logging.LoggerFactory.Create(x => _ = x.AddFile(x =>
+            {
+                x.RootPath = ApplicationData.Current.LocalFolder.Path;
+                x.IncludeScopes = true;
+                x.BasePath = "Logs";
+                x.Files = [
+                    new LogFileOptions()
+                    {
+                        Path = "Log - <date>.log"
+                    }
+                ];
+            }).AddDebug());
     }
 }

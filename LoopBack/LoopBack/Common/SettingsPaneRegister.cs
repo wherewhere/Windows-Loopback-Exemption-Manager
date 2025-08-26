@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.WinUI;
+using LoopBack.Helpers;
 using LoopBack.Metadata;
 using LoopBack.Pages;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,38 +26,66 @@ namespace LoopBack.Common
 
         public static void Register(Window window)
         {
-            if (IsSearchPaneSupported)
+            try
             {
-                SearchPane searchPane = SearchPane.GetForCurrentView();
-                searchPane.QuerySubmitted -= SearchPane_QuerySubmitted;
-                searchPane.QuerySubmitted += SearchPane_QuerySubmitted;
-                searchPane.SuggestionsRequested -= SearchPane_SuggestionsRequested;
-                searchPane.SuggestionsRequested += SearchPane_SuggestionsRequested;
+                if (IsSearchPaneSupported)
+                {
+                    SearchPane searchPane = SearchPane.GetForCurrentView();
+                    searchPane.QuerySubmitted -= SearchPane_QuerySubmitted;
+                    searchPane.QuerySubmitted += SearchPane_QuerySubmitted;
+                    searchPane.SuggestionsRequested -= SearchPane_SuggestionsRequested;
+                    searchPane.SuggestionsRequested += SearchPane_SuggestionsRequested;
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LoggerFactory.CreateLogger(typeof(SettingsPaneRegister)).LogError(ex, "Failed to register search pane. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
             }
 
-            if (IsSettingsPaneSupported)
+            try
             {
-                SettingsPane searchPane = SettingsPane.GetForCurrentView();
-                searchPane.CommandsRequested -= OnCommandsRequested;
-                searchPane.CommandsRequested += OnCommandsRequested;
-                window.Dispatcher.AcceleratorKeyActivated -= Dispatcher_AcceleratorKeyActivated;
-                window.Dispatcher.AcceleratorKeyActivated += Dispatcher_AcceleratorKeyActivated;
+                if (IsSettingsPaneSupported)
+                {
+                    SettingsPane searchPane = SettingsPane.GetForCurrentView();
+                    searchPane.CommandsRequested -= OnCommandsRequested;
+                    searchPane.CommandsRequested += OnCommandsRequested;
+                    window.Dispatcher.AcceleratorKeyActivated -= Dispatcher_AcceleratorKeyActivated;
+                    window.Dispatcher.AcceleratorKeyActivated += Dispatcher_AcceleratorKeyActivated;
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LoggerFactory.CreateLogger(typeof(SettingsPaneRegister)).LogError(ex, "Failed to register settings pane. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
             }
         }
 
         public static void Unregister(Window window)
         {
-            if (IsSearchPaneSupported)
+            try
             {
-                SearchPane searchPane = SearchPane.GetForCurrentView();
-                searchPane.QuerySubmitted -= SearchPane_QuerySubmitted;
-                searchPane.SuggestionsRequested -= SearchPane_SuggestionsRequested;
+                if (IsSearchPaneSupported)
+                {
+                    SearchPane searchPane = SearchPane.GetForCurrentView();
+                    searchPane.QuerySubmitted -= SearchPane_QuerySubmitted;
+                    searchPane.SuggestionsRequested -= SearchPane_SuggestionsRequested;
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LoggerFactory.CreateLogger(typeof(SettingsPaneRegister)).LogError(ex, "Failed to unregister search pane. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
             }
 
-            if (IsSettingsPaneSupported)
+            try
             {
-                SettingsPane.GetForCurrentView().CommandsRequested -= OnCommandsRequested;
-                window.Dispatcher.AcceleratorKeyActivated -= Dispatcher_AcceleratorKeyActivated;
+                if (IsSettingsPaneSupported)
+                {
+                    SettingsPane.GetForCurrentView().CommandsRequested -= OnCommandsRequested;
+                    window.Dispatcher.AcceleratorKeyActivated -= Dispatcher_AcceleratorKeyActivated;
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LoggerFactory.CreateLogger(typeof(SettingsPaneRegister)).LogError(ex, "Failed to unregister settings pane. {message} (0x{hResult:X})", ex.GetMessage(), ex.HResult);
             }
         }
 
@@ -115,7 +145,7 @@ namespace LoopBack.Common
                 new SettingsCommand(
                     "LogFolder",
                     "LogFolder",
-                    async (handler) => _ = Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists))));
+                    async (handler) => _ = Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("Logs", CreationCollisionOption.OpenIfExists))));
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
                     "Repository",
