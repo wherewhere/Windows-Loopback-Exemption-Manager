@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Solution_Name: LoopBack.sln
+      Solution_Name: LoopBack/LoopBack/LoopBack.csproj
       Project_Directory: LoopBack/LoopBack
       Signing_Certificate: LoopBack_TemporaryKey.pfx
 
@@ -52,6 +52,7 @@ jobs:
       run: msbuild $env:Solution_Name `
         /p:AppxBundlePlatforms="$env:Appx_Bundle_Platforms" `
         /p:Configuration=$env:Configuration `
+        /p:Platform=$env:Platform `
         /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode `
         /p:AppxBundle=$env:Appx_Bundle `
         /p:AppxPackageDir="$env:Appx_Package_Dir" `
