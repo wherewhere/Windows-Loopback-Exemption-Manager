@@ -2,6 +2,7 @@ import "LoopBackManagerContract.idl";
 
 namespace LoopBack.Metadata
 {
+    [bindable]
     [default_interface]
     [contract(LoopBackManagerContract, 1)]
     runtimeclass AppContainer : Windows.Foundation.IStringable

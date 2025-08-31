@@ -117,372 +117,428 @@
                 </Button>
             </StackPanel>
         </ScrollViewer>
-        <ListView
+        <cwuc:DataGrid
+            x:Name="DataGrid"
             Grid.Row="1"
+            AutoGenerateColumns="False"
+            CanUserReorderColumns="True"
+            CanUserResizeColumns="True"
+            CanUserSortColumns="True"
+            FrozenColumnCount="1"
+            GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind Provider.FilteredAppContainers, Mode=OneWay}"
-            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-            ScrollViewer.HorizontalScrollMode="Auto">
-            <ListView.Header>
-                <Border Padding="8,4,0,4">
-                    <cwuc:DataTable ColumnSpacing="16">
-                        <cwuc:DataColumn
-                            CanResize="False"
-                            Content="Exempt"
-                            DesiredWidth="85"
-                            Tag="IsEnableLoop"
-                            Tapped="DataColumn_Tapped" />
-                        <cwuc:DataColumn
-                            CanResize="True"
-                            Content="App Display Name"
-                            DesiredWidth="150"
-                            Tag="DisplayName"
-                            Tapped="DataColumn_Tapped" />
-                        <cwuc:DataColumn
-                            CanResize="True"
-                            Content="App Full Name"
-                            DesiredWidth="400"
-                            Tag="AppContainerName"
-                            Tapped="DataColumn_Tapped" />
-                        <cwuc:DataColumn
-                            CanResize="True"
-                            Content="Directory"
-                            DesiredWidth="400"
-                            Tag="WorkingDirectory"
-                            Tapped="DataColumn_Tapped" />
-                        <cwuc:DataColumn
-                            CanResize="True"
-                            Content="Package Full Name"
-                            DesiredWidth="400"
-                            Tag="PackageFullName"
-                            Tapped="DataColumn_Tapped" />
-                        <cwuc:DataColumn
-                            CanResize="True"
-                            Content="App Container SID"
-                            DesiredWidth="400"
-                            Tag="AppContainerSid"
-                            Tapped="DataColumn_Tapped" />
-                        <cwuc:DataColumn
-                            CanResize="True"
-                            Content="User SID"
-                            DesiredWidth="400"
-                            Tag="UserSid"
-                            Tapped="DataColumn_Tapped" />
-                    </cwuc:DataTable>
-                </Border>
-            </ListView.Header>
-            <ListView.ItemTemplate>
+            RowDetailsVisibilityMode="{Binding SelectedValue, ElementName=DataGridRowDetailsVisibilityMode}"
+            Sorting="DataGrid_Sorting">
+            <cwuc:DataGrid.RowDetailsTemplate>
                 <DataTemplate x:DataType="metadata:AppContainer">
-                    <cwuc:DataRow>
-                        <!--<cwuc:DataRow.RowDetailsTemplate>
-                            <DataTemplate x:DataType="metadata:AppContainer">
-                                <Grid
-                                    Padding="12,8"
-                                    ColumnSpacing="8"
-                                    RowSpacing="8">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
+                    <Grid
+                        Padding="12,8"
+                        ColumnSpacing="8"
+                        RowSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="Display Name" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind DisplayName}"
+                            TextWrapping="WrapWholeWords" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="App Container Name" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind AppContainerName}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="Package Full Name" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind PackageFullName}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="App Container Sid" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind AppContainerSid}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="User Sid" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind UserSid}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="Working Directory" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind WorkingDirectory}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Text="Capabilities" />
+                        <ItemsControl
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            ItemsSource="{x:Bind Capabilities}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
                                     <TextBlock
-                                        Grid.Row="0"
-                                        Grid.Column="0"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                        Text="Display Name" />
-                                    <TextBlock
-                                        Grid.Row="0"
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                         IsTextSelectionEnabled="True"
-                                        Text="{x:Bind DisplayName}"
-                                        TextWrapping="WrapWholeWords" />
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                        Text="App Container Name" />
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                        IsTextSelectionEnabled="True"
-                                        Text="{x:Bind AppContainerName}"
+                                        Text="{x:Bind}"
                                         TextWrapping="Wrap" />
-                                    <TextBlock
-                                        Grid.Row="2"
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                        Text="Package Full Name" />
-                                    <TextBlock
-                                        Grid.Row="2"
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                        IsTextSelectionEnabled="True"
-                                        Text="{x:Bind PackageFullName}"
-                                        TextWrapping="Wrap" />
-                                    <TextBlock
-                                        Grid.Row="3"
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                        Text="App Container Sid" />
-                                    <TextBlock
-                                        Grid.Row="3"
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                        IsTextSelectionEnabled="True"
-                                        Text="{x:Bind AppContainerSid}"
-                                        TextWrapping="Wrap" />
-                                    <TextBlock
-                                        Grid.Row="4"
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                        Text="User Sid" />
-                                    <TextBlock
-                                        Grid.Row="4"
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                        IsTextSelectionEnabled="True"
-                                        Text="{x:Bind UserSid}"
-                                        TextWrapping="Wrap" />
-                                    <TextBlock
-                                        Grid.Row="5"
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                        Text="Working Directory" />
-                                    <TextBlock
-                                        Grid.Row="5"
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                        IsTextSelectionEnabled="True"
-                                        Text="{x:Bind WorkingDirectory}"
-                                        TextWrapping="Wrap" />
-                                    <TextBlock
-                                        Grid.Row="6"
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                        Text="Capabilities" />
-                                    <ItemsControl
-                                        Grid.Row="6"
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        ItemsSource="{x:Bind Capabilities}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate x:DataType="x:String">
-                                                <TextBlock
-                                                    HorizontalAlignment="Left"
-                                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                                    IsTextSelectionEnabled="True"
-                                                    Text="{x:Bind}"
-                                                    TextWrapping="Wrap" />
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </Grid>
-                            </DataTemplate>
-                        </cwuc:DataRow.RowDetailsTemplate>-->
-                        <CheckBox
-                            MinWidth="0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Click="ToggleSwitch_Toggled"
-                            IsChecked="{x:Bind IsEnableLoop, Mode=TwoWay}" />
-                        <Border
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{ThemeResource SystemControlTransparentBrush}"
-                            Visibility="{x:Bind DisplayName, Converter={StaticResource StringVisibilityConverter}}">
-                            <Border.ContextFlyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem
-                                        Click="Copy_Click"
-                                        Tag="{x:Bind DisplayName}"
-                                        Text="Copy">
-                                        <MenuFlyoutItem.Icon>
-                                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
-                                </MenuFlyout>
-                            </Border.ContextFlyout>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Text="{x:Bind DisplayName}"
-                                TextTrimming="CharacterEllipsis"
-                                ToolTipService.ToolTip="{x:Bind DisplayName}" />
-                        </Border>
-                        <Border
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{ThemeResource SystemControlTransparentBrush}"
-                            Visibility="{x:Bind AppContainerName, Converter={StaticResource StringVisibilityConverter}}">
-                            <Border.ContextFlyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem
-                                        Click="Copy_Click"
-                                        Tag="{x:Bind AppContainerName}"
-                                        Text="Copy">
-                                        <MenuFlyoutItem.Icon>
-                                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
-                                </MenuFlyout>
-                            </Border.ContextFlyout>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Text="{x:Bind AppContainerName}"
-                                TextTrimming="CharacterEllipsis"
-                                ToolTipService.ToolTip="{x:Bind AppContainerName}" />
-                        </Border>
-                        <Border
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{ThemeResource SystemControlTransparentBrush}"
-                            Visibility="{x:Bind WorkingDirectory, Converter={StaticResource StringVisibilityConverter}}">
-                            <Border.ContextFlyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem
-                                        Click="Copy_Click"
-                                        Tag="{x:Bind WorkingDirectory}"
-                                        Text="Copy">
-                                        <MenuFlyoutItem.Icon>
-                                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
-                                    <MenuFlyoutItem
-                                        x:Name="Open"
-                                        Click="MenuFlyoutItem_Click"
-                                        Tag="{x:Bind WorkingDirectory}"
-                                        Text="Open">
-                                        <MenuFlyoutItem.Icon>
-                                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8DA;" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
-                                </MenuFlyout>
-                            </Border.ContextFlyout>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Text="{x:Bind WorkingDirectory}"
-                                TextTrimming="CharacterEllipsis"
-                                ToolTipService.ToolTip="{x:Bind WorkingDirectory}" />
-                        </Border>
-                        <Border
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{ThemeResource SystemControlTransparentBrush}"
-                            Visibility="{x:Bind PackageFullName, Converter={StaticResource StringVisibilityConverter}}">
-                            <Border.ContextFlyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem
-                                        Click="Copy_Click"
-                                        Tag="{x:Bind PackageFullName}"
-                                        Text="Copy">
-                                        <MenuFlyoutItem.Icon>
-                                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
-                                </MenuFlyout>
-                            </Border.ContextFlyout>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Text="{x:Bind PackageFullName}"
-                                TextTrimming="CharacterEllipsis"
-                                ToolTipService.ToolTip="{x:Bind PackageFullName}" />
-                        </Border>
-                        <Border
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{ThemeResource SystemControlTransparentBrush}"
-                            Visibility="{x:Bind AppContainerSid, Converter={StaticResource StringVisibilityConverter}}">
-                            <Border.ContextFlyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem
-                                        Click="Copy_Click"
-                                        Tag="{x:Bind AppContainerSid}"
-                                        Text="Copy">
-                                        <MenuFlyoutItem.Icon>
-                                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
-                                </MenuFlyout>
-                            </Border.ContextFlyout>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Text="{x:Bind AppContainerSid}"
-                                TextTrimming="CharacterEllipsis"
-                                ToolTipService.ToolTip="{x:Bind AppContainerSid}" />
-                        </Border>
-                        <Border
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{ThemeResource SystemControlTransparentBrush}"
-                            Visibility="{x:Bind UserSid, Converter={StaticResource StringVisibilityConverter}}">
-                            <Border.ContextFlyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem
-                                        Click="Copy_Click"
-                                        Tag="{x:Bind UserSid}"
-                                        Text="Copy">
-                                        <MenuFlyoutItem.Icon>
-                                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
-                                </MenuFlyout>
-                            </Border.ContextFlyout>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Text="{x:Bind UserSid}"
-                                TextTrimming="CharacterEllipsis"
-                                ToolTipService.ToolTip="{x:Bind UserSid}" />
-                        </Border>
-                    </cwuc:DataRow>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.ItemContainerStyle>
-                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Left" />
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
+            </cwuc:DataGrid.RowDetailsTemplate>
+            <cwuc:DataGrid.Columns>
+                <cwuc:DataGridTemplateColumn
+                    Width="85"
+                    CanUserResize="False"
+                    CanUserSort="True"
+                    Header="Exempt"
+                    IsReadOnly="True"
+                    Tag="IsEnableLoop">
+                    <cwuc:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:DataType="metadata:AppContainer">
+                            <CheckBox
+                                MinWidth="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Click="ToggleSwitch_Toggled"
+                                IsChecked="{x:Bind IsEnableLoop, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </cwuc:DataGridTemplateColumn.CellTemplate>
+                </cwuc:DataGridTemplateColumn>
+                <cwuc:DataGridTemplateColumn
+                    Width="150"
+                    CanUserResize="True"
+                    CanUserSort="True"
+                    Header="App Display Name"
+                    IsReadOnly="True"
+                    Tag="DisplayName">
+                    <cwuc:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:DataType="metadata:AppContainer">
+                            <Border
+                                Padding="8"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="{ThemeResource SystemControlTransparentBrush}"
+                                Visibility="{x:Bind DisplayName, Converter={StaticResource StringVisibilityConverter}}">
+                                <Border.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem
+                                            x:Name="Copy"
+                                            Click="MenuFlyoutItem_Click"
+                                            Tag="{x:Bind DisplayName}"
+                                            Text="Copy">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </Border.ContextFlyout>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind DisplayName}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTipService.ToolTip="{x:Bind DisplayName}" />
+                            </Border>
+                        </DataTemplate>
+                    </cwuc:DataGridTemplateColumn.CellTemplate>
+                </cwuc:DataGridTemplateColumn>
+                <cwuc:DataGridTemplateColumn
+                    Width="400"
+                    CanUserResize="True"
+                    CanUserSort="True"
+                    Header="App Full Name"
+                    IsReadOnly="True"
+                    Tag="AppContainerName">
+                    <cwuc:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:DataType="metadata:AppContainer">
+                            <Border
+                                Padding="8"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="{ThemeResource SystemControlTransparentBrush}"
+                                Visibility="{x:Bind AppContainerName, Converter={StaticResource StringVisibilityConverter}}">
+                                <Border.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem
+                                            x:Name="Copy"
+                                            Click="MenuFlyoutItem_Click"
+                                            Tag="{x:Bind AppContainerName}"
+                                            Text="Copy">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </Border.ContextFlyout>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind AppContainerName}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTipService.ToolTip="{x:Bind AppContainerName}" />
+                            </Border>
+                        </DataTemplate>
+                    </cwuc:DataGridTemplateColumn.CellTemplate>
+                </cwuc:DataGridTemplateColumn>
+                <cwuc:DataGridTemplateColumn
+                    Width="400"
+                    CanUserResize="True"
+                    CanUserSort="True"
+                    Header="Directory"
+                    IsReadOnly="True"
+                    Tag="WorkingDirectory">
+                    <cwuc:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:DataType="metadata:AppContainer">
+                            <Border
+                                Padding="8"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="{ThemeResource SystemControlTransparentBrush}"
+                                Visibility="{x:Bind WorkingDirectory, Converter={StaticResource StringVisibilityConverter}}">
+                                <Border.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem
+                                            x:Name="Copy"
+                                            Click="MenuFlyoutItem_Click"
+                                            Tag="{x:Bind WorkingDirectory}"
+                                            Text="Copy">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutItem
+                                            x:Name="Open"
+                                            Click="MenuFlyoutItem_Click"
+                                            Tag="{x:Bind WorkingDirectory}"
+                                            Text="Open">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8DA;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </Border.ContextFlyout>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind WorkingDirectory}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTipService.ToolTip="{x:Bind WorkingDirectory}" />
+                            </Border>
+                        </DataTemplate>
+                    </cwuc:DataGridTemplateColumn.CellTemplate>
+                </cwuc:DataGridTemplateColumn>
+                <cwuc:DataGridTemplateColumn
+                    Width="400"
+                    CanUserResize="True"
+                    CanUserSort="True"
+                    Header="Package Full Name"
+                    IsReadOnly="True"
+                    Tag="PackageFullName">
+                    <cwuc:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:DataType="metadata:AppContainer">
+                            <Border
+                                Padding="8"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="{ThemeResource SystemControlTransparentBrush}"
+                                Visibility="{x:Bind PackageFullName, Converter={StaticResource StringVisibilityConverter}}">
+                                <Border.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem
+                                            x:Name="Copy"
+                                            Click="MenuFlyoutItem_Click"
+                                            Tag="{x:Bind PackageFullName}"
+                                            Text="Copy">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </Border.ContextFlyout>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind PackageFullName}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTipService.ToolTip="{x:Bind PackageFullName}" />
+                            </Border>
+                        </DataTemplate>
+                    </cwuc:DataGridTemplateColumn.CellTemplate>
+                </cwuc:DataGridTemplateColumn>
+                <cwuc:DataGridTemplateColumn
+                    Width="400"
+                    CanUserResize="True"
+                    CanUserSort="True"
+                    Header="App Container SID"
+                    IsReadOnly="True"
+                    Tag="AppContainerSid">
+                    <cwuc:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:DataType="metadata:AppContainer">
+                            <Border
+                                Padding="8"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="{ThemeResource SystemControlTransparentBrush}"
+                                Visibility="{x:Bind AppContainerSid, Converter={StaticResource StringVisibilityConverter}}">
+                                <Border.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem
+                                            x:Name="Copy"
+                                            Click="MenuFlyoutItem_Click"
+                                            Tag="{x:Bind AppContainerSid}"
+                                            Text="Copy">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </Border.ContextFlyout>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind AppContainerSid}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTipService.ToolTip="{x:Bind AppContainerSid}" />
+                            </Border>
+                        </DataTemplate>
+                    </cwuc:DataGridTemplateColumn.CellTemplate>
+                </cwuc:DataGridTemplateColumn>
+                <cwuc:DataGridTemplateColumn
+                    Width="400"
+                    CanUserResize="True"
+                    CanUserSort="True"
+                    Header="User SID"
+                    IsReadOnly="True"
+                    Tag="UserSid">
+                    <cwuc:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:DataType="metadata:AppContainer">
+                            <Border
+                                Padding="8"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="{ThemeResource SystemControlTransparentBrush}"
+                                Visibility="{x:Bind UserSid, Converter={StaticResource StringVisibilityConverter}}">
+                                <Border.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem
+                                            x:Name="Copy"
+                                            Click="MenuFlyoutItem_Click"
+                                            Tag="{x:Bind UserSid}"
+                                            Text="Copy">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </Border.ContextFlyout>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind UserSid}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTipService.ToolTip="{x:Bind UserSid}" />
+                            </Border>
+                        </DataTemplate>
+                    </cwuc:DataGridTemplateColumn.CellTemplate>
+                </cwuc:DataGridTemplateColumn>
+            </cwuc:DataGrid.Columns>
+        </cwuc:DataGrid>
         <Grid
             Grid.Row="2"
             Height="30"
             Padding="2,0"
             VerticalAlignment="Bottom"
             ColumnSpacing="2">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="14" />
+                </Style>
+                <x:Double x:Key="ControlContentThemeFontSize">14</x:Double>
+                <x:Double x:Key="ContentControlFontSize">14</x:Double>
+                <Thickness x:Key="ComboBoxEditableTextPadding">10,0,30,0</Thickness>
+                <x:Double x:Key="ComboBoxMinHeight">24</x:Double>
+                <Thickness x:Key="ComboBoxPadding">12,1,0,3</Thickness>
+            </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -498,6 +554,14 @@
                 <Run Text="Status:" />
                 <Run Text="{x:Bind Provider.Message, Mode=OneWay}" />
             </TextBlock>
+            <ComboBox
+                x:Name="DataGridRowDetailsVisibilityMode"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                ItemsSource="{x:Bind viewmodels:ManageViewModel.DataGridRowDetailsVisibilityModes}"
+                SelectedIndex="0"
+                ToolTipService.ToolTip="Data Grid Row Details Visibility Mode" />
         </Grid>
     </Grid>
 </Page>

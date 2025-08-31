@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopBack", "LoopBack\LoopBa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoopBack.Metadata", "LoopBack\LoopBack.Metadata\LoopBack.Metadata.vcxproj", "{8BEF428A-76E0-45B4-B2B0-DB66A88C1406}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommunityToolkit", "CommunityToolkit", "{B929CE4B-6D2C-63D9-7EFD-E15275D60312}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityToolkit.WinUI.Controls.DataGrid", "LoopBack\CommunityToolkit\DataGrid\CommunityToolkit.WinUI.Controls.DataGrid.csproj", "{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -55,9 +59,28 @@ Global
 		{8BEF428A-76E0-45B4-B2B0-DB66A88C1406}.Release|x64.Build.0 = Release|x64
 		{8BEF428A-76E0-45B4-B2B0-DB66A88C1406}.Release|x86.ActiveCfg = Release|Win32
 		{8BEF428A-76E0-45B4-B2B0-DB66A88C1406}.Release|x86.Build.0 = Release|Win32
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Debug|x64.Build.0 = Debug|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Debug|x86.Build.0 = Debug|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Release|ARM.Build.0 = Release|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Release|ARM64.Build.0 = Release|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Release|x64.ActiveCfg = Release|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Release|x64.Build.0 = Release|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Release|x86.ActiveCfg = Release|Any CPU
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B898F48F-A2DA-FB51-B9AD-3ABE0134CA46} = {B929CE4B-6D2C-63D9-7EFD-E15275D60312}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A2578A69-416D-4270-823A-65BF153BBA8C}

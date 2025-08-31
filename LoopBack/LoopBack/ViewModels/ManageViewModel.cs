@@ -2,6 +2,7 @@
 using LoopBack.Helpers;
 using LoopBack.Metadata;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.WinUI.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,8 @@ namespace LoopBack.ViewModels
     {
         private bool isLoading;
         private LoopUtil loopUtil;
+
+        public static DataGridRowDetailsVisibilityMode[] DataGridRowDetailsVisibilityModes { get; } = Enum.GetValues<DataGridRowDetailsVisibilityMode>();
 
         public CoreDispatcher Dispatcher => dispatcher;
 

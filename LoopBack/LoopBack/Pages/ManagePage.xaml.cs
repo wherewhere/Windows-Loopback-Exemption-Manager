@@ -1,7 +1,7 @@
-﻿using CommunityToolkit.WinUI.Controls;
-using LoopBack.Common;
+﻿using LoopBack.Common;
 using LoopBack.Metadata;
 using LoopBack.ViewModels;
+using CommunityToolkit.WinUI.Controls;
 using System;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
@@ -10,7 +10,6 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -55,6 +54,7 @@ namespace LoopBack.Pages
                     break;
                 case "Refresh":
                     _ = Provider.Refresh().ContinueWith((x) => Provider.IsDirty = false);
+                    ClearSort();
                     break;
                 default:
                     break;
@@ -104,19 +104,63 @@ namespace LoopBack.Pages
             if (args.ChosenSuggestion is string word)
             {
                 _ = Provider.FilterDataAsync(word);
+                ClearSort();
             }
             else if (args.ChosenSuggestion is null)
             {
                 _ = Provider.FilterDataAsync(sender.Text);
+                ClearSort();
             }
         }
 
-        private void DataColumn_Tapped(object sender, TappedRoutedEventArgs e)
+        private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
         {
-            DataColumn dataGrid = sender as DataColumn;
-            if (dataGrid.Tag != null)
+            DataGrid dataGrid = sender as DataGrid;
+            // Clear previous sorted column if we start sorting a different column
+            string previousSortedColumn = Provider.CachedSortedColumn;
+            if (previousSortedColumn != string.Empty)
             {
-                _ = Provider.SortDataAsync(dataGrid.Tag.ToString(), true);
+                foreach (DataGridColumn dataGridColumn in dataGrid.Columns)
+                {
+                    if (dataGridColumn.Tag != null && dataGridColumn.Tag.ToString() == previousSortedColumn &&
+                        (e.Column.Tag == null || previousSortedColumn != e.Column.Tag.ToString()))
+                    {
+                        dataGridColumn.SortDirection = null;
+                    }
+                }
+            }
+
+            // Toggle clicked column's sorting method
+            if (e.Column.Tag != null)
+            {
+                if (e.Column.SortDirection == null)
+                {
+                    _ = Provider.SortDataAsync(e.Column.Tag.ToString(), true);
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else if (e.Column.SortDirection == DataGridSortDirection.Ascending)
+                {
+                    _ = Provider.SortDataAsync(e.Column.Tag.ToString(), false);
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+                else
+                {
+                    _ = Provider.SortDataAsync(e.Column.Tag.ToString(), true);
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+            }
+        }
+
+        public void ClearSort()
+        {
+            // Clear previous sorted column if we start sorting a different column
+            string previousSortedColumn = Provider.CachedSortedColumn;
+            if (previousSortedColumn != string.Empty)
+            {
+                foreach (DataGridColumn dataGridColumn in DataGrid.Columns)
+                {
+                    dataGridColumn.SortDirection = null;
+                }
             }
         }
 
@@ -125,6 +169,11 @@ namespace LoopBack.Pages
             if (sender is not FrameworkElement element) { return; }
             switch (element.Name)
             {
+                case "Copy":
+                    DataPackage dataPackage = new();
+                    dataPackage.SetText(element.Tag.ToString());
+                    Clipboard.SetContentWithOptions(dataPackage, null);
+                    break;
                 case "Open" when element.Tag != null:
                     string tag = element.Tag.ToString();
                     if (Uri.TryCreate(tag, UriKind.RelativeOrAbsolute, out Uri url))
@@ -139,15 +188,6 @@ namespace LoopBack.Pages
                     _ = Provider.RunAsAdministratorAsync();
                     break;
             }
-        }
-
-        private void Copy_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is not FrameworkElement element) { return; }
-            if (element.Tag == null) { return; }
-            DataPackage dataPackage = new();
-            dataPackage.SetText(element.Tag.ToString());
-            Clipboard.SetContentWithOptions(dataPackage, null);
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e) => Provider.IsDirty = true;

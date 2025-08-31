@@ -1,6 +1,5 @@
 ﻿using LoopBack.Common;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation.Metadata;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;

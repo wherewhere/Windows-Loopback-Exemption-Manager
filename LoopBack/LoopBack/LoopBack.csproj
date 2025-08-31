@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationEntryPoint>LoopBack.App</ApplicationEntryPoint>
     <AssetTargetFallback>$(AssetTargetFallback);native</AssetTargetFallback>
     <CsWinRTIncludes>LoopBack.Metadata</CsWinRTIncludes>
@@ -19,7 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Labs.Uwp.Controls.DataTable" Version="0.1.250811-build.10" />
+    <PackageReference Include="CommunityToolkit.Uwp.Converters" Version="8.2.250402" />
+    <PackageReference Include="CommunityToolkit.Uwp.Extensions" Version="8.2.250402" />
     <PackageReference Include="Karambolo.Extensions.Logging.File" Version="3.6.3" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
     <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" />
@@ -27,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommunityToolkit\DataGrid\CommunityToolkit.WinUI.Controls.DataGrid.csproj" />
     <ProjectReference Include="..\LoopBack.Metadata\LoopBack.Metadata.vcxproj" />
   </ItemGroup>
 

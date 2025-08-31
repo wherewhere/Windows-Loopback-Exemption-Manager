@@ -130,7 +130,7 @@ namespace LoopBack.Common
             {
                 ManagePage page = Window.Current?.Content?.FindDescendant<ManagePage>();
                 _ = page.Provider.FilterDataAsync(keyWord);
-                //page.ClearSort();
+                page.ClearSort();
             }
         }
 
