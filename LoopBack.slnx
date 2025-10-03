@@ -1,0 +1,18 @@
+<Solution>
+  <Configurations>
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/CommunityToolkit/">
+    <Project Path="LoopBack/CommunityToolkit/DataGrid/CommunityToolkit.WinUI.Controls.DataGrid.csproj" />
+  </Folder>
+  <Project Path="LoopBack/LoopBack.Metadata/LoopBack.Metadata.vcxproj" Id="8bef428a-76e0-45b4-b2b0-db66a88c1406" />
+  <Project Path="LoopBack/LoopBack/LoopBack.csproj">
+    <BuildDependency Project="LoopBack/LoopBack.Metadata/LoopBack.Metadata.vcxproj" />
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+    <Deploy />
+  </Project>
+</Solution>
