@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <Authors>wherewhere</Authors>
-    <Copyright>Copyright © 2017 - 2025 wherewhere. All Rights Reserved.</Copyright>
+    <Copyright>Copyright © 2017 - 2026 wherewhere. All Rights Reserved.</Copyright>
     <Description>GUI to enable Loopback Exemptions for Universal Windows Apps and Windows 8, 8.1, 10 Modern UI Apps.</Description>
     <LangVersion>latest</LangVersion>
     <RepositoryType>git</RepositoryType>
