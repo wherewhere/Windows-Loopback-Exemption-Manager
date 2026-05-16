@@ -14,7 +14,7 @@ namespace winrt::LoopBack::Metadata::implementation
         LoopUtil() = default;
         ~LoopUtil()
         {
-            if (firewallAPI != nullptr)
+            if (firewallAPI)
             {
                 FreeLibrary(firewallAPI);
                 firewallAPI = nullptr;

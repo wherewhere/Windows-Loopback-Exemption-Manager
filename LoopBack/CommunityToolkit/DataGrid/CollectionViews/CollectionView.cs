@@ -800,6 +800,7 @@ namespace CommunityToolkit.WinUI.Data.Utilities
         /// Returns type of the items in the source collection.
         /// </summary>
         /// <returns>Type of the items in the source collection.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2075:'this' argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The return value of the source method does not have matching annotations.", Justification = "<挂起>")]
         internal Type GetItemType(bool useRepresentativeItem)
         {
             Type collectionType = SourceCollection.GetType();

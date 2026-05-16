@@ -211,6 +211,7 @@ namespace CommunityToolkit.WinUI.Data.Utilities
         /// <param name="element">FrameworkElement of interest</param>
         /// <param name="useBlockList">If true, ignores elements not typically used for input</param>
         /// <returns>List of DependencyProperties</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2075:'this' argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The return value of the source method does not have matching annotations.", Justification = "<挂起>")]
         public static List<DependencyProperty> GetDependencyProperties(this FrameworkElement element, bool useBlockList)
         {
             List<DependencyProperty> dependencyProperties = [];

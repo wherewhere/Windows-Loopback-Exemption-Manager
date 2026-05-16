@@ -8,7 +8,7 @@ env:
 jobs:
   build-and-package:
     name: build-and-package
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
 
     env:
       Solution_Name: LoopBack/LoopBack/LoopBack.csproj
@@ -32,7 +32,7 @@ jobs:
 
       # Install the .NET Core App workload
       - name: Install .NET Core App
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -43,7 +43,7 @@ jobs:
           msbuild-architecture: x64
 
       # Restore the application to populate the obj folder with RuntimeIdentifiers
-      - name: Restore the application
+      - name: Restore the application (x64)
         run: msbuild $env:Solution_Name `
           /t:Restore `
           /p:Configuration=$env:Configuration `
@@ -51,6 +51,24 @@ jobs:
         env:
           Configuration: Release
           Platform: x64
+
+      - name: Restore the application (x86)
+        run: msbuild $env:Solution_Name `
+          /t:Restore `
+          /p:Configuration=$env:Configuration `
+          /p:Platform=$env:Platform
+        env:
+          Configuration: Release
+          Platform: x86
+
+      - name: Restore the application (ARM64)
+        run: msbuild $env:Solution_Name `
+          /t:Restore `
+          /p:Configuration=$env:Configuration `
+          /p:Platform=$env:Platform
+        env:
+          Configuration: Release
+          Platform: ARM64
 
       # Create the app package by building and packaging the Windows Application Packaging project
       - name: Create the app package
@@ -69,7 +87,7 @@ jobs:
           /p:IsPackable=false
         env:
           Appx_Bundle: Always
-          Appx_Bundle_Platforms: x64|ARM64
+          Appx_Bundle_Platforms: x86|x64|ARM64
           Appx_Package_Build_Mode: SideloadOnly
           Appx_Package_Dir: AppxPackages\
           Configuration: Release
@@ -79,7 +97,7 @@ jobs:
 
       # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: MSIX Package
           path: LoopBack/LoopBack/AppxPackages/**

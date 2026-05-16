@@ -371,6 +371,7 @@ namespace CommunityToolkit.WinUI.Utilities
         /// <param name="item">Parent data item.</param>
         /// <param name="newValue">New child value</param>
         /// <param name="propertyPath">Property path</param>
+        [SuppressMessage("Trimming", "IL2075:'this' argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The return value of the source method does not have matching annotations.", Justification = "<¹ÒÆð>")]
         internal static void SetNestedPropertyValue(ref object item, object newValue, string propertyPath)
         {
             if (string.IsNullOrEmpty(propertyPath))

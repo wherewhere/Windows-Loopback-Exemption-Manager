@@ -110,6 +110,7 @@ namespace CommunityToolkit.WinUI.Utilities
             return false;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2072:Target parameter argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The return value of the source method does not have matching annotations.", Justification = "<挂起>")]
         internal static Type GetItemType(this IEnumerable list)
         {
             Type listType = list.GetType();

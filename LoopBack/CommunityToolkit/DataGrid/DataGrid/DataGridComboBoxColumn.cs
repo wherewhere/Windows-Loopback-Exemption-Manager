@@ -187,6 +187,7 @@ namespace CommunityToolkit.WinUI.Controls
         /// <param name="cell">The cell that will contain the generated element.</param>
         /// <param name="dataItem">The data item represented by the row that contains the intended cell.</param>
         /// <returns>A new <see cref="T:Windows.UI.Xaml.Controls.ComboBox"/> control that is bound to the column's ItemsSource collection.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2075:'this' argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The return value of the source method does not have matching annotations.", Justification = "<挂起>")]
         protected override FrameworkElement GenerateEditingElement(DataGridCell cell, object dataItem)
         {
             EnsureColumnBinding(dataItem);
@@ -333,6 +334,7 @@ namespace CommunityToolkit.WinUI.Controls
         /// </summary>
         /// <param name="editingElement">The element that the column displays for a cell in editing mode.</param>
         /// <param name="uneditedValue">The previous, unedited value in the cell being edited.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2072:Target parameter argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The return value of the source method does not have matching annotations.", Justification = "<挂起>")]
         protected override void CancelCellEdit(FrameworkElement editingElement, object uneditedValue)
         {
             ComboBox comboBox = editingElement as ComboBox;
@@ -584,6 +586,7 @@ namespace CommunityToolkit.WinUI.Controls
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2075:'this' argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The return value of the source method does not have matching annotations.", Justification = "<挂起>")]
         private string GetDisplayValue(object dataItem)
         {
             if (Binding?.Path != null && dataItem != null)
@@ -600,6 +603,7 @@ namespace CommunityToolkit.WinUI.Controls
             return string.Empty;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2072:Target parameter argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The return value of the source method does not have matching annotations.", Justification = "<挂起>")]
         private void EnsureColumnBinding(object dataItem)
         {
             if (Binding?.Path == null)
@@ -620,6 +624,7 @@ namespace CommunityToolkit.WinUI.Controls
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2072:Target parameter argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The return value of the source method does not have matching annotations.", Justification = "<挂起>")]
         private void EnsureColumnTypeAgreement(object dataItem)
         {
             if (string.IsNullOrEmpty(DisplayMemberPath))
@@ -648,6 +653,7 @@ namespace CommunityToolkit.WinUI.Controls
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2075:'this' argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The return value of the source method does not have matching annotations.", Justification = "<挂起>")]
         private void EnsureItemsSourceBinding()
         {
             if (!string.IsNullOrEmpty(DisplayMemberPath) && ItemsSource != null)

@@ -268,24 +268,24 @@ namespace winrt::LoopBack::Metadata::implementation
         AppContainer app = AppContainer::AppContainer();
 
         app.IsEnableLoop(loopUtil);
-        if (PI_app.displayName != nullptr) { app.DisplayName(PI_app.displayName); }
-        if (PI_app.description != nullptr) { app.DisplayName(PI_app.description); }
-        if (PI_app.appContainerName != nullptr) { app.AppContainerName(PI_app.appContainerName); }
-        if (PI_app.packageFullName != nullptr) { app.PackageFullName(PI_app.packageFullName); }
-        if (PI_app.workingDirectory != nullptr) { app.WorkingDirectory(PI_app.workingDirectory); }
+        if (PI_app.displayName) { app.DisplayName(PI_app.displayName); }
+        if (PI_app.description) { app.DisplayName(PI_app.description); }
+        if (PI_app.appContainerName) { app.AppContainerName(PI_app.appContainerName); }
+        if (PI_app.packageFullName) { app.PackageFullName(PI_app.packageFullName); }
+        if (PI_app.workingDirectory) { app.WorkingDirectory(PI_app.workingDirectory); }
 
-        if (PI_app.appContainerSid != nullptr)
+        if (PI_app.appContainerSid)
         {
             LPWSTR tempSid;
             ConvertSidToStringSid(PI_app.appContainerSid, &tempSid);
-            if (tempSid != nullptr) { app.AppContainerSid(tempSid); }
+            if (tempSid) { app.AppContainerSid(tempSid); }
         }
 
-        if (PI_app.userSid != nullptr)
+        if (PI_app.userSid)
         {
             LPWSTR tempSid;
             ConvertSidToStringSid(PI_app.userSid, &tempSid);
-            if (tempSid != nullptr) { app.UserSid(tempSid); }
+            if (tempSid) { app.UserSid(tempSid); }
         }
 
         const IVector<hstring> capabilities = GetCapabilities(PI_app.capabilities);
@@ -299,11 +299,11 @@ namespace winrt::LoopBack::Metadata::implementation
 
     const bool LoopUtil::CheckLoopback(SID* intPtr) const
     {
-        if (intPtr != nullptr)
+        if (intPtr)
         {
             LPWSTR right;
             ConvertSidToStringSid(intPtr, &right);
-            if (right != nullptr)
+            if (right)
             {
                 for (hstring left : appListConfig)
                 {
@@ -321,14 +321,14 @@ namespace winrt::LoopBack::Metadata::implementation
     {
         const IVector<hstring> myCap = single_threaded_vector<hstring>();
 
-        if (cap.binaries != nullptr)
+        if (cap.binaries)
         {
             const LPWSTR* arrayValue = cap.binaries;
 
             for (DWORD i = 0; i < cap.count; i++)
             {
                 const LPWSTR cur = arrayValue[i];
-                if (cur != nullptr)
+                if (cur)
                 {
                     myCap.Append(cur);
                 }
@@ -342,18 +342,18 @@ namespace winrt::LoopBack::Metadata::implementation
     {
         const IVector<hstring> myCap = single_threaded_vector<hstring>();
 
-        if (cap.capabilities != nullptr)
+        if (cap.capabilities)
         {
             const SID_AND_ATTRIBUTES* arrayValue = cap.capabilities;
 
             for (DWORD i = 0; i < cap.count; i++)
             {
                 const SID_AND_ATTRIBUTES cur = arrayValue[i];
-                if (cur.Sid != nullptr)
+                if (cur.Sid)
                 {
                     LPWSTR mysid;
                     ConvertSidToStringSid(cur.Sid, &mysid);
-                    if (mysid != nullptr)
+                    if (mysid)
                     {
                         myCap.Append(mysid);
                     }
@@ -372,16 +372,16 @@ namespace winrt::LoopBack::Metadata::implementation
 
         if (NetworkIsolationGetAppContainerConfig(&size, &arrayValue) == S_OK)
         {
-            if (arrayValue != nullptr)
+            if (arrayValue)
             {
                 for (DWORD i = 0; i < size; i++)
                 {
                     LPWSTR sid;
                     const SID_AND_ATTRIBUTES cur = arrayValue[i];
-                    if (cur.Sid != nullptr)
+                    if (cur.Sid)
                     {
                         ConvertSidToStringSid(cur.Sid, &sid);
-                        if (sid != nullptr)
+                        if (sid)
                         {
                             list.Append(sid);
                         }
@@ -403,7 +403,7 @@ namespace winrt::LoopBack::Metadata::implementation
 
         if (NetworkIsolationEnumAppContainers(NETISO_FLAG::NETISO_FLAG_MAX, &size, &arrayValue) == S_OK)
         {
-            if (arrayValue != nullptr)
+            if (arrayValue)
             {
                 const PINET_FIREWALL_APP_CONTAINER _PACs = arrayValue; //store the pointer so it can be freed when we close the form
 
@@ -423,7 +423,7 @@ namespace winrt::LoopBack::Metadata::implementation
 
     const void LoopUtil::PI_NetworkIsolationFreeAppContainers(const PINET_FIREWALL_APP_CONTAINER point) const
     {
-        if (point != nullptr)
+        if (point)
         {
             NetworkIsolationFreeAppContainers(point);
         }
@@ -518,7 +518,7 @@ namespace winrt::LoopBack::Metadata::implementation
 
     const void LoopUtil::Close()
     {
-        if (firewallAPI != nullptr)
+        if (firewallAPI)
         {
             FreeLibrary(firewallAPI);
             firewallAPI = nullptr;

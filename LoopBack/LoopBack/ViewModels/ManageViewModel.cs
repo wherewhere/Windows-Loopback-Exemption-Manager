@@ -258,7 +258,7 @@ namespace LoopBack.ViewModels
                 }
 
                 IsDirty = false;
-                IEnumerable<AppContainer> enableList = AppContainers.Where(x => x.IsEnableLoop);
+                AppContainer[] enableList = [.. AppContainers.Where(x => x.IsEnableLoop)];
                 if (loopUtil.SetLoopbackList(enableList) is Exception exception)
                 {
                     SettingsHelper.LoggerFactory.CreateLogger<ManageViewModel>().LogError(exception, "Failed to saving data. {message} (0x{hResult:X})", exception.GetMessage(), exception.HResult);

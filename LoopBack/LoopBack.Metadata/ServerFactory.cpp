@@ -78,7 +78,7 @@ namespace winrt::LoopBack::Metadata::implementation
     {
         if (!ppvObject) { return E_POINTER; }
         *ppvObject = nullptr;
-        if (pUnkOuter != nullptr) { return CLASS_E_NOAGGREGATION; }
+        if (pUnkOuter) { return CLASS_E_NOAGGREGATION; }
         ServerManager result = ServerManager::ServerManager();
         if (!result) { return S_FALSE; }
         CoAddRefServerProcess();
