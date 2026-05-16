@@ -80,7 +80,6 @@
   </Applications>
 
   <Capabilities>
-    <Capability Name="internetClient" />
     <rescap:Capability Name="runFullTrust" />
     <!--<uap4:CustomCapability Name="Microsoft.coreAppActivation_8wekyb3d8bbwe" />-->
   </Capabilities>
