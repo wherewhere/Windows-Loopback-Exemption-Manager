@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <ApplicationEntryPoint>LoopBack.App</ApplicationEntryPoint>
     <AssetTargetFallback>$(AssetTargetFallback);native</AssetTargetFallback>
     <CsWinRTIncludes>LoopBack.Metadata</CsWinRTIncludes>
@@ -17,6 +17,11 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <UseUwp>True</UseUwp>
     <VersionPrefix>0.0.1</VersionPrefix>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AppxManifestName Condition="'$(AppxManifestName)' == ''">Package.appxmanifest</AppxManifestName>
+    <DefineConstants Condition="'$(IsUpdateCIManifest)' == 'True'">$(DefineConstants);CANARY</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,6 +44,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="CustomCapability.SCCD" />
+    <!--<Content Include="CustomCapability.SCCD" />-->
   </ItemGroup>
+
+  <Import Project="Properties\UpdateCIManifest.targets" Condition="'$(IsUpdateCIManifest)' == 'True' and Exists('Properties\UpdateCIManifest.targets')" />
 </Project>

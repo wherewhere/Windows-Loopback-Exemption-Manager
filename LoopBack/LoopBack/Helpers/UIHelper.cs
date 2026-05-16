@@ -39,7 +39,7 @@ namespace LoopBack.Helpers
                 }
             }
 
-            TaskCompletionSource taskCompletionSource = new TaskCompletionSource();
+            TaskCompletionSource taskCompletionSource = new();
 
             _ = dispatcher.RunAsync(priority, () =>
             {

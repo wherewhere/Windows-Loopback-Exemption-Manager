@@ -1,14 +1,25 @@
 name: build and package
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/build-and-package.yml
+      - LoopBack**
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 env:
   DOTNET_VERSION: 10.0.x # The .NET SDK version to use
 
 jobs:
   build-and-package:
-    name: build-and-package
+    name: build-and-package (${{ matrix.config }})
     runs-on: windows-2025-vs2026
+    strategy:
+      matrix:
+        config: [x86, x64, ARM64]
 
     env:
       Solution_Name: LoopBack/LoopBack/LoopBack.csproj
@@ -43,36 +54,21 @@ jobs:
           msbuild-architecture: x64
 
       # Restore the application to populate the obj folder with RuntimeIdentifiers
-      - name: Restore the application (x64)
+      - name: Restore the application
         run: msbuild $env:Solution_Name `
           /t:Restore `
           /p:Configuration=$env:Configuration `
           /p:Platform=$env:Platform
         env:
           Configuration: Release
-          Platform: x64
-
-      - name: Restore the application (x86)
-        run: msbuild $env:Solution_Name `
-          /t:Restore `
-          /p:Configuration=$env:Configuration `
-          /p:Platform=$env:Platform
-        env:
-          Configuration: Release
-          Platform: x86
-
-      - name: Restore the application (ARM64)
-        run: msbuild $env:Solution_Name `
-          /t:Restore `
-          /p:Configuration=$env:Configuration `
-          /p:Platform=$env:Platform
-        env:
-          Configuration: Release
-          Platform: ARM64
+          Platform: ${{ matrix.config }}
 
       # Create the app package by building and packaging the Windows Application Packaging project
       - name: Create the app package
         run: msbuild $env:Solution_Name `
+          /p:IsUpdateCIManifest=True `
+          /p:CIBuildID=$env:Build_ID `
+          /p:PublisherName=$env:Publisher_Name `
           /p:AppxBundlePlatforms=$env:Appx_Bundle_Platforms `
           /p:Configuration=$env:Configuration `
           /p:Platform=$env:Platform `
@@ -86,12 +82,14 @@ jobs:
           /p:PackageCertificatePassword=$env:Password `
           /p:IsPackable=false
         env:
-          Appx_Bundle: Always
-          Appx_Bundle_Platforms: x86|x64|ARM64
+          Build_ID: ${{ github.run_number }}
+          Publisher_Name: CN=where
+          Appx_Bundle: Never
+          Appx_Bundle_Platforms: ${{ matrix.config }}
           Appx_Package_Build_Mode: SideloadOnly
           Appx_Package_Dir: AppxPackages\
           Configuration: Release
-          Platform: x64
+          Platform: ${{ matrix.config }}
           Thumbprint: 0CDF4A03E9BE9DD789894BB3C7AD3DEDECD9AB25
           Password: ${{ secrets.Password }}
 
@@ -99,5 +97,5 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: MSIX Package
+          name: MSIX Package (${{ matrix.config }})
           path: LoopBack/LoopBack/AppxPackages/**

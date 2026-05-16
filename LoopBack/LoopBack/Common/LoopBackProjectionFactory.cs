@@ -11,21 +11,20 @@ namespace LoopBack.Common
         public static readonly Guid CLSID_IUnknown = new("00000000-0000-0000-C000-000000000046");
         public static readonly Guid CLSID_ServerManager = new(0x50169480, 0x3fb8, 0x4a19, 0xaa, 0xed, 0xed, 0x91, 0x70, 0x81, 0x1a, 0x3a);  // 50169480-3FB8-4A19-AAED-ED9170811A3A
 
-        private static ServerManager m_serverManager;
         public static ServerManager ServerManager
         {
             get
             {
                 try
                 {
-                    if (m_serverManager != null && m_serverManager.IsServerRunning)
+                    if (field != null && field.IsServerRunning)
                     {
-                        return m_serverManager;
+                        return field;
                     }
                 }
                 catch { }
-                m_serverManager = TryCreateInstance<ServerManager>(CLSID_ServerManager, CLSCTX_ALL);
-                return m_serverManager;
+                field = TryCreateInstance<ServerManager>(CLSID_ServerManager, CLSCTX_ALL);
+                return field;
             }
         }
 

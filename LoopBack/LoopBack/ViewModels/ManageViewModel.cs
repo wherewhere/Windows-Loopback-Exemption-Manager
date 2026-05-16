@@ -1,10 +1,9 @@
-﻿using LoopBack.Common;
+﻿using CommunityToolkit.WinUI.Controls;
+using LoopBack.Common;
 using LoopBack.Helpers;
 using LoopBack.Metadata;
 using Microsoft.Extensions.Logging;
-using CommunityToolkit.WinUI.Controls;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -25,41 +24,31 @@ namespace LoopBack.ViewModels
 
         public string CachedSortedColumn { get; set; }
         public VectorViewReader<AppContainer> AppContainers { get; private set; }
-
-        private bool isDirty;
         public bool IsDirty
         {
-            get => isDirty;
-            set => SetProperty(ref isDirty, value);
+            get;
+            set => SetProperty(ref field, value);
         }
-
-        private bool isFullTrust = true;
         public bool IsFullTrust
         {
-            get => isFullTrust;
-            set => SetProperty(ref isFullTrust, value);
-        }
-
-        private bool isRunAsAdministrator;
+            get;
+            set => SetProperty(ref field, value);
+        } = false;
         public bool IsRunAsAdministrator
         {
-            get => isRunAsAdministrator;
-            set => SetProperty(ref isRunAsAdministrator, value);
+            get;
+            set => SetProperty(ref field, value);
         }
-
-        private string message = string.Empty;
         public string Message
         {
-            get => message;
-            set => SetProperty(ref message, value);
-        }
-
-        private ObservableCollection<AppContainer> filteredAppContainers = [];
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
         public ObservableCollection<AppContainer> FilteredAppContainers
         {
-            get => filteredAppContainers;
-            set => SetProperty(ref filteredAppContainers, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -89,10 +78,10 @@ namespace LoopBack.ViewModels
                 isLoading = true;
                 ShowMessage("Loading...");
                 await ThreadSwitcher.ResumeBackgroundAsync();
-                loopUtil ??= isFullTrust ? new LoopUtil() : LoopBackProjectionFactory.ServerManager.GetLoopUtil();
+                loopUtil ??= IsFullTrust ? new LoopUtil() : LoopBackProjectionFactory.ServerManager.GetLoopUtil();
                 if (loopUtil != null)
                 {
-                    IsRunAsAdministrator = !isFullTrust && LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
+                    IsRunAsAdministrator = !IsFullTrust && LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
                     AppContainers = new(loopUtil.GetAppContainers());
                     await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
                     await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
@@ -138,7 +127,7 @@ namespace LoopBack.ViewModels
                 {
                     ShowMessage("Filtering...");
                     string appsInFilter = filter;
-                    await Dispatcher.AwaitableRunAsync(filteredAppContainers.Clear);
+                    await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
                     foreach (AppContainer app in AppContainers)
                     {
                         if (app != null)
@@ -149,7 +138,7 @@ namespace LoopBack.ViewModels
                             if (appName.Contains(appsInFilter, StringComparison.OrdinalIgnoreCase)
                                 || packageFullName.Contains(appsInFilter, StringComparison.OrdinalIgnoreCase))
                             {
-                                await Dispatcher.AwaitableRunAsync(() => filteredAppContainers.Add(app));
+                                await Dispatcher.AwaitableRunAsync(() => FilteredAppContainers.Add(app));
                             }
                         }
                     }
@@ -170,8 +159,8 @@ namespace LoopBack.ViewModels
                 ShowMessage("Sorting...");
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 CachedSortedColumn = sortBy;
-                AppContainer[] temp = [.. filteredAppContainers];
-                await Dispatcher.AwaitableRunAsync(filteredAppContainers.Clear);
+                AppContainer[] temp = [.. FilteredAppContainers];
+                await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
                 switch (sortBy)
                 {
                     case "IsEnableLoop":
@@ -229,10 +218,7 @@ namespace LoopBack.ViewModels
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 foreach (AppContainer app in FilteredAppContainers)
                 {
-                    if (app != null)
-                    {
-                        app.IsEnableLoop = isChecked;
-                    }
+                    app?.IsEnableLoop = isChecked;
                 }
                 FilteredAppContainers = [.. FilteredAppContainers];
                 IsDirty = true;
@@ -251,7 +237,7 @@ namespace LoopBack.ViewModels
             {
                 await ThreadSwitcher.ResumeBackgroundAsync();
 
-                if (!isDirty)
+                if (!IsDirty)
                 {
                     ShowMessage("Nothing to save");
                     return;
@@ -281,7 +267,7 @@ namespace LoopBack.ViewModels
             try
             {
                 await ThreadSwitcher.ResumeBackgroundAsync();
-                if (!isRunAsAdministrator)
+                if (!IsRunAsAdministrator)
                 {
                     ShowMessage("Try to run as administrator");
                     try
@@ -295,7 +281,7 @@ namespace LoopBack.ViewModels
                         AppContainers = new(loopUtil.GetAppContainers());
                         await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
                         await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
-                        if (isRunAsAdministrator)
+                        if (IsRunAsAdministrator)
                         {
                             ShowMessage("Run as administrator now");
                         }

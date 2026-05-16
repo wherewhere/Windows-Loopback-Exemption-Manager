@@ -12,14 +12,14 @@
   IgnorableNamespaces="uap uap4 uap5 uap10 com rescap mp">
 
   <Identity
-    Name="wherewhere.LoopBack.Manager"
-    Publisher="CN=where"
+    Name="18184wherewhere.LoopbackUWP"
+    Publisher="CN=2C3A37C0-35FC-4839-B08C-751C1C1AFBF5"
     Version="0.0.1.0" />
 
-  <mp:PhoneIdentity PhoneProductId="eb02184e-8ef5-4f9b-abe6-578d647fea6d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="eaffad50-3974-4429-9659-c2d134afa482" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>LoopBack</DisplayName>
+    <DisplayName>Loopback UWP</DisplayName>
     <PublisherDisplayName>wherewhere</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -34,7 +34,7 @@
 
   <Applications>
     <Application Id="App"
-      uap10:TrustLevel="mediumIL"
+      uap10:TrustLevel="appContainer"
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
@@ -82,6 +82,6 @@
   <Capabilities>
     <Capability Name="internetClient" />
     <rescap:Capability Name="runFullTrust" />
-    <uap4:CustomCapability Name="Microsoft.coreAppActivation_8wekyb3d8bbwe" />
+    <!--<uap4:CustomCapability Name="Microsoft.coreAppActivation_8wekyb3d8bbwe" />-->
   </Capabilities>
 </Package>
