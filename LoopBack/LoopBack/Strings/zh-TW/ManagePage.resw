@@ -142,7 +142,7 @@
     <value>Copy</value>
   </data>
   <data name="DataGridRowDetailsVisibilityMode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Data Grid Row Details Visibility Mode</value>
+    <value>DataGrid Row Details Visibility Mode</value>
   </data>
   <data name="Directory.Text" xml:space="preserve">
     <value>Directory</value>
