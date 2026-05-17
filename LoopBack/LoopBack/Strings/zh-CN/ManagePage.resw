@@ -207,6 +207,9 @@
   <data name="RunAsAdministratorNow" xml:space="preserve">
     <value>现在以管理员身份运行</value>
   </data>
+  <data name="SavedLoopbackExemptions" xml:space="preserve">
+    <value>已保存回环豁免项</value>
+  </data>
   <data name="SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>保存 (Ctrl+S)</value>
   </data>
