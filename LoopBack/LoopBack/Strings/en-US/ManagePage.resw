@@ -207,6 +207,9 @@
   <data name="RunAsAdministratorNow" xml:space="preserve">
     <value>Run as administrator now</value>
   </data>
+  <data name="SavedLoopbackExemptions" xml:space="preserve">
+    <value>Saved loopback exemptions</value>
+  </data>
   <data name="SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Save (Ctrl+S)</value>
   </data>
