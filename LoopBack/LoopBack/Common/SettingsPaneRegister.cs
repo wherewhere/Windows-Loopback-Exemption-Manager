@@ -97,7 +97,7 @@ namespace LoopBack.Common
             await Task.Run(() =>
             {
                 results = [];
-                using LoopUtil loopUtil = LoopBackProjectionFactory.ServerManager.GetLoopUtil();
+                using LoopUtil loopUtil = LoopBackProjectionFactory.IsFullTrust || LoopBackProjectionFactory.ServerManager is not ServerManager serverManager ? new LoopUtil() : serverManager.GetLoopUtil();
                 IReadOnlyList<AppContainer> appContainers = loopUtil.Apps;
                 for (int i = 0; i < appContainers.Count; i++)
                 {

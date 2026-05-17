@@ -22,37 +22,38 @@ namespace LoopBack.ViewModels
         private bool isLoading;
         private LoopUtil loopUtil;
 
-        public static DataGridRowDetailsVisibilityMode[] DataGridRowDetailsVisibilityModes { get; } = Enum.GetValues<DataGridRowDetailsVisibilityMode>();
+        public const bool IsFullTrust = LoopBackProjectionFactory.IsFullTrust;
+        public static DataGridRowDetailsVisibilityMode[] DataGridRowDetailsVisibilityModes => Enum.GetValues<DataGridRowDetailsVisibilityMode>();
 
         public CoreDispatcher Dispatcher => dispatcher;
 
         public string CachedSortedColumn { get; set; }
         public VectorViewReader<AppContainer> AppContainers { get; private set; }
+
         public bool IsDirty
         {
             get;
             set => SetProperty(ref field, value);
         }
-        public bool IsFullTrust
-        {
-            get;
-            set => SetProperty(ref field, value);
-        } = false;
+
         public bool IsRunAsAdministrator
         {
             get;
             set => SetProperty(ref field, value);
         }
+
         public string Message
         {
             get;
             set => SetProperty(ref field, value);
         } = string.Empty;
+
         public ObservableCollection<AppContainer> FilteredAppContainers
         {
             get;
             set => SetProperty(ref field, value);
         } = [];
+
         public bool IsExemptAll => FilteredAppContainers.Count > 0 && FilteredAppContainers.All(x => x.IsEnableLoop);
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -83,10 +84,20 @@ namespace LoopBack.ViewModels
                 isLoading = true;
                 ShowLocalizedMessage("Loading");
                 await ThreadSwitcher.ResumeBackgroundAsync();
-                loopUtil ??= IsFullTrust ? new LoopUtil() : LoopBackProjectionFactory.ServerManager.GetLoopUtil();
+                if (loopUtil == null)
+                {
+                    if (IsFullTrust || LoopBackProjectionFactory.ServerManager is not ServerManager serverManager)
+                    {
+                        loopUtil = new LoopUtil();
+                    }
+                    else
+                    {
+                        loopUtil = serverManager.GetLoopUtil();
+                        IsRunAsAdministrator = serverManager.IsRunAsAdministrator;
+                    }
+                }
                 if (loopUtil != null)
                 {
-                    IsRunAsAdministrator = !IsFullTrust && LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
                     AppContainers = new(loopUtil.GetAppContainers());
                     await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
                     await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
@@ -288,8 +299,9 @@ namespace LoopBack.ViewModels
                     }
                     catch (Exception ex) when (ex.HResult == -2147023170)
                     {
-                        loopUtil = LoopBackProjectionFactory.ServerManager.GetLoopUtil();
-                        IsRunAsAdministrator = LoopBackProjectionFactory.ServerManager.IsRunAsAdministrator;
+                        ServerManager serverManager = LoopBackProjectionFactory.ServerManager;
+                        loopUtil = serverManager.GetLoopUtil();
+                        IsRunAsAdministrator = serverManager.IsRunAsAdministrator;
                         AppContainers = new(loopUtil.GetAppContainers());
                         await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
                         await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
