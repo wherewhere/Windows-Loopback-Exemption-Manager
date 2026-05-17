@@ -142,7 +142,7 @@
     <value>复制</value>
   </data>
   <data name="DataGridRowDetailsVisibilityMode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>DataGrid Row Details Visibility Mode</value>
+    <value>数据网格行详细信息可见性模式</value>
   </data>
   <data name="Directory.Text" xml:space="preserve">
     <value>目录</value>
@@ -187,10 +187,10 @@
     <value>正在加载……</value>
   </data>
   <data name="NothingToSave" xml:space="preserve">
-    <value>没有数据可保存</value>
+    <value>没有变更可保存</value>
   </data>
   <data name="Open.Text" xml:space="preserve">
-    <value>Open</value>
+    <value>打开</value>
   </data>
   <data name="PackageFullName.Text" xml:space="preserve">
     <value>程序包全名</value>
@@ -223,7 +223,7 @@
     <value>筛选应用：</value>
   </data>
   <data name="Sorted" xml:space="preserve">
-    <value>Sorted</value>
+    <value>排序完成</value>
   </data>
   <data name="Sorting" xml:space="preserve">
     <value>正在排序……</value>
