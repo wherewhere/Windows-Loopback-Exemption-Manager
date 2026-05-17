@@ -73,7 +73,8 @@
                     x:Uid="/ManagePage/ExemptButton"
                     MinWidth="0"
                     VerticalAlignment="Center"
-                    Click="CheckBox_Click">
+                    Click="CheckBox_Click"
+                    IsChecked="{x:Bind Provider.IsExemptAll, Mode=OneWay}">
                     <CheckBox.KeyboardAccelerators>
                         <KeyboardAccelerator Key="A" Modifiers="Control" />
                     </CheckBox.KeyboardAccelerators>
@@ -152,7 +153,8 @@
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            ToolTipService.ToolTip="DisplayName" />
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="1"
@@ -168,7 +170,8 @@
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            ToolTipService.ToolTip="AppContainerName" />
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="1"
@@ -184,7 +187,8 @@
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            ToolTipService.ToolTip="PackageFullName" />
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="1"
@@ -200,7 +204,8 @@
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            ToolTipService.ToolTip="AppContainerSid" />
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="1"
@@ -216,7 +221,8 @@
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            ToolTipService.ToolTip="UserSid" />
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="1"
@@ -227,12 +233,13 @@
                             Text="{x:Bind UserSid}"
                             TextWrapping="Wrap" />
                         <TextBlock
-                            x:Uid="/ManagePage/WorkingDirectory"
+                            x:Uid="/ManagePage/Directory"
                             Grid.Row="5"
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            ToolTipService.ToolTip="WorkingDirectory" />
                         <TextBlock
                             Grid.Row="5"
                             Grid.Column="1"
@@ -248,7 +255,8 @@
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            ToolTipService.ToolTip="Capabilities" />
                         <ItemsControl
                             Grid.Row="6"
                             Grid.Column="1"
@@ -307,7 +315,7 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
-                                            x:Uid="/ManagePage/CopyMenu"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="{x:Bind DisplayName}">
                                             <MenuFlyoutItem.Icon>
@@ -344,7 +352,7 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
-                                            x:Uid="/ManagePage/CopyMenu"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="{x:Bind AppContainerName}">
                                             <MenuFlyoutItem.Icon>
@@ -381,7 +389,7 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
-                                            x:Uid="/ManagePage/CopyMenu"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="{x:Bind WorkingDirectory}">
                                             <MenuFlyoutItem.Icon>
@@ -390,7 +398,7 @@
                                         </MenuFlyoutItem>
                                         <MenuFlyoutItem
                                             x:Name="Open"
-                                            x:Uid="/ManagePage/OpenMenu"
+                                            x:Uid="/ManagePage/Open"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="{x:Bind WorkingDirectory}">
                                             <MenuFlyoutItem.Icon>
@@ -427,7 +435,7 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
-                                            x:Uid="/ManagePage/CopyMenu"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="{x:Bind PackageFullName}">
                                             <MenuFlyoutItem.Icon>
@@ -464,7 +472,7 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
-                                            x:Uid="/ManagePage/CopyMenu"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="{x:Bind AppContainerSid}">
                                             <MenuFlyoutItem.Icon>
@@ -501,7 +509,7 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
-                                            x:Uid="/ManagePage/CopyMenu"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="{x:Bind UserSid}">
                                             <MenuFlyoutItem.Icon>
@@ -554,7 +562,7 @@
             </TextBlock>
             <ComboBox
                 x:Name="DataGridRowDetailsVisibilityMode"
-                x:Uid="/ManagePage/RowDetailsVisibilityMode"
+                x:Uid="/ManagePage/DataGridRowDetailsVisibilityMode"
                 Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"

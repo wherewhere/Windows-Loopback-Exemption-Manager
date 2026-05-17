@@ -53,6 +53,7 @@ namespace LoopBack.ViewModels
             get;
             set => SetProperty(ref field, value);
         } = [];
+        public bool IsExemptAll => FilteredAppContainers.Count > 0 && FilteredAppContainers.All(x => x.IsEnableLoop);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -120,33 +121,40 @@ namespace LoopBack.ViewModels
         {
             try
             {
-                await ThreadSwitcher.ResumeBackgroundAsync();
-                if (string.IsNullOrWhiteSpace(filter))
+                try
                 {
-                    await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
-                    await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
-                    return;
-                }
-                else
-                {
-                    ShowLocalizedMessage("Filtering");
-                    string appsInFilter = filter;
-                    await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
-                    foreach (AppContainer app in AppContainers)
+                    await ThreadSwitcher.ResumeBackgroundAsync();
+                    if (string.IsNullOrWhiteSpace(filter))
                     {
-                        if (app != null)
+                        await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
+                        await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
+                        return;
+                    }
+                    else
+                    {
+                        ShowLocalizedMessage("Filtering");
+                        string appsInFilter = filter;
+                        await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
+                        foreach (AppContainer app in AppContainers)
                         {
-                            string appName = app.DisplayName;
-                            string packageFullName = app.PackageFullName;
-
-                            if (appName.Contains(appsInFilter, StringComparison.OrdinalIgnoreCase)
-                                || packageFullName.Contains(appsInFilter, StringComparison.OrdinalIgnoreCase))
+                            if (app != null)
                             {
-                                await Dispatcher.AwaitableRunAsync(() => FilteredAppContainers.Add(app));
+                                string appName = app.DisplayName;
+                                string packageFullName = app.PackageFullName;
+
+                                if (appName.Contains(appsInFilter, StringComparison.OrdinalIgnoreCase)
+                                    || packageFullName.Contains(appsInFilter, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    await Dispatcher.AwaitableRunAsync(() => FilteredAppContainers.Add(app));
+                                }
                             }
                         }
+                        ShowLocalizedMessage("Filtered");
                     }
-                    ShowLocalizedMessage("Filtered");
+                }
+                finally
+                {
+                    RaisePropertyChangedEvent(nameof(IsExemptAll));
                 }
             }
             catch (Exception ex)
