@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,17 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ExemptButton.Content" xml:space="preserve">
-    <value>Exempt All</value>
+  <data name="AlreadyRunAsAdministrator" xml:space="preserve">
+    <value>Already run as administrator</value>
+  </data>
+  <data name="AppContainerName.Text" xml:space="preserve">
+    <value>App Container Name</value>
+  </data>
+  <data name="AppContainerSid.Text" xml:space="preserve">
+    <value>App Container SID</value>
+  </data>
+  <data name="AppContainerSidColumn.Header" xml:space="preserve">
+    <value>App Container SID</value>
+  </data>
+  <data name="AppFullNameColumn.Header" xml:space="preserve">
+    <value>App Full Name</value>
+  </data>
+  <data name="Capabilities.Text" xml:space="preserve">
+    <value>Capabilities</value>
+  </data>
+  <data name="Collapsed" xml:space="preserve">
+    <value>Collapsed</value>
+  </data>
+  <data name="Copy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="DataGridRowDetailsVisibilityMode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Data Grid Row Details Visibility Mode</value>
+  </data>
+  <data name="Directory.Text" xml:space="preserve">
+    <value>Directory</value>
+  </data>
+  <data name="DirectoryColumn.Header" xml:space="preserve">
+    <value>Directory</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="DisplayNameColumn.Header" xml:space="preserve">
+    <value>App Display Name</value>
+  </data>
+  <data name="ErrorSavingFormat" xml:space="preserve">
+    <value>ERROR SAVING: {0}</value>
   </data>
   <data name="ExemptButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Exempt All (Ctrl+A)</value>
   </data>
-  <data name="AlreadyRunAsAdministrator" xml:space="preserve">
-    <value>Already run as administrator</value>
+  <data name="ExemptButton.Content" xml:space="preserve">
+    <value>Exempt All</value>
   </data>
-  <data name="ErrorSavingFormat" xml:space="preserve">
-    <value>ERROR SAVING: {0}</value>
+  <data name="ExemptColumn.Header" xml:space="preserve">
+    <value>Exempt</value>
   </data>
   <data name="FailedRunAsAdministrator" xml:space="preserve">
     <value>Failed to run as administrator</value>
@@ -150,32 +189,29 @@
   <data name="NothingToSave" xml:space="preserve">
     <value>Nothing to save</value>
   </data>
-  <data name="RunAsAdministratorNow" xml:space="preserve">
-    <value>Run as administrator now</value>
+  <data name="Open.Text" xml:space="preserve">
+    <value>Open</value>
   </data>
-  <data name="Sorted" xml:space="preserve">
-    <value>Sorted...</value>
+  <data name="PackageFullName.Text" xml:space="preserve">
+    <value>Package Full Name</value>
   </data>
-  <data name="Sorting" xml:space="preserve">
-    <value>Sorting...</value>
+  <data name="PackageFullNameColumn.Header" xml:space="preserve">
+    <value>Package Full Name</value>
   </data>
-  <data name="Switched" xml:space="preserve">
-    <value>Switched</value>
-  </data>
-  <data name="Switching" xml:space="preserve">
-    <value>Switching...</value>
-  </data>
-  <data name="TryRunAsAdministrator" xml:space="preserve">
-    <value>Try to run as administrator</value>
+  <data name="RefreshButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Refresh (F5)</value>
   </data>
   <data name="RefreshButton.Content" xml:space="preserve">
     <value>Refresh</value>
   </data>
-  <data name="SaveButton.Content" xml:space="preserve">
-    <value>Save</value>
+  <data name="RunAsAdministratorNow" xml:space="preserve">
+    <value>Run as administrator now</value>
   </data>
   <data name="SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Save (Ctrl+S)</value>
+  </data>
+  <data name="SaveButton.Content" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="SaveFlyoutTitle.Text" xml:space="preserve">
     <value>Are you sure you want to save it?</value>
@@ -186,50 +222,23 @@
   <data name="SearchTitle.Text" xml:space="preserve">
     <value>Filter the Apps:</value>
   </data>
+  <data name="Sorted" xml:space="preserve">
+    <value>Sorted</value>
+  </data>
+  <data name="Sorting" xml:space="preserve">
+    <value>Sorting...</value>
+  </data>
   <data name="StatusPrefix.Text" xml:space="preserve">
     <value>Status:</value>
   </data>
-  <data name="AppContainerName.Text" xml:space="preserve">
-    <value>App Container Name</value>
+  <data name="Switched" xml:space="preserve">
+    <value>Switched</value>
   </data>
-  <data name="AppContainerSid.Text" xml:space="preserve">
-    <value>App Container SID</value>
+  <data name="Switching" xml:space="preserve">
+    <value>Switching...</value>
   </data>
-  <data name="AppContainerSidColumn.Header" xml:space="preserve">
-    <value>App Container SID</value>
-  </data>
-  <data name="AppFullNameColumn.Header" xml:space="preserve">
-    <value>App Full Name</value>
-  </data>
-  <data name="Capabilities.Text" xml:space="preserve">
-    <value>Capabilities</value>
-  </data>
-  <data name="CopyMenu.Text" xml:space="preserve">
-    <value>Copy</value>
-  </data>
-  <data name="DirectoryColumn.Header" xml:space="preserve">
-    <value>Directory</value>
-  </data>
-  <data name="DisplayName.Text" xml:space="preserve">
-    <value>Display Name</value>
-  </data>
-  <data name="DisplayNameColumn.Header" xml:space="preserve">
-    <value>App Display Name</value>
-  </data>
-  <data name="ExemptColumn.Header" xml:space="preserve">
-    <value>Exempt</value>
-  </data>
-  <data name="OpenMenu.Text" xml:space="preserve">
-    <value>Open</value>
-  </data>
-  <data name="PackageFullName.Text" xml:space="preserve">
-    <value>Package Full Name</value>
-  </data>
-  <data name="PackageFullNameColumn.Header" xml:space="preserve">
-    <value>Package Full Name</value>
-  </data>
-  <data name="RowDetailsVisibilityMode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Data Grid Row Details Visibility Mode</value>
+  <data name="TryRunAsAdministrator" xml:space="preserve">
+    <value>Try to run as administrator</value>
   </data>
   <data name="UserSid.Text" xml:space="preserve">
     <value>User SID</value>
@@ -237,19 +246,10 @@
   <data name="UserSidColumn.Header" xml:space="preserve">
     <value>User SID</value>
   </data>
-  <data name="WorkingDirectory.Text" xml:space="preserve">
-    <value>Working Directory</value>
-  </data>
-  <data name="Collapsed" xml:space="preserve">
-    <value>Collapsed</value>
-  </data>
   <data name="Visible" xml:space="preserve">
     <value>Visible</value>
   </data>
   <data name="VisibleWhenSelected" xml:space="preserve">
     <value>Visible When Selected</value>
-  </data>
-  <data name="RefreshButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Refresh (F5)</value>
   </data>
 </root>
