@@ -1,5 +1,6 @@
 ﻿using LoopBack.Helpers;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.Resources;
 using Windows.System.Profile;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,6 +29,7 @@ namespace LoopBack.Pages
             CoreApplicationViewTitleBar TitleBar = CoreApplication.GetCurrentView().TitleBar;
             TitleBar.LayoutMetricsChanged += TitleBar_LayoutMetricsChanged;
             TitleBar.IsVisibleChanged += TitleBar_IsVisibleChanged;
+            AppTitle.Text = ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "Loopback Exemption Manager";
             _ = CoreAppFrame.Navigate(typeof(ManagePage));
         }
 

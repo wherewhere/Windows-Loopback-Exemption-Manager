@@ -7,6 +7,7 @@
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:cwuc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:LoopBack.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:metadata="using:LoopBack.Metadata"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -45,13 +46,13 @@
                         <ReorderThemeTransition />
                     </TransitionCollection>
                 </StackPanel.ChildrenTransitions>
-                <TextBlock VerticalAlignment="Center" Text="Filter the Apps:" />
+                <TextBlock x:Uid="/ManagePage/SearchTitle" VerticalAlignment="Center" />
                 <AutoSuggestBox
+                    x:Uid="/ManagePage/SearchBox"
                     Grid.Row="0"
                     Width="250"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    PlaceholderText="Searching Name and ID..."
                     QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                     TextChanged="AutoSuggestBox_TextChanged">
                     <AutoSuggestBox.QueryIcon>
@@ -69,35 +70,34 @@
                     </AutoSuggestBox.QueryIcon>
                 </AutoSuggestBox>
                 <CheckBox
+                    x:Uid="/ManagePage/ExemptButton"
                     MinWidth="0"
                     VerticalAlignment="Center"
                     Click="CheckBox_Click"
-                    Content="Exempt All"
-                    ToolTipService.ToolTip="Exempt All (Ctrl+A)">
+                    IsChecked="{x:Bind Provider.IsExemptAll, Mode=OneWay}">
                     <CheckBox.KeyboardAccelerators>
                         <KeyboardAccelerator Key="A" Modifiers="Control" />
                     </CheckBox.KeyboardAccelerators>
                 </CheckBox>
                 <Button
                     x:Name="SaveButton"
+                    x:Uid="/ManagePage/SaveButton"
                     Width="100"
                     VerticalAlignment="Center"
-                    Content="Save"
                     IsEnabled="{x:Bind Provider.IsDirty, Mode=OneWay}"
-                    Style="{StaticResource AccentButtonStyle}"
-                    ToolTipService.ToolTip="Save (Ctrl+S)">
+                    Style="{StaticResource AccentButtonStyle}">
                     <Button.KeyboardAccelerators>
                         <KeyboardAccelerator Key="S" Modifiers="Control" />
                     </Button.KeyboardAccelerators>
                     <Button.Flyout>
                         <Flyout contract8Present:ShouldConstrainToRootBounds="False">
                             <StackPanel Spacing="12">
-                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Are you sure you want to save it?" />
+                                <TextBlock x:Uid="/ManagePage/SaveFlyoutTitle" Style="{ThemeResource BaseTextBlockStyle}" />
                                 <Button
                                     Width="100"
                                     HorizontalAlignment="Right"
                                     Click="Button_Click"
-                                    Content="Save"
+                                    Content="{x:Bind SaveButton.Content, Mode=OneWay}"
                                     IsEnabled="{x:Bind Provider.IsDirty, Mode=OneWay}"
                                     Tag="Save" />
                             </StackPanel>
@@ -105,12 +105,11 @@
                     </Button.Flyout>
                 </Button>
                 <Button
+                    x:Uid="/ManagePage/RefreshButton"
                     Width="100"
                     VerticalAlignment="Center"
                     Click="Button_Click"
-                    Content="Refresh"
-                    Tag="Refresh"
-                    ToolTipService.ToolTip="Refresh (F5)">
+                    Tag="Refresh">
                     <Button.KeyboardAccelerators>
                         <KeyboardAccelerator Key="F5" />
                     </Button.KeyboardAccelerators>
@@ -149,12 +148,13 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock
+                            x:Uid="/ManagePage/DisplayName"
                             Grid.Row="0"
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            Text="Display Name" />
+                            ToolTipService.ToolTip="DisplayName" />
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="1"
@@ -165,12 +165,13 @@
                             Text="{x:Bind DisplayName}"
                             TextWrapping="WrapWholeWords" />
                         <TextBlock
+                            x:Uid="/ManagePage/AppContainerName"
                             Grid.Row="1"
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            Text="App Container Name" />
+                            ToolTipService.ToolTip="AppContainerName" />
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="1"
@@ -181,12 +182,13 @@
                             Text="{x:Bind AppContainerName}"
                             TextWrapping="Wrap" />
                         <TextBlock
+                            x:Uid="/ManagePage/PackageFullName"
                             Grid.Row="2"
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            Text="Package Full Name" />
+                            ToolTipService.ToolTip="PackageFullName" />
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="1"
@@ -197,12 +199,13 @@
                             Text="{x:Bind PackageFullName}"
                             TextWrapping="Wrap" />
                         <TextBlock
+                            x:Uid="/ManagePage/AppContainerSid"
                             Grid.Row="3"
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            Text="App Container Sid" />
+                            ToolTipService.ToolTip="AppContainerSid" />
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="1"
@@ -213,12 +216,13 @@
                             Text="{x:Bind AppContainerSid}"
                             TextWrapping="Wrap" />
                         <TextBlock
+                            x:Uid="/ManagePage/UserSid"
                             Grid.Row="4"
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            Text="User Sid" />
+                            ToolTipService.ToolTip="UserSid" />
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="1"
@@ -229,12 +233,13 @@
                             Text="{x:Bind UserSid}"
                             TextWrapping="Wrap" />
                         <TextBlock
+                            x:Uid="/ManagePage/Directory"
                             Grid.Row="5"
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            Text="Working Directory" />
+                            ToolTipService.ToolTip="WorkingDirectory" />
                         <TextBlock
                             Grid.Row="5"
                             Grid.Column="1"
@@ -245,12 +250,13 @@
                             Text="{x:Bind WorkingDirectory}"
                             TextWrapping="Wrap" />
                         <TextBlock
+                            x:Uid="/ManagePage/Capabilities"
                             Grid.Row="6"
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            Text="Capabilities" />
+                            ToolTipService.ToolTip="Capabilities" />
                         <ItemsControl
                             Grid.Row="6"
                             Grid.Column="1"
@@ -273,10 +279,10 @@
             </cwuc:DataGrid.RowDetailsTemplate>
             <cwuc:DataGrid.Columns>
                 <cwuc:DataGridTemplateColumn
+                    x:Uid="/ManagePage/ExemptColumn"
                     Width="85"
                     CanUserResize="False"
                     CanUserSort="True"
-                    Header="Exempt"
                     IsReadOnly="True"
                     Tag="IsEnableLoop">
                     <cwuc:DataGridTemplateColumn.CellTemplate>
@@ -291,10 +297,10 @@
                     </cwuc:DataGridTemplateColumn.CellTemplate>
                 </cwuc:DataGridTemplateColumn>
                 <cwuc:DataGridTemplateColumn
+                    x:Uid="/ManagePage/DisplayNameColumn"
                     Width="150"
                     CanUserResize="True"
                     CanUserSort="True"
-                    Header="App Display Name"
                     IsReadOnly="True"
                     Tag="DisplayName">
                     <cwuc:DataGridTemplateColumn.CellTemplate>
@@ -309,9 +315,9 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
-                                            Tag="{x:Bind DisplayName}"
-                                            Text="Copy">
+                                            Tag="{x:Bind DisplayName}">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
                                             </MenuFlyoutItem.Icon>
@@ -328,10 +334,10 @@
                     </cwuc:DataGridTemplateColumn.CellTemplate>
                 </cwuc:DataGridTemplateColumn>
                 <cwuc:DataGridTemplateColumn
+                    x:Uid="/ManagePage/AppFullNameColumn"
                     Width="400"
                     CanUserResize="True"
                     CanUserSort="True"
-                    Header="App Full Name"
                     IsReadOnly="True"
                     Tag="AppContainerName">
                     <cwuc:DataGridTemplateColumn.CellTemplate>
@@ -346,9 +352,9 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
-                                            Tag="{x:Bind AppContainerName}"
-                                            Text="Copy">
+                                            Tag="{x:Bind AppContainerName}">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
                                             </MenuFlyoutItem.Icon>
@@ -365,10 +371,10 @@
                     </cwuc:DataGridTemplateColumn.CellTemplate>
                 </cwuc:DataGridTemplateColumn>
                 <cwuc:DataGridTemplateColumn
+                    x:Uid="/ManagePage/DirectoryColumn"
                     Width="400"
                     CanUserResize="True"
                     CanUserSort="True"
-                    Header="Directory"
                     IsReadOnly="True"
                     Tag="WorkingDirectory">
                     <cwuc:DataGridTemplateColumn.CellTemplate>
@@ -383,18 +389,18 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
-                                            Tag="{x:Bind WorkingDirectory}"
-                                            Text="Copy">
+                                            Tag="{x:Bind WorkingDirectory}">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
                                             </MenuFlyoutItem.Icon>
                                         </MenuFlyoutItem>
                                         <MenuFlyoutItem
                                             x:Name="Open"
+                                            x:Uid="/ManagePage/Open"
                                             Click="MenuFlyoutItem_Click"
-                                            Tag="{x:Bind WorkingDirectory}"
-                                            Text="Open">
+                                            Tag="{x:Bind WorkingDirectory}">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8DA;" />
                                             </MenuFlyoutItem.Icon>
@@ -411,10 +417,10 @@
                     </cwuc:DataGridTemplateColumn.CellTemplate>
                 </cwuc:DataGridTemplateColumn>
                 <cwuc:DataGridTemplateColumn
+                    x:Uid="/ManagePage/PackageFullNameColumn"
                     Width="400"
                     CanUserResize="True"
                     CanUserSort="True"
-                    Header="Package Full Name"
                     IsReadOnly="True"
                     Tag="PackageFullName">
                     <cwuc:DataGridTemplateColumn.CellTemplate>
@@ -429,9 +435,9 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
-                                            Tag="{x:Bind PackageFullName}"
-                                            Text="Copy">
+                                            Tag="{x:Bind PackageFullName}">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
                                             </MenuFlyoutItem.Icon>
@@ -448,10 +454,10 @@
                     </cwuc:DataGridTemplateColumn.CellTemplate>
                 </cwuc:DataGridTemplateColumn>
                 <cwuc:DataGridTemplateColumn
+                    x:Uid="/ManagePage/AppContainerSidColumn"
                     Width="400"
                     CanUserResize="True"
                     CanUserSort="True"
-                    Header="App Container SID"
                     IsReadOnly="True"
                     Tag="AppContainerSid">
                     <cwuc:DataGridTemplateColumn.CellTemplate>
@@ -466,9 +472,9 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
-                                            Tag="{x:Bind AppContainerSid}"
-                                            Text="Copy">
+                                            Tag="{x:Bind AppContainerSid}">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
                                             </MenuFlyoutItem.Icon>
@@ -485,10 +491,10 @@
                     </cwuc:DataGridTemplateColumn.CellTemplate>
                 </cwuc:DataGridTemplateColumn>
                 <cwuc:DataGridTemplateColumn
+                    x:Uid="/ManagePage/UserSidColumn"
                     Width="400"
                     CanUserResize="True"
                     CanUserSort="True"
-                    Header="User SID"
                     IsReadOnly="True"
                     Tag="UserSid">
                     <cwuc:DataGridTemplateColumn.CellTemplate>
@@ -503,9 +509,9 @@
                                     <MenuFlyout>
                                         <MenuFlyoutItem
                                             x:Name="Copy"
+                                            x:Uid="/ManagePage/Copy"
                                             Click="MenuFlyoutItem_Click"
-                                            Tag="{x:Bind UserSid}"
-                                            Text="Copy">
+                                            Tag="{x:Bind UserSid}">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
                                             </MenuFlyoutItem.Icon>
@@ -551,17 +557,23 @@
                 FontWeight="Bold"
                 TextTrimming="CharacterEllipsis"
                 ToolTipService.ToolTip="{x:Bind Provider.Message, Mode=OneWay}">
-                <Run Text="Status:" />
+                <Run x:Uid="/ManagePage/StatusPrefix" />
                 <Run Text="{x:Bind Provider.Message, Mode=OneWay}" />
             </TextBlock>
             <ComboBox
                 x:Name="DataGridRowDetailsVisibilityMode"
+                x:Uid="/ManagePage/DataGridRowDetailsVisibilityMode"
                 Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 ItemsSource="{x:Bind viewmodels:ManageViewModel.DataGridRowDetailsVisibilityModes}"
-                SelectedIndex="0"
-                ToolTipService.ToolTip="Data Grid Row Details Visibility Mode" />
+                SelectedIndex="0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="cwuc:DataGridRowDetailsVisibilityMode">
+                        <TextBlock local:DataGridRowDetailsVisibilityModeConverter.VisibilityMode="{x:Bind}" ToolTipService.ToolTip="{x:Bind}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Grid>
     </Grid>
 </Page>

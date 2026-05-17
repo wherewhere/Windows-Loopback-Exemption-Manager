@@ -5,11 +5,14 @@ using LoopBack.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Resources;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -191,5 +194,29 @@ namespace LoopBack.Pages
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e) => Provider.IsDirty = true;
+    }
+
+    public static class DataGridRowDetailsVisibilityModeConverter
+    {
+        private static readonly ResourceLoader _loader = ResourceLoader.GetForViewIndependentUse("ManagePage");
+
+        public static readonly DependencyProperty VisibilityModeProperty =
+            DependencyProperty.Register(
+                "VisibilityMode",
+                typeof(DataGridRowDetailsVisibilityMode),
+                typeof(DataGridRowDetailsVisibilityModeConverter),
+                new PropertyMetadata(default, OnModePropertyChanged));
+
+        public static DataGridRowDetailsVisibilityMode GetVisibilityMode(TextBlock element) => (DataGridRowDetailsVisibilityMode)element.GetValue(VisibilityModeProperty);
+
+        public static void SetVisibilityMode(TextBlock element, DataGridRowDetailsVisibilityMode value) => element.SetValue(VisibilityModeProperty, value);
+
+        private static void OnModePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TextBlock element && e.OldValue?.Equals(e.NewValue) != true)
+            {
+                element.Text = _loader.GetString(e.NewValue.ToString());
+            }
+        }
     }
 }
