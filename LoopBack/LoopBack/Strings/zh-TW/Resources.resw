@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value>GUI to enable Loopback Exemptions for Universal Windows Apps and Windows 8, 8.1, 10 Modern UI Apps.</value>
+    <value>用于为通用 Windows 应用以及 Windows 8、8.1、10 现代 UI 应用启用环回豁免的图形界面工具。</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>Loopback Exemption Manager</value>
+    <value>Loopback 豁免管理器</value>
   </data>
 </root>
