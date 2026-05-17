@@ -1,0 +1,3 @@
+files:
+  - source: /LoopBack/LoopBack/Strings/en-US
+    translation: /LoopBack/LoopBack/Strings/%locale%/%original_file_name%

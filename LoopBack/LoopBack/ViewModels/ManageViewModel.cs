@@ -6,15 +6,19 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Core;
 
 namespace LoopBack.ViewModels
 {
     public partial class ManageViewModel(CoreDispatcher dispatcher) : INotifyPropertyChanged
     {
+        private static readonly ResourceLoader _loader = ResourceLoader.GetForViewIndependentUse("ManagePage");
+
         private bool isLoading;
         private LoopUtil loopUtil;
 
@@ -76,7 +80,7 @@ namespace LoopBack.ViewModels
             {
                 if (isLoading) { return; }
                 isLoading = true;
-                ShowMessage("Loading...");
+                ShowLocalizedMessage("Loading");
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 loopUtil ??= IsFullTrust ? new LoopUtil() : LoopBackProjectionFactory.ServerManager.GetLoopUtil();
                 if (loopUtil != null)
@@ -85,11 +89,11 @@ namespace LoopBack.ViewModels
                     AppContainers = new(loopUtil.GetAppContainers());
                     await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
                     await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
-                    ShowMessage("Loaded");
+                    ShowLocalizedMessage("Loaded");
                 }
                 else
                 {
-                    ShowMessage("Load failed");
+                    ShowLocalizedMessage("LoadFailed");
                 }
             }
             catch (Exception ex) when (ex.HResult == -2147023174)
@@ -125,7 +129,7 @@ namespace LoopBack.ViewModels
                 }
                 else
                 {
-                    ShowMessage("Filtering...");
+                    ShowLocalizedMessage("Filtering");
                     string appsInFilter = filter;
                     await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
                     foreach (AppContainer app in AppContainers)
@@ -142,7 +146,7 @@ namespace LoopBack.ViewModels
                             }
                         }
                     }
-                    ShowMessage("Filtered");
+                    ShowLocalizedMessage("Filtered");
                 }
             }
             catch (Exception ex)
@@ -156,7 +160,7 @@ namespace LoopBack.ViewModels
         {
             try
             {
-                ShowMessage("Sorting...");
+                ShowLocalizedMessage("Sorting");
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 CachedSortedColumn = sortBy;
                 AppContainer[] temp = [.. FilteredAppContainers];
@@ -201,7 +205,7 @@ namespace LoopBack.ViewModels
                     default:
                         break;
                 }
-                ShowMessage("Sorted...");
+                ShowLocalizedMessage("Sorted");
             }
             catch (Exception ex)
             {
@@ -214,7 +218,7 @@ namespace LoopBack.ViewModels
         {
             try
             {
-                ShowMessage("Switching...");
+                ShowLocalizedMessage("Switching");
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 foreach (AppContainer app in FilteredAppContainers)
                 {
@@ -222,7 +226,7 @@ namespace LoopBack.ViewModels
                 }
                 FilteredAppContainers = [.. FilteredAppContainers];
                 IsDirty = true;
-                ShowMessage("Switched");
+                ShowLocalizedMessage("Switched");
             }
             catch (Exception ex)
             {
@@ -239,7 +243,7 @@ namespace LoopBack.ViewModels
 
                 if (!IsDirty)
                 {
-                    ShowMessage("Nothing to save");
+                    ShowLocalizedMessage("NothingToSave");
                     return;
                 }
 
@@ -248,11 +252,11 @@ namespace LoopBack.ViewModels
                 if (loopUtil.SetLoopbackList(enableList) is Exception exception)
                 {
                     SettingsHelper.LoggerFactory.CreateLogger<ManageViewModel>().LogError(exception, "Failed to saving data. {message} (0x{hResult:X})", exception.GetMessage(), exception.HResult);
-                    ShowMessage($"ERROR SAVING: {exception.Message}");
+                    ShowLocalizedMessage("ErrorSavingFormat", exception.Message);
                 }
                 else
                 {
-                    ShowMessage("Saved loopback exemptions");
+                    ShowLocalizedMessage("SavedLoopbackExemptions");
                 }
             }
             catch (Exception ex)
@@ -269,7 +273,7 @@ namespace LoopBack.ViewModels
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 if (!IsRunAsAdministrator)
                 {
-                    ShowMessage("Try to run as administrator");
+                    ShowLocalizedMessage("TryRunAsAdministrator");
                     try
                     {
                         LoopBackProjectionFactory.ServerManager.RunAsAdministrator();
@@ -283,19 +287,19 @@ namespace LoopBack.ViewModels
                         await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
                         if (IsRunAsAdministrator)
                         {
-                            ShowMessage("Run as administrator now");
+                            ShowLocalizedMessage("RunAsAdministratorNow");
                         }
                         else
                         {
-                            ShowMessage("Failed to run as administrator");
+                            ShowLocalizedMessage("FailedRunAsAdministrator");
                         }
                         return;
                     }
-                    ShowMessage("Failed to run as administrator");
+                    ShowLocalizedMessage("FailedRunAsAdministrator");
                 }
                 else
                 {
-                    ShowMessage("Already run as administrator");
+                    ShowLocalizedMessage("AlreadyRunAsAdministrator");
                 }
             }
             catch (Exception ex)
@@ -306,5 +310,11 @@ namespace LoopBack.ViewModels
         }
 
         public void ShowMessage(string log) => Message = $"{DateTime.Now:hh:mm:ss.fff} {log}";
+
+        public void ShowLocalizedMessage([ConstantExpected] string resourceKey) => ShowMessage(_loader.GetString(resourceKey));
+
+        public void ShowLocalizedMessage([ConstantExpected] string resourceKey, string arg0) => ShowMessage(string.Format(_loader.GetString(resourceKey), arg0));
+
+        public static string GetLocalizedString(DataGridRowDetailsVisibilityMode mode) => _loader.GetString(mode.ToString());
     }
 }
