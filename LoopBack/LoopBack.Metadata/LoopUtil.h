@@ -31,33 +31,33 @@ namespace winrt::LoopBack::Metadata::implementation
         }
 
         IVectorView<AppContainer> GetAppContainers();
-        HRESULT SetLoopbackList(IIterable<hstring> list) const;
-        HRESULT SetLoopbackList(IIterable<AppContainer> list) const;
-        HRESULT AddLookback(hstring stringSid) const;
-        HRESULT AddLookback(AppContainer appContainer) const;
-        HRESULT AddLookbacks(IIterable<hstring> list) const;
-        HRESULT AddLookbacks(IIterable<AppContainer> list) const;
-        HRESULT RemoveLookback(hstring stringSid) const;
-        HRESULT RemoveLookback(AppContainer appContainer) const;
-        HRESULT RemoveLookbacks(IIterable<hstring> list) const;
-        HRESULT RemoveLookbacks(IIterable<AppContainer> list) const;
-        const void Close();
+        const HRESULT SetLoopbackList(const IIterable<hstring>& list) const;
+        const HRESULT SetLoopbackList(const IIterable<AppContainer>& list) const;
+        const HRESULT AddLookback(const hstring& stringSid) const;
+        const HRESULT AddLookback(const AppContainer& appContainer) const;
+        const HRESULT AddLookbacks(const IIterable<hstring>& list) const;
+        const HRESULT AddLookbacks(const IIterable<AppContainer>& list) const;
+        const HRESULT RemoveLookback(const hstring& stringSid) const;
+        const HRESULT RemoveLookback(const AppContainer& appContainer) const;
+        const HRESULT RemoveLookbacks(const IIterable<hstring>& list) const;
+        const HRESULT RemoveLookbacks(const IIterable<AppContainer>& list) const;
+        void Close();
 
     private:
         const IVector<AppContainer> apps = single_threaded_vector<AppContainer>();
         IVector<hstring> appListConfig = nullptr;
         HINSTANCE firewallAPI = LoadLibrary(L"FirewallAPI.dll");
 
-        const AppContainer CreateAppContainer(INET_FIREWALL_APP_CONTAINER PI_app, bool loopUtil) const;
+        const AppContainer CreateAppContainer(const INET_FIREWALL_APP_CONTAINER& PI_app, const bool loopUtil) const;
         const bool CheckLoopback(SID* intPtr) const;
-        const IVector<hstring> GetBinaries(INET_FIREWALL_AC_BINARIES cap) const;
-        const IVector<hstring> GetCapabilities(INET_FIREWALL_AC_CAPABILITIES cap) const;
+        const IVector<hstring> GetBinaries(const INET_FIREWALL_AC_BINARIES& cap) const;
+        const IVector<hstring> GetCapabilities(const INET_FIREWALL_AC_CAPABILITIES& cap) const;
         const IVector<hstring> PI_NetworkIsolationGetAppContainerConfig() const;
-        const IVectorView<AppContainer> PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> list) const;
-        const void PI_NetworkIsolationFreeAppContainers(PINET_FIREWALL_APP_CONTAINER point) const;
-        const IVector<hstring> GetEnabledLoopList(hstring list, bool isAdd = true) const;
-        const IVector<hstring> GetEnabledLoopList(IIterable<hstring> list, bool isAdd = true) const;
-        const IVector<hstring> GetEnabledLoopList(IIterable<AppContainer> list, bool isAdd = true) const;
+        const IVectorView<AppContainer> PI_NetworkIsolationEnumAppContainers(const IVector<AppContainer>& list) const;
+        void PI_NetworkIsolationFreeAppContainers(const PINET_FIREWALL_APP_CONTAINER& point) const;
+        const IVector<hstring> GetEnabledLoopList(const hstring& list, const bool isAdd = true) const;
+        const IVector<hstring> GetEnabledLoopList(const IIterable<hstring>& list, const bool isAdd = true) const;
+        const IVector<hstring> GetEnabledLoopList(const IIterable<AppContainer>& list, const bool isAdd = true) const;
 
         const decltype(&NetworkIsolationGetAppContainerConfig) NetworkIsolationGetAppContainerConfig = GetNetworkIsolationGetAppContainerConfig();
         const decltype(&NetworkIsolationSetAppContainerConfig) NetworkIsolationSetAppContainerConfig = GetNetworkIsolationSetAppContainerConfig();

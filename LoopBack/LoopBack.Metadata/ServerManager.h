@@ -14,17 +14,17 @@ namespace winrt::LoopBack::Metadata::implementation
         ServerManager() = default;
         ~ServerManager();
 
-        bool IsServerRunning() const { return true; }
-        bool IsRunAsAdministrator() const;
+        const bool IsServerRunning() const { return true; }
+        const bool IsRunAsAdministrator() const;
 
-        event_token ServerManagerDestructed(EventHandler<bool> const& handler);
-        void ServerManagerDestructed(winrt::event_token const& token);
+        event_token ServerManagerDestructed(const EventHandler<bool>& handler);
+        void ServerManagerDestructed(const winrt::event_token& token);
 
         LoopUtil GetLoopUtil() const;
         void RunAsAdministrator() const;
         IAsyncAction StopServerAsync() const;
         IAsyncOperation<LoopBack::Metadata::ServerManager> GetAdminServerManagerAsync();
-        const void Close();
+        void Close();
 
     private:
         event<EventHandler<bool>> m_serverManagerDestructedEvent;

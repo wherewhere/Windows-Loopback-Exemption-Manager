@@ -13,7 +13,7 @@ namespace winrt::LoopBack::Metadata::implementation
         m_isDisposed = true;
     }
 
-    bool ServerManager::IsRunAsAdministrator() const
+    const bool ServerManager::IsRunAsAdministrator() const
     {
         SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
         PSID AdministratorsGroup;
@@ -38,12 +38,12 @@ namespace winrt::LoopBack::Metadata::implementation
         return result;
     }
 
-    event_token ServerManager::ServerManagerDestructed(EventHandler<bool> const& handler)
+    event_token ServerManager::ServerManagerDestructed(const EventHandler<bool>& handler)
     {
         return m_serverManagerDestructedEvent.add(handler);
     }
 
-    void ServerManager::ServerManagerDestructed(winrt::event_token const& token)
+    void ServerManager::ServerManagerDestructed(const winrt::event_token& token)
     {
         m_serverManagerDestructedEvent.remove(token);
     }
@@ -123,7 +123,7 @@ namespace winrt::LoopBack::Metadata::implementation
         }
     }
 
-    const void ServerManager::Close()
+    void ServerManager::Close()
     {
         if (m_isDisposed) { return; }
         m_serverManagerDestructedEvent(*this, true);
