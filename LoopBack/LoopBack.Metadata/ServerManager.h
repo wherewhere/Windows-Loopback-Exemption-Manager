@@ -24,6 +24,7 @@ namespace winrt::LoopBack::Metadata::implementation
         void RunAsAdministrator() const;
         IAsyncAction StopServerAsync() const;
         IAsyncOperation<LoopBack::Metadata::ServerManager> GetAdminServerManagerAsync();
+        LoopBack::Metadata::TaskbarList GetTaskbarList() const;
         void Close();
 
     private:

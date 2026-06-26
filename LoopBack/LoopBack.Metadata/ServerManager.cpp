@@ -123,6 +123,11 @@ namespace winrt::LoopBack::Metadata::implementation
         }
     }
 
+    TaskbarList ServerManager::GetTaskbarList() const
+    {
+        return TaskbarList::TaskbarList();
+    }
+
     void ServerManager::Close()
     {
         if (m_isDisposed) { return; }

@@ -126,6 +126,9 @@
     <ClInclude Include="ServerManager.h">
       <DependentUpon>ServerManager.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="TaskbarList.h">
+      <DependentUpon>TaskbarList.idl</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppContainer.cpp">
@@ -144,24 +147,23 @@
     <ClCompile Include="ServerManager.cpp">
       <DependentUpon>ServerManager.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="TaskbarList.cpp">
+      <DependentUpon>TaskbarList.idl</DependentUpon>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="AppContainer.idl" />
     <Midl Include="LoopBackManagerContract.idl" />
     <Midl Include="LoopUtil.idl" />
-    <Midl Include="ServerFactory.idl">
-      <SubType>Designer</SubType>
-    </Midl>
+    <Midl Include="ServerFactory.idl" />
     <Midl Include="ServerManager.idl" />
+    <Midl Include="TaskbarList.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LoopBack.Metadata.def" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
-    <Text Include="readme.txt">
-      <DeploymentContent>false</DeploymentContent>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.CppWinRT">

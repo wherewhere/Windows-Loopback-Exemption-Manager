@@ -7,6 +7,7 @@
     </ClCompile>
     <ClCompile Include="ServerManager.cpp" />
     <ClCompile Include="ServerFactory.cpp" />
+    <ClCompile Include="TaskbarList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -14,6 +15,7 @@
     </ClInclude>
     <ClInclude Include="ServerManager.h" />
     <ClInclude Include="ServerFactory.h" />
+    <ClInclude Include="TaskbarList.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="AppContainer.idl" />
@@ -21,6 +23,7 @@
     <Midl Include="LoopBackManagerContract.idl" />
     <Midl Include="ServerManager.idl" />
     <Midl Include="ServerFactory.idl" />
+    <Midl Include="TaskbarList.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LoopBack.Metadata.def" />
