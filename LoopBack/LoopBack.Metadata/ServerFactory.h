@@ -25,12 +25,12 @@ namespace winrt::LoopBack::Metadata::implementation
         static DWORD RegisterServerManager();
     };
 
-    struct Factory : winrt::implements<Factory, winrt::Windows::Foundation::IActivationFactory, IClassFactory>
+    struct Factory : winrt::implements<Factory, IActivationFactory, IClassFactory>
     {
         static const CLSID& GetCLSID();
 
         // IActivationFactory
-        winrt::Windows::Foundation::IInspectable ActivateInstance();
+        IInspectable ActivateInstance();
 
         // IClassFactory
         HRESULT STDMETHODCALLTYPE CreateInstance(::IUnknown* pUnkOuter, REFIID riid, void** ppvObject);

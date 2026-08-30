@@ -11,7 +11,7 @@ namespace winrt::LoopBack::Metadata::implementation
     {
         AppContainer() = default;
 
-        bool IsEnableLoop() const { return isEnableLoop; }
+        const bool IsEnableLoop() const { return isEnableLoop; }
         hstring DisplayName() const { return displayName; }
         hstring Description() const { return description; }
         hstring AppContainerName() const { return appContainerName; }
@@ -22,16 +22,16 @@ namespace winrt::LoopBack::Metadata::implementation
         IVector<hstring> Capabilities() const { return capabilities; }
         IVector<hstring> Binaries() const { return binaries; }
 
-        void IsEnableLoop(bool value) { isEnableLoop = value; }
-        void DisplayName(hstring value) { displayName = value; }
-        void Description(hstring value) { description = value; }
-        void AppContainerName(hstring value) { appContainerName = value; }
-        void PackageFullName(hstring value) { packageFullName = value; }
-        void WorkingDirectory(hstring value) { workingDirectory = value; }
-        void AppContainerSid(hstring value) { appContainerSid = value; }
-        void UserSid(hstring value) { userSid = value; }
-        void Capabilities(IVector<hstring> value) { capabilities = value; }
-        void Binaries(IVector<hstring> value) { binaries = value; }
+        void IsEnableLoop(const bool value) { isEnableLoop = value; }
+        void DisplayName(const hstring& value) { displayName = value; }
+        void Description(const hstring& value) { description = value; }
+        void AppContainerName(const hstring& value) { appContainerName = value; }
+        void PackageFullName(const hstring& value) { packageFullName = value; }
+        void WorkingDirectory(const hstring& value) { workingDirectory = value; }
+        void AppContainerSid(const hstring& value) { appContainerSid = value; }
+        void UserSid(const hstring& value) { userSid = value; }
+        void Capabilities(const IVector<hstring>& value) { capabilities = value; }
+        void Binaries(const IVector<hstring>& value) { binaries = value; }
 
         hstring ToString() const;
 

@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Core;
+using Windows.Win32.UI.Shell;
 
 namespace LoopBack.ViewModels
 {
@@ -19,8 +20,21 @@ namespace LoopBack.ViewModels
     {
         private static readonly ResourceLoader _loader = ResourceLoader.GetForViewIndependentUse("ManagePage");
 
-        private bool isLoading;
         private LoopUtil loopUtil;
+        private TaskbarProgress taskbar;
+
+        private bool IsLoading
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    taskbar?.SetProgressState(value ? TBPFLAG.TBPF_INDETERMINATE : TBPFLAG.TBPF_NOPROGRESS);
+                }
+            }
+        }
 
         public const bool IsFullTrust = LoopBackProjectionFactory.IsFullTrust;
         public static DataGridRowDetailsVisibilityMode[] DataGridRowDetailsVisibilityModes => Enum.GetValues<DataGridRowDetailsVisibilityMode>();
@@ -80,18 +94,22 @@ namespace LoopBack.ViewModels
         {
             try
             {
-                if (isLoading) { return; }
-                isLoading = true;
+                if (IsLoading) { return; }
+                IsLoading = true;
                 ShowLocalizedMessage("Loading");
                 await ThreadSwitcher.ResumeBackgroundAsync();
                 if (loopUtil == null)
                 {
                     if (IsFullTrust || LoopBackProjectionFactory.ServerManager is not ServerManager serverManager)
                     {
+                        taskbar = await TaskbarProgress.GetForDispatcher(Dispatcher);
+                        taskbar.SetProgressState(TBPFLAG.TBPF_INDETERMINATE);
                         loopUtil = new LoopUtil();
                     }
                     else
                     {
+                        taskbar = await TaskbarProgress.GetForDispatcher(serverManager.GetTaskbarList(), Dispatcher);
+                        taskbar.SetProgressState(TBPFLAG.TBPF_INDETERMINATE);
                         loopUtil = serverManager.GetLoopUtil();
                         IsRunAsAdministrator = serverManager.IsRunAsAdministrator;
                     }
@@ -110,6 +128,7 @@ namespace LoopBack.ViewModels
             }
             catch (Exception ex) when (ex.HResult == -2147023174)
             {
+                taskbar = null;
                 loopUtil = null;
                 AppContainers = null;
                 FilteredAppContainers = null;
@@ -124,7 +143,7 @@ namespace LoopBack.ViewModels
             }
             finally
             {
-                isLoading = false;
+                IsLoading = false;
             }
         }
 
@@ -301,18 +320,12 @@ namespace LoopBack.ViewModels
                     {
                         ServerManager serverManager = LoopBackProjectionFactory.ServerManager;
                         loopUtil = serverManager.GetLoopUtil();
+                        taskbar = await TaskbarProgress.GetForDispatcher(serverManager.GetTaskbarList(), Dispatcher);
                         IsRunAsAdministrator = serverManager.IsRunAsAdministrator;
                         AppContainers = new(loopUtil.GetAppContainers());
                         await Dispatcher.AwaitableRunAsync(FilteredAppContainers.Clear);
                         await FilteredAppContainers.AddRangeAsync(AppContainers, Dispatcher);
-                        if (IsRunAsAdministrator)
-                        {
-                            ShowLocalizedMessage("RunAsAdministratorNow");
-                        }
-                        else
-                        {
-                            ShowLocalizedMessage("FailedRunAsAdministrator");
-                        }
+                        ShowLocalizedMessage(IsRunAsAdministrator ? "RunAsAdministratorNow" : "FailedRunAsAdministrator");
                         return;
                     }
                     ShowLocalizedMessage("FailedRunAsAdministrator");
@@ -331,7 +344,7 @@ namespace LoopBack.ViewModels
 
         public void ShowMessage(string log) => Message = $"{DateTime.Now:hh:mm:ss.fff} {log}";
 
-        public void ShowLocalizedMessage([ConstantExpected] string resourceKey) => ShowMessage(_loader.GetString(resourceKey));
+        public void ShowLocalizedMessage(string resourceKey) => ShowMessage(_loader.GetString(resourceKey));
 
         public void ShowLocalizedMessage([ConstantExpected] string resourceKey, string arg0) => ShowMessage(string.Format(_loader.GetString(resourceKey), arg0));
 

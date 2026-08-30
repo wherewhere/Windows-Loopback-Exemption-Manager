@@ -1,0 +1,11 @@
+import "LoopBackManagerContract.idl";
+
+namespace LoopBack.Metadata
+{
+    [default_interface]
+    [contract(LoopBackManagerContract, 3)]
+    runtimeclass TaskbarList 
+    {
+        TaskbarList();
+    }
+}

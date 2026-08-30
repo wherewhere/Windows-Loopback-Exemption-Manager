@@ -15,7 +15,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return PI_NetworkIsolationEnumAppContainers(apps);
     }
 
-    HRESULT LoopUtil::SetLoopbackList(const IIterable<hstring> list) const try
+    const HRESULT LoopUtil::SetLoopbackList(const IIterable<hstring>& list) const try
     {
         vector<SID_AND_ATTRIBUTES> arr;
         DWORD count = 0;
@@ -39,7 +39,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return to_hresult();
     }
 
-    HRESULT LoopUtil::SetLoopbackList(const IIterable<AppContainer> list) const try
+    const HRESULT LoopUtil::SetLoopbackList(const IIterable<AppContainer>& list) const try
     {
         vector<SID_AND_ATTRIBUTES> arr;
         DWORD count = 0;
@@ -63,7 +63,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return to_hresult();
     }
 
-    HRESULT LoopUtil::AddLookback(const hstring stringSid) const try
+    const HRESULT LoopUtil::AddLookback(const hstring& stringSid) const try
     {
         const IVector<hstring> enabledList = GetEnabledLoopList(stringSid, true);
         vector<SID_AND_ATTRIBUTES> arr;
@@ -88,7 +88,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return to_hresult();
     }
 
-    HRESULT LoopUtil::AddLookback(AppContainer appContainer) const try
+    const HRESULT LoopUtil::AddLookback(const AppContainer& appContainer) const try
     {
         const IVector<hstring> enabledList = GetEnabledLoopList(appContainer.AppContainerSid(), true);
         vector<SID_AND_ATTRIBUTES> arr;
@@ -113,7 +113,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return to_hresult();
     }
 
-    HRESULT LoopUtil::AddLookbacks(const IIterable<hstring> list) const try
+    const HRESULT LoopUtil::AddLookbacks(const IIterable<hstring>& list) const try
     {
         const IVector<hstring> enabledList = GetEnabledLoopList(list, true);
         vector<SID_AND_ATTRIBUTES> arr;
@@ -138,7 +138,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return to_hresult();
     }
 
-    HRESULT LoopUtil::AddLookbacks(const IIterable<AppContainer> list) const try
+    const HRESULT LoopUtil::AddLookbacks(const IIterable<AppContainer>& list) const try
     {
         const IVector<hstring> enabledList = GetEnabledLoopList(list, true);
         vector<SID_AND_ATTRIBUTES> arr;
@@ -163,7 +163,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return to_hresult();
     }
 
-    HRESULT LoopUtil::RemoveLookback(const hstring stringSid) const try
+    const HRESULT LoopUtil::RemoveLookback(const hstring& stringSid) const try
     {
         const IVector<hstring> enabledList = GetEnabledLoopList(stringSid, false);
         vector<SID_AND_ATTRIBUTES> arr;
@@ -188,7 +188,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return to_hresult();
     }
 
-    HRESULT LoopUtil::RemoveLookback(const AppContainer appContainer) const try
+    const HRESULT LoopUtil::RemoveLookback(const AppContainer& appContainer) const try
     {
         const IVector<hstring> enabledList = GetEnabledLoopList(appContainer.AppContainerSid(), false);
         vector<SID_AND_ATTRIBUTES> arr;
@@ -213,7 +213,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return to_hresult();
     }
 
-    HRESULT LoopUtil::RemoveLookbacks(const IIterable<hstring> list) const try
+    const HRESULT LoopUtil::RemoveLookbacks(const IIterable<hstring>& list) const try
     {
         const IVector<hstring> enabledList = GetEnabledLoopList(list, false);
         vector<SID_AND_ATTRIBUTES> arr;
@@ -238,7 +238,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return to_hresult();
     }
 
-    HRESULT LoopUtil::RemoveLookbacks(const IIterable<AppContainer> list) const try
+    const HRESULT LoopUtil::RemoveLookbacks(const IIterable<AppContainer>& list) const try
     {
         const IVector<hstring> enabledList = GetEnabledLoopList(list, false);
         vector<SID_AND_ATTRIBUTES> arr;
@@ -263,7 +263,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return to_hresult();
     }
 
-    const AppContainer LoopUtil::CreateAppContainer(const INET_FIREWALL_APP_CONTAINER PI_app, const bool loopUtil) const
+    const AppContainer LoopUtil::CreateAppContainer(const INET_FIREWALL_APP_CONTAINER& PI_app, const bool loopUtil) const
     {
         AppContainer app = AppContainer::AppContainer();
 
@@ -317,7 +317,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return false;
     }
 
-    const IVector<hstring> LoopUtil::GetBinaries(const INET_FIREWALL_AC_BINARIES cap) const
+    const IVector<hstring> LoopUtil::GetBinaries(const INET_FIREWALL_AC_BINARIES& cap) const
     {
         const IVector<hstring> myCap = single_threaded_vector<hstring>();
 
@@ -338,7 +338,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return myCap;
     }
 
-    const IVector<hstring> LoopUtil::GetCapabilities(const INET_FIREWALL_AC_CAPABILITIES cap) const
+    const IVector<hstring> LoopUtil::GetCapabilities(const INET_FIREWALL_AC_CAPABILITIES& cap) const
     {
         const IVector<hstring> myCap = single_threaded_vector<hstring>();
 
@@ -393,7 +393,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return list;
     }
 
-    const IVectorView<AppContainer> LoopUtil::PI_NetworkIsolationEnumAppContainers(IVector<AppContainer> list) const
+    const IVectorView<AppContainer> LoopUtil::PI_NetworkIsolationEnumAppContainers(const IVector<AppContainer>& list) const
     {
         if (!list) { return nullptr; }
         list.Clear();
@@ -421,7 +421,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return list.GetView();
     }
 
-    const void LoopUtil::PI_NetworkIsolationFreeAppContainers(const PINET_FIREWALL_APP_CONTAINER point) const
+    void LoopUtil::PI_NetworkIsolationFreeAppContainers(const PINET_FIREWALL_APP_CONTAINER& point) const
     {
         if (point)
         {
@@ -429,7 +429,7 @@ namespace winrt::LoopBack::Metadata::implementation
         }
     }
 
-    const IVector<hstring> LoopUtil::GetEnabledLoopList(const hstring sid, const bool isAdd) const
+    const IVector<hstring> LoopUtil::GetEnabledLoopList(const hstring& sid, const bool isAdd) const
     {
         const IVector<hstring> enabledList = single_threaded_vector<hstring>();
         for (AppContainer app : apps)
@@ -450,7 +450,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return enabledList;
     }
 
-    const IVector<hstring> LoopUtil::GetEnabledLoopList(const IIterable<hstring> list, const bool isAdd) const
+    const IVector<hstring> LoopUtil::GetEnabledLoopList(const IIterable<hstring>& list, const bool isAdd) const
     {
         const IVector<hstring> enabledList = single_threaded_vector<hstring>();
         for (AppContainer app : apps)
@@ -483,7 +483,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return enabledList;
     }
 
-    const IVector<hstring> LoopUtil::GetEnabledLoopList(const IIterable<AppContainer> list, const bool isAdd) const
+    const IVector<hstring> LoopUtil::GetEnabledLoopList(const IIterable<AppContainer>& list, const bool isAdd) const
     {
         const IVector<hstring> enabledList = single_threaded_vector<hstring>();
         for (AppContainer app : apps)
@@ -516,7 +516,7 @@ namespace winrt::LoopBack::Metadata::implementation
         return enabledList;
     }
 
-    const void LoopUtil::Close()
+    void LoopUtil::Close()
     {
         if (firewallAPI)
         {

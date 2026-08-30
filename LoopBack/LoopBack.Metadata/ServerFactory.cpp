@@ -21,7 +21,10 @@ namespace winrt::LoopBack::Metadata::implementation
         DWORD token = RegisterServerManager();
 
         CheckComRefAsync();
-        WaitForSingleObject(_comServerExitEvent, INFINITE);
+        if (_comServerExitEvent)
+        {
+            WaitForSingleObject(_comServerExitEvent, INFINITE);
+        }
 
         check_hresult(CoRevokeClassObject(token));
         uninit_apartment();

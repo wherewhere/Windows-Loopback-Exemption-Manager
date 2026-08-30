@@ -9,6 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Resources;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation.Metadata;
 using Windows.Storage;
@@ -136,20 +137,26 @@ namespace LoopBack.Common
 
         private static void OnCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
         {
+            ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("SettingsPane");
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
                     "Feedback",
-                    "Feedback",
+                    loader.GetString("Feedback"),
                     (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/wherewhere/Windows-Loopback-Exemption-Manager/issues"))));
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
                     "LogFolder",
-                    "LogFolder",
+                    loader.GetString("LogFolder"),
                     async (handler) => _ = Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("Logs", CreationCollisionOption.OpenIfExists))));
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
+                    "Translate",
+                    loader.GetString("Translate"),
+                    handler => _ = Launcher.LaunchUriAsync(new Uri("https://crowdin.com/project/Loopback"))));
+            args.Request.ApplicationCommands.Add(
+                new SettingsCommand(
                     "Repository",
-                    "Repository",
+                    loader.GetString("Repository"),
                     (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/wherewhere/Windows-Loopback-Exemption-Manager"))));
         }
 

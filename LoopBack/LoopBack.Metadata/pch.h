@@ -8,5 +8,6 @@
 #include <sddl.h>
 #include <shellapi.h>
 #include <winnt.h>
+#include <shobjidl_core.h>
 
 #pragma comment(lib,"shell32.lib")

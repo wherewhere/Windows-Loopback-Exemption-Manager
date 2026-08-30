@@ -126,6 +126,9 @@
     <ClInclude Include="ServerManager.h">
       <DependentUpon>ServerManager.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="TaskbarList.h">
+      <DependentUpon>TaskbarList.idl</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppContainer.cpp">
@@ -144,39 +147,29 @@
     <ClCompile Include="ServerManager.cpp">
       <DependentUpon>ServerManager.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="TaskbarList.cpp">
+      <DependentUpon>TaskbarList.idl</DependentUpon>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="AppContainer.idl" />
     <Midl Include="LoopBackManagerContract.idl" />
     <Midl Include="LoopUtil.idl" />
-    <Midl Include="ServerFactory.idl">
-      <SubType>Designer</SubType>
-    </Midl>
+    <Midl Include="ServerFactory.idl" />
     <Midl Include="ServerManager.idl" />
+    <Midl Include="TaskbarList.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LoopBack.Metadata.def" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
-    <Text Include="readme.txt">
-      <DeploymentContent>false</DeploymentContent>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.CppWinRT">
-      <Version>2.0.250303.1</Version>
+      <Version>3.0.260520.1</Version>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <Target Name="OutputWinMD" BeforeTargets="BuildCompile">
-    <PropertyGroup>
-      <PlatformName Condition="'$(Platform)' == 'Win32'">x86</PlatformName>
-      <PlatformName Condition="'$(Platform)' == 'ARM64EC'">ARM64</PlatformName>
-      <PlatformName Condition="'$(PlatformName)' == ''">$(Platform)</PlatformName>
-    </PropertyGroup>
-    <Copy SourceFiles="$(OutDir)\$(ProjectName).winmd" DestinationFolder="..\..\WinMD\$(PlatformName)\$(Configuration)\" />
-    <Message Text="Copied output metadata file to '..\..\WinMD\$(PlatformName)\$(Configuration)\'." />
-  </Target>
 </Project>

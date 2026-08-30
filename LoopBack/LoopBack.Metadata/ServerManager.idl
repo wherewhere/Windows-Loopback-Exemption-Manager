@@ -1,5 +1,6 @@
 import "LoopBackManagerContract.idl";
 import "LoopUtil.idl";
+import "TaskbarList.idl";
 
 namespace LoopBack.Metadata
 {
@@ -18,5 +19,7 @@ namespace LoopBack.Metadata
         void RunAsAdministrator();
         Windows.Foundation.IAsyncAction StopServerAsync();
         Windows.Foundation.IAsyncOperation<ServerManager> GetAdminServerManagerAsync();
+        [contract(LoopBackManagerContract, 3)]
+        TaskbarList GetTaskbarList();
     }
 }
