@@ -16,7 +16,7 @@ using Windows.Win32.UI.Shell;
 
 namespace LoopBack.ViewModels
 {
-    public partial class ManageViewModel(CoreDispatcher dispatcher) : INotifyPropertyChanged
+    public sealed partial class ManageViewModel(CoreDispatcher dispatcher) : INotifyPropertyChanged
     {
         private static readonly ResourceLoader _loader = ResourceLoader.GetForViewIndependentUse("ManagePage");
 
@@ -72,7 +72,7 @@ namespace LoopBack.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected async void RaisePropertyChangedEvent([CallerMemberName] string name = null)
+        private async void RaisePropertyChangedEvent([CallerMemberName] string name = null)
         {
             if (name != null)
             {
@@ -81,9 +81,9 @@ namespace LoopBack.ViewModels
             }
         }
 
-        protected void SetProperty<TProperty>(ref TProperty property, TProperty value, [CallerMemberName] string name = null)
+        private void SetProperty<TProperty>(ref TProperty property, TProperty value, [CallerMemberName] string name = null)
         {
-            if (property == null ? value != null : !property.Equals(value))
+            if (!property?.Equals(value) ?? (value != null))
             {
                 property = value;
                 RaisePropertyChangedEvent(name);

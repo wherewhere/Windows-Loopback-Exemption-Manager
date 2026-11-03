@@ -43,7 +43,7 @@ jobs:
 
       # Install the .NET Core App workload
       - name: Install .NET Core App
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 

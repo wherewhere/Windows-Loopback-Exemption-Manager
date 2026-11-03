@@ -5,22 +5,22 @@
     <Description>GUI to enable Loopback Exemptions for Universal Windows Apps and Windows 8, 8.1, 10 Modern UI Apps.</Description>
     <LangVersion>latest</LangVersion>
     <RepositoryType>git</RepositoryType>
-    <PublishRepositoryUrl>True</PublishRepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryUrl>https://github.com/wherewhere/Windows-Loopback-Exemption-Manager</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>false</AppxAutoIncrementPackageRevision>
     <AppxBundle>Never</AppxBundle>
     <AppxBundlePlatforms>x86|x64|ARM64</AppxBundlePlatforms>
     <AppxPackageDir>AppPackages</AppxPackageDir>
-    <AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxPackageSigningTimestampServerUrl>http://timestamp.digicert.com</AppxPackageSigningTimestampServerUrl>
-    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
-    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
-    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxSymbolPackageEnabled>true</AppxSymbolPackageEnabled>
+    <GenerateAppInstallerFile>false</GenerateAppInstallerFile>
+    <GenerateTemporaryStoreCertificate>true</GenerateTemporaryStoreCertificate>
+    <GenerateTestArtifacts>true</GenerateTestArtifacts>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
 

@@ -21,7 +21,7 @@ namespace LoopBack.Metadata
         IVector<String> Binaries { get; set; };
     }
 
-    /// Force midl3 to generate vector marshalling info. 
+    /// Force midl3 to generate vector marshalling info.
     declare
     {
         interface IVector<AppContainer>;
