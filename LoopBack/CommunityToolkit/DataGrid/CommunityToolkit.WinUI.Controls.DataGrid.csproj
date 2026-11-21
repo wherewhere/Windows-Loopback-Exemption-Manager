@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net11.0-windows10.0.26100.0</TargetFramework>
     <RootNamespace>CommunityToolkit.WinUI.Controls</RootNamespace>
     <UseUwp>true</UseUwp>
   </PropertyGroup>

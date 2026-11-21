@@ -28,6 +28,6 @@ namespace LoopBack.Helpers
             }
         }
 
-        public static HashSet<Window> ActiveWindows { get; } = new HashSet<Window>(1);
+        public static HashSet<Window> ActiveWindows { get; } = [with(1)];
     }
 }
